@@ -1,11 +1,17 @@
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { ButtonsSectionComponent } from "./buttons-section/buttons-section.component";
+import { HeaderComponent } from "./header/header.component";
 
 @Component({
-  selector: 'app-home-page',
-  imports: [],
+  standalone: true,
+  selector: 'app-home-page',  // WICHTIG: anderer Selector als InitialTestPage
+  imports: [RouterLink, ButtonsSectionComponent, HeaderComponent],  // RouterLink für Navigation hinzufügen
   templateUrl: './home-page.component.html',
-  styleUrl: './home-page.component.scss'
+  styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent {
-
+  ngOnInit() {
+    console.log('HomePage geladen');
+  }
 }
