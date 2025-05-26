@@ -6,7 +6,7 @@ import { HeaderComponent } from "./header/header.component";
 @Component({
   standalone: true,
   selector: 'app-home-page',  // WICHTIG: anderer Selector als InitialTestPage
-  imports: [RouterLink, ButtonsSectionComponent, HeaderComponent],  // RouterLink für Navigation hinzufügen
+  imports: [ButtonsSectionComponent, HeaderComponent],  // RouterLink für Navigation hinzufügen
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.scss']
 })
