@@ -1,3 +1,4 @@
+@use "sass:color";
 .btn-section {
   text-align: center;
   padding: 2rem;
@@ -35,8 +36,8 @@
     background-color: #738fbd;
 
     &:hover {
-      background-color: darken(#738fbd, 10%);
-      transform: scale(1.03);
+    background-color: color.scale(#738fbd, $lightness: -10%);
+    transform: scale(1.07)
     }
   }
 
@@ -44,8 +45,8 @@
     background-color: #a8c3d4;
 
     &:hover {
-      background-color: darken(#a8c3d4, 10%);
-      transform: scale(1.03);
+    background-color: color.scale(#a8c3d4, $lightness: -10%);
+    transform: scale(1.07)
     }
   }
 
@@ -53,8 +54,8 @@
     background-color: #db88a4;
 
     &:hover {
-      background-color: darken(#db88a4, 10%);
-      transform: scale(1.03);
+    background-color: color.scale(#db88a4, $lightness: -10%);
+    transform: scale(1.07)
     }
   }
 }
