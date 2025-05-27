@@ -9,8 +9,16 @@ import lombok.Data;
 public class Pruefling {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    @SequenceGenerator(
+        name = "pruefling_seq",
+        sequenceName = "pruefling_seq",
+        allocationSize = 1
+    )
+    @GeneratedValue(
+        strategy = GenerationType.SEQUENCE,
+        generator = "pruefling_seq"
+    )
+    private Long id;
 
 
     private String name;
