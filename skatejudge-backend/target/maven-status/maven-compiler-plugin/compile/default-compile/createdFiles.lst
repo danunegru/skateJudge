@@ -1,5 +1,4 @@
-de\whs\mci\me76507\skatejudge\DurchschnittBerechnen.class
-de\whs\mci\me76507\skatejudge\PrueflingController.class
-de\whs\mci\me76507\skatejudge\PrueflingRepository.class
-de\whs\mci\me76507\skatejudge\SkateJudgeApplication.class
-de\whs\mci\me76507\skatejudge\Pruefling.class
+skatejudge\SkateJudgeApplication.class
+skatejudge\PrueflingController.class
+skatejudge\PrueflingRepository.class
+skatejudge\Pruefling.class

@@ -1,6 +1,8 @@
-package skatejudge;
+package skatejudge.controller;
 
 import org.springframework.web.bind.annotation.*;
+import skatejudge.repository.PrueflingRepository;
+import skatejudge.entity.Pruefling;
 
 @RestController
 @RequestMapping("/api")

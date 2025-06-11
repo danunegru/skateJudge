@@ -1,4 +1,4 @@
-package skatejudge;
+package skatejudge.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
