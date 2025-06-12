@@ -1,13 +1,15 @@
 import { Component } from '@angular/core';
-//import { RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { NavigationComponent } from '../../shared/components/navigation/navigation.component';
 
 @Component({
-  standalone: true,
   selector: 'app-header',
-  imports: [],
+  standalone: true,
+  imports: [
+    CommonModule,
+    NavigationComponent
+  ],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent {
-
-}
+export class HeaderComponent {}

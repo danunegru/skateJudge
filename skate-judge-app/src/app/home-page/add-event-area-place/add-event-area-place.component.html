@@ -1,0 +1,40 @@
+<div class="main-div-addEventArea">
+  <div>
+    <div class="manage-event-part">
+      <p>Verantstaltungverwaltung</p>
+      <button class="create-button" (click)="openCreateNewEvent()">
+        + Neue Veranstaltung erstellen
+      </button>
+    </div>
+
+    <div class="event-part-main">
+      <ng-container *ngIf="showInitialContent; else eventsList">
+        <div class="add-event-part">
+          <button (click)="openCreateNewEvent()">+</button>
+          <p>Keine Veranstaltung</p>
+          <p>Beginnen damit, Ihre erste Veranstaltung zu erstellen</p>
+        </div>
+      </ng-container>
+
+      <ng-template #eventsList>
+        <div class="events-grid">
+          <div class="event-details" *ngFor="let event of events; let i = index">
+            <div class="event-header">
+              <h3>{{ event.name }}</h3>
+              <button class="delete-button" (click)="deleteEvent(i)">Löschen</button>
+            </div>
+            <p>Veranstalter: {{ event.veranstalter }}</p>
+            <p>Ort: {{ event.place }}</p>
+            <p>Datum: {{ event.startDate | date:'dd.MM.yyyy' }} - {{ event.endDate | date:'dd.MM.yyyy' }}</p>
+            <div class="exam-list">
+              <h4>Prüfungen:</h4>
+              <ul>
+                <li *ngFor="let exam of event.selectedExams">{{ exam }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
