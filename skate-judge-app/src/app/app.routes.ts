@@ -10,11 +10,10 @@ import { KunstlauferComponent } from './kunstlaufer/kunstlaufer.component';
 export const routes: Routes = [
   { path: 'home', component: HomePageComponent },  // Explizite /home Route
   { path: 'initial', component: InitialTestPageComponent },
-  { path: '', redirectTo: 'home', pathMatch: 'full' } , // Root leitet zu /home 
+  { path: '', redirectTo: 'home', pathMatch: 'full' } , // Root leitet zu /home  "AnfangsRoute"
   { path: 'mandatory', component: MandatoryClassesPageComponent},
   { path: 'first', component: FirstTestComponent },
   { path: 'freilaufer', component: FreilauferComponent},
   { path: 'figurlaufer', component: FigurlauferComponent},
   { path: 'kunstlaufer', component: KunstlauferComponent}
-
 ];
