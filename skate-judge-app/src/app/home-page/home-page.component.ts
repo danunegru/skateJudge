@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { ButtonsSectionComponent } from "./buttons-section/buttons-section.component";
 import { HeaderComponent } from "./header/header.component";
+import { AddEventAreaPlaceComponent } from "./add-event-area-place/add-event-area-place.component";
 
 @Component({
   standalone: true,
   selector: 'app-home-page',  // WICHTIG: anderer Selector als InitialTestPage
-  imports: [ButtonsSectionComponent, HeaderComponent, RouterModule],  // RouterLink für Navigation hinzufügen
+  imports: [HeaderComponent, RouterModule, AddEventAreaPlaceComponent],  // RouterLink für Navigation hinzufügen
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.scss']
 })
