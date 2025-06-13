@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { HeaderComponent } from "./header/header.component";
 import { AddEventAreaPlaceComponent } from "./add-event-area-place/add-event-area-place.component";
 
@@ -11,7 +11,14 @@ import { AddEventAreaPlaceComponent } from "./add-event-area-place/add-event-are
   styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent {
+  constructor(private router: Router) {}
+
   ngOnInit() {
     console.log('HomePage geladen');
+  }
+
+  navigateToEventDetails(id: string) {
+    console.log('Navigating to event ID:', id);
+    this.router.navigate(['/event', id]);
   }
 }

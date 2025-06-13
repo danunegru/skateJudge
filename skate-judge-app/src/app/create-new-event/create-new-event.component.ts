@@ -22,7 +22,7 @@ import { Event } from '../shared/models/event.interface';
     MatNativeDateModule
   ],
   templateUrl: './create-new-event.component.html',
-  styleUrl: './create-new-event.component.scss'
+  styleUrls: ['./create-new-event.component.scss']
 })
 export class CreateNewEventComponent {
   eventForm: FormGroup;
@@ -53,10 +53,18 @@ export class CreateNewEventComponent {
 
   onSubmit() {
     if (this.eventForm.valid) {
-      const newEvent: Event = this.eventForm.value;
+      const newEvent: Event = {
+        id: crypto.randomUUID(),
+        ...this.eventForm.value,
+        prueflinge: []
+      };
+      
+      console.log('Creating new event:', newEvent); // Debug log
+      
       const existingEvents = JSON.parse(localStorage.getItem('events') || '[]');
       existingEvents.push(newEvent);
       localStorage.setItem('events', JSON.stringify(existingEvents));
+      
       this.router.navigate(['/']);
     }
   }

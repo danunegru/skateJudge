@@ -2,7 +2,8 @@
   <ul>
     <li *ngFor="let item of navItems">
       <a [routerLink]="item.path" routerLinkActive="active">
-        {{ item.label }}
+        <mat-icon>{{ item.icon }}</mat-icon>
+        <span>{{ item.label }}</span>
       </a>
     </li>
   </ul>
