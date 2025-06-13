@@ -5,27 +5,36 @@
       <button class="close-button" (click)="closeCreateNewEvent()">×</button>
     </div>
     <div class="popup-body">
-      <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="eventForm" (ngSubmit)="onSubmit()" aria-label="Neue Veranstaltung erstellen">
         <mat-form-field appearance="fill">
           <mat-label>Name der Veranstaltung</mat-label>
-          <input matInput formControlName="name" required>
+          <input matInput 
+                 formControlName="name" 
+                 required
+                 aria-label="Name der Veranstaltung"
+                 placeholder="Name der Veranstaltung eingeben">
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Veranstalter</mat-label>
-          <input matInput formControlName="veranstalter" required>
+          <input matInput 
+                 formControlName="veranstalter" 
+                 required
+                 aria-label="Veranstalter"
+                 placeholder="Name des Veranstalters eingeben">
         </mat-form-field>
 
-        <div class="date-range">
+        <div class="date-range" role="group" aria-label="Veranstaltungszeitraum">
           <mat-form-field appearance="fill">
             <mat-label>Startdatum</mat-label>
             <input matInput 
                    [matDatepicker]="startPicker" 
                    formControlName="startDate"
                    placeholder="TT-MM-JJJJ"
-                   [matDatepickerFilter]="dateFilter">
+                   [matDatepickerFilter]="dateFilter"
+                   aria-label="Startdatum auswählen">
             <mat-hint>Format: TT-MM-JJJJ</mat-hint>
-            <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+            <mat-datepicker-toggle matSuffix [for]="startPicker" aria-label="Startdatum Kalender öffnen"></mat-datepicker-toggle>
             <mat-datepicker #startPicker></mat-datepicker>
           </mat-form-field>
 
@@ -35,22 +44,29 @@
                    [matDatepicker]="endPicker" 
                    formControlName="endDate"
                    placeholder="TT-MM-JJJJ"
-                   [matDatepickerFilter]="dateFilter">
+                   [matDatepickerFilter]="dateFilter"
+                   aria-label="Enddatum auswählen">
             <mat-hint>Format: TT-MM-JJJJ</mat-hint>
-            <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+            <mat-datepicker-toggle matSuffix [for]="endPicker" aria-label="Enddatum Kalender öffnen"></mat-datepicker-toggle>
             <mat-datepicker #endPicker></mat-datepicker>
           </mat-form-field>
         </div>
 
         <mat-form-field appearance="fill">
           <mat-label>Veranstaltungsort</mat-label>
-          <input matInput formControlName="place" required>
+          <input matInput 
+                 formControlName="place" 
+                 required
+                 aria-label="Veranstaltungsort"
+                 placeholder="Adresse der Sporthalle eingeben">
           <mat-hint>z.B. Sporthalle-Adresse</mat-hint>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Prüfungen auswählen</mat-label>
-          <mat-select formControlName="selectedExams" multiple>
+          <mat-select formControlName="selectedExams" 
+                      multiple 
+                      aria-label="Prüfungen auswählen">
             <mat-option *ngFor="let exam of examOptions" [value]="exam">
               {{exam}}
             </mat-option>
@@ -62,8 +78,15 @@
           <textarea matInput
             [value]="selectedExamList.join('\n')"
             readonly
-            [rows]="selectedExamList.length">
+            [rows]="selectedExamList.length"
+            aria-label="Liste der ausgewählten Prüfungen"
+            placeholder="Ausgewählte Prüfungen werden hier angezeigt"
+            title="Ausgewählte Prüfungen"
+            cdkTextareaAutosize
+            cdkAutosizeMinRows="2"
+            cdkAutosizeMaxRows="10">
           </textarea>
+          <mat-hint>Nur Anzeige - keine Bearbeitung möglich</mat-hint>
         </mat-form-field>
 
 
