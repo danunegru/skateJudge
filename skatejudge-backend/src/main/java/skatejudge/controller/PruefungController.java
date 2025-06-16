@@ -3,15 +3,12 @@ package skatejudge.controller;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import skatejudge.entity.Pruefling;
 import skatejudge.entity.Pruefung;
 import skatejudge.entity.Veranstaltung;
 import skatejudge.entity.VeranstaltungRequest;
-import skatejudge.repository.PrueflingRepository;
 import skatejudge.repository.PruefungRepository;
-import skatejudge.repository.VeranstaltungReopsitory;
+import skatejudge.repository.VeranstaltungRepository;
 
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 
@@ -20,31 +17,33 @@ import java.util.List;
 public class PruefungController {
 
     private final PruefungRepository pruefungRepository;
-    private final VeranstaltungReopsitory veranstaltungReopsitory;
+    private final VeranstaltungRepository veranstaltungRepository;
 
-    public PruefungController(PruefungRepository pruefungRepository, VeranstaltungReopsitory veranstaltungReopsitory) {
+    public PruefungController(PruefungRepository pruefungRepository, VeranstaltungRepository veranstaltungRepository) {
         this.pruefungRepository = pruefungRepository;
-        this.veranstaltungReopsitory = veranstaltungReopsitory;
+        this.veranstaltungRepository = veranstaltungRepository;
     }
 
     @PostMapping("/veranstaltungen")
     public ResponseEntity<String> createVeranstaltung(@RequestBody @Valid VeranstaltungRequest req) {
         Veranstaltung veranstaltung = new Veranstaltung();
-        veranstaltung.setName(req.name);
-        veranstaltung.setOrt(req.ort);
-        veranstaltung.setDatum(LocalDate.parse(req.datum));
+        veranstaltung.setName(req.getName());
+        veranstaltung.setOrt(req.getOrt());
+        veranstaltung.setStartDatum(req.getStartDatum());
+        veranstaltung.setEndDatum(req.getEndDatum());
+        veranstaltung.setVeranstalter(req.getVeranstalter());
 
-        List<Pruefung> ausgewaehltePruefungen = pruefungRepository.findAllById(req.pruefungen);
+        List<Pruefung> ausgewaehltePruefungen = pruefungRepository.findAllById(req.getPruefungen());
         veranstaltung.setPruefungen(new HashSet<>(ausgewaehltePruefungen));
 
-        veranstaltungReopsitory.save(veranstaltung);
+        veranstaltungRepository.save(veranstaltung);
 
         return ResponseEntity.ok("Veranstaltung erfolgreich gespeichert.");
     }
 
     @GetMapping("/veranstaltungen")
     public Iterable<Veranstaltung> findAllVeranstaltungen() {
-        return this.veranstaltungReopsitory.findAll();
+        return this.veranstaltungRepository.findAll();
     }
 
 
@@ -65,7 +64,7 @@ public class PruefungController {
 
     @DeleteMapping("/veranstaltungen/{id}")
     public void deleteVeranstaltung(@PathVariable long id) {
-        this.veranstaltungReopsitory.deleteById(id);
+        this.veranstaltungRepository.deleteById(id);
     }
 
 }

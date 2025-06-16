@@ -3,6 +3,9 @@ package skatejudge.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "prueflinge")
 @Data
@@ -16,6 +19,13 @@ public class Pruefling {
     private String name;
     private String vorname;
     private String verein;
+
+    @ManyToMany
+    @JoinTable(
+            name = "pruefling_pruefung",
+            joinColumns = @JoinColumn(name = "pruefling_id"),
+            inverseJoinColumns = @JoinColumn(name = "pruefung_id") )
+    private Set<Pruefung> pruefungen = new HashSet<>();
 
     public Pruefling() {}
 
