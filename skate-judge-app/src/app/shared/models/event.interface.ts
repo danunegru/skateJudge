@@ -13,13 +13,11 @@ export interface Pruefling {
   id?: string;
   name: string;
   verein: string;
-  exam: string;
+  exam: Exam[];
 }
 
 export interface Exam {
   id: string;
   name: string;
-  shortCode: string;
   category: 'Anfänger' | 'Pflicht' | 'Kür';
-  level: number;
 }

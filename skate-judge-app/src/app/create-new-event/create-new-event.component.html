@@ -79,7 +79,7 @@
                       multiple 
                       aria-label="Prüfungen auswählen">
             <mat-option *ngFor="let exam of examOptions" [value]="exam">
-              {{ exam.name }} ({{ exam.shortCode }})
+              {{ exam.name }} ({{ exam.id }})
             </mat-option>
           </mat-select>
         </mat-form-field>

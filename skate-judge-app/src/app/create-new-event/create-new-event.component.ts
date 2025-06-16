@@ -56,79 +56,57 @@ export class CreateNewEventComponent implements OnInit {
     {
       id: 'A1',
       name: 'Anfängerprüfung - Freiläufer',
-      shortCode: 'A1',
-      category: 'Anfänger',
-      level: 1
+      category: 'Anfänger'
     },
     {
       id: 'A2',
       name: 'Anfängerprüfung - Figurenläufer',
-      shortCode: 'A2',
-      category: 'Anfänger',
-      level: 2
+      category: 'Anfänger'
     },
     {
       id: 'A3',
       name: 'Anfängerprüfung - Kunstläufer',
-      shortCode: 'A3',
-      category: 'Anfänger',
-      level: 3
+      category: 'Anfänger'
     },
     {
       id: 'P4',
       name: 'Pflichtklasse 4',
-      shortCode: 'P4',
-      category: 'Pflicht',
-      level: 4
+      category: 'Pflicht'
     },
     {
       id: 'P3',
       name: 'Pflichtklasse 3',
-      shortCode: 'P3',
-      category: 'Pflicht',
-      level: 3
+      category: 'Pflicht'
     },
     {
       id: 'P2',
       name: 'Pflichtklasse 2',
-      shortCode: 'P2',
-      category: 'Pflicht',
-      level: 2
+      category: 'Pflicht'
     },
     {
       id: 'P1',
       name: 'Pflichtklasse 1',
-      shortCode: 'P1',
-      category: 'Pflicht',
-      level: 1
+      category: 'Pflicht'
     },
     {
       id: 'K4',
       name: 'Kürklasse 4',
-      shortCode: 'K4',
-      category: 'Kür',
-      level: 4
+      category: 'Kür'
     },
     {
       id: 'K3',
       name: 'Kürklasse 3 - Nachwuchsklasse',
-      shortCode: 'K3',
-      category: 'Kür',
-      level: 3
+      category: 'Kür'
     },
     {
       id: 'K2',
       name: 'Kürklasse 2 - Juniorenklasse',
-      shortCode: 'K2',
-      category: 'Kür',
-      level: 2
+      category: 'Kür'
     },
     {
       id: 'K1',
       name: 'Kürklasse 1 - Meisterklasse',
-      shortCode: 'K1',
-      category: 'Kür',
-      level: 1
+      category: 'Kür'
     }
   ];
   selectedExamList: Exam[] = [];
@@ -224,7 +202,7 @@ export class CreateNewEventComponent implements OnInit {
   // Helper method to format exam display
   getSelectedExamsDisplay(): string {
     return this.selectedExamList
-      .map(exam => `${exam.name} (${exam.shortCode})`)
+      .map(exam => `${exam.name} (${exam.id})`)
       .join('\n');
   }
 }
