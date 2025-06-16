@@ -47,7 +47,7 @@
             <mat-list *ngIf="getPrueflingeForExam(exam).length > 0">
               <mat-list-item *ngFor="let pruefling of getPrueflingeForExam(exam)">
                 <mat-icon matListItemIcon>person</mat-icon>
-                <div matListItemTitle>{{ pruefling.name }}</div>
+                <div matListItemTitle>{{ pruefling.vorname }} {{ pruefling.nachname }}</div>
                 <div matListItemLine>{{ pruefling.verein }}</div>
               </mat-list-item>
             </mat-list>

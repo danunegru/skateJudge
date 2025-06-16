@@ -4,10 +4,36 @@
   <mat-dialog-content>
     <form [formGroup]="prueflingForm" class="pruefling-form">
       <mat-form-field appearance="fill">
-        <mat-label>Name</mat-label>
-        <input matInput formControlName="name" placeholder="Name des Prüflings">
-        <mat-error *ngIf="prueflingForm.get('name')?.errors?.['required']">
-          Name ist erforderlich
+        <mat-label>Vorname</mat-label>
+        <input matInput 
+               formControlName="vorname" 
+               placeholder="Vorname des Prüflings"
+               (keydown)="onNameInput($event, 'vorname')">
+        <mat-error *ngIf="prueflingForm.get('vorname')?.errors?.['required']">
+          Vorname ist erforderlich
+        </mat-error>
+        <mat-error *ngIf="prueflingForm.get('vorname')?.errors?.['pattern']">
+          Vorname darf nur Buchstaben und Bindestriche enthalten
+        </mat-error>
+        <mat-error *ngIf="prueflingForm.get('vorname')?.errors?.['capitalizedFirstLetter']">
+          Vorname muss mit einem Großbuchstaben beginnen
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Nachname</mat-label>
+        <input matInput 
+               formControlName="nachname" 
+               placeholder="Nachname des Prüflings"
+               (keydown)="onNameInput($event, 'nachname')">
+        <mat-error *ngIf="prueflingForm.get('nachname')?.errors?.['required']">
+          Nachname ist erforderlich
+        </mat-error>
+        <mat-error *ngIf="prueflingForm.get('nachname')?.errors?.['pattern']">
+          Nachname darf nur Buchstaben und Bindestriche enthalten
+        </mat-error>
+        <mat-error *ngIf="prueflingForm.get('nachname')?.errors?.['capitalizedFirstLetter']">
+          Nachname muss mit einem Großbuchstaben beginnen
         </mat-error>
       </mat-form-field>
 

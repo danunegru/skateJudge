@@ -11,7 +11,8 @@ export interface Event {
 
 export interface Pruefling {
   id: string;
-  name: string;
+  vorname: string;
+  nachname: string;
   verein: string;
   exam: Exam[];
 }

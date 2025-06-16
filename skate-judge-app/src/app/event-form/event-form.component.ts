@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, AbstractControl, ValidationErrors, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -113,12 +113,35 @@ export class EventFormComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.eventForm = this.fb.group({
-      name: [''],
-      veranstalter: [''],
-      place: [''],
-      startDate: [''],
-      endDate: [''],
-      selectedExams: [[]] // For storing Exam objects
+      name: ['', [
+        Validators.required, 
+        Validators.pattern(/^[A-ZÄÖÜ][a-zäöüß\s\-0-9]*$/),
+        this.capitalizeFirstLetterValidator()
+      ]],
+      veranstalter: ['', [Validators.required, this.capitalizeFirstLetterValidator()]],
+      place: ['', Validators.required],
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
+      selectedExams: [[]]
+    });
+
+    // Update the name value changes subscription
+    this.eventForm.get('name')?.valueChanges.subscribe(value => {
+      if (value && typeof value === 'string') {
+        const capitalized = this.capitalizeFirstLetter(value);
+        if (capitalized !== value) {
+          this.eventForm.patchValue({ name: capitalized }, { emitEvent: false });
+        }
+      }
+    });
+
+    this.eventForm.get('veranstalter')?.valueChanges.subscribe(value => {
+      if (value && typeof value === 'string') {
+        const capitalized = this.capitalizeFirstLetter(value);
+        if (capitalized !== value) {
+          this.eventForm.patchValue({ veranstalter: capitalized }, { emitEvent: false });
+        }
+      }
     });
 
     // Subscribe to changes in the selectedExams form control
@@ -204,5 +227,26 @@ export class EventFormComponent implements OnInit {
     return this.selectedExamList
       .map(exam => `${exam.name} (${exam.id})`)
       .join('\n');
+  }
+
+  // Add these new methods
+  private capitalizeFirstLetter(value: string): string {
+    if (!value) return value;
+    const firstChar = value.charAt(0).toUpperCase();
+    const restOfString = value.slice(1);
+    return firstChar + restOfString;
+  }
+
+  private capitalizeFirstLetterValidator() {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      if (!value) return null;
+      
+      const firstLetter = value.charAt(0);
+      if (!/^[A-ZÄÖÜ]/.test(firstLetter)) {
+        return { capitalizedFirstLetter: true };
+      }
+      return null;
+    };
   }
 }
