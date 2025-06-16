@@ -1,16 +1,16 @@
 export interface Event {
-  id: string; // Make id required, not optional
+  id: string;
   name: string;
   veranstalter: string;
   place: string;
   startDate: Date;
   endDate: Date;
-  selectedExams:Exam[];
+  selectedExams: Exam[];
   prueflinge: Pruefling[];
 }
 
 export interface Pruefling {
-  id?: string;
+  id: string;
   name: string;
   verein: string;
   exam: Exam[];
