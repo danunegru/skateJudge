@@ -1,1 +1,33 @@
-<p>it works</p>
+<p>here shows the selected exams </p>
+<div class="event-details-container" *ngIf="eventDetails">
+  <div class="event-header">
+    <h2>{{ eventDetails.name }}</h2>
+    <button class="back-button" (click)="goBack()">Zurück</button>
+  </div>
+
+  <div class="event-info">
+    <p>Veranstalter: {{ eventDetails.veranstalter }}</p>
+    <p>Ort: {{ eventDetails.place }}</p>
+    <p>Datum: {{ eventDetails.startDate | date:'dd.MM.yyyy' }} - {{ eventDetails.endDate | date:'dd.MM.yyyy' }}</p>
+  </div>
+
+  <div class="pruefling-info">
+    <mat-icon>group</mat-icon>
+    <span>{{ eventDetails.prueflinge.length || 0 }} Prüflinge</span>
+  </div>
+
+  <div class="exam-section" *ngIf="selectedExams.length > 0">
+    <h3>Ausgewählte Prüfungen</h3>
+    <div class="exam-grid">
+      <div class="exam-card" *ngFor="let exam of selectedExams">
+        <div class="exam-header">
+          <mat-icon>school</mat-icon>
+          <h4>{{ exam.name }} ({{ exam.id }})</h4>
+        </div>
+        <div class="exam-info">
+          <span class="exam-category">{{ exam.category }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
