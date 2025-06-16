@@ -26,7 +26,7 @@ export const GERMAN_DATE_FORMATS = {
 };
 
 @Component({
-  selector: 'app-create-new-event',
+  selector: 'app-event-form',
   standalone: true,
   imports: [
     CommonModule,
@@ -37,8 +37,8 @@ export const GERMAN_DATE_FORMATS = {
     MatDatepickerModule,
     TextFieldModule
   ],
-  templateUrl: './create-new-event.component.html',
-  styleUrls: ['./create-new-event.component.scss'],
+  templateUrl: './event-form.component.html',
+  styleUrls: ['./event-form.component.scss'],
   providers: [
     {
       provide: DateAdapter,
@@ -50,7 +50,7 @@ export const GERMAN_DATE_FORMATS = {
     { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
   ]
 })
-export class CreateNewEventComponent implements OnInit {
+export class EventFormComponent implements OnInit {
   eventForm: FormGroup;
   examOptions: Exam[] = [
     {
