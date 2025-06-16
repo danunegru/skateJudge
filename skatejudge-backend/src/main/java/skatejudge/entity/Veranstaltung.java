@@ -17,14 +17,11 @@ public class Veranstaltung {
     private Long id;
 
     private String name;
-    private LocalDate datum;
+    private String veranstalter;
+    private LocalDate startDatum;
+    private LocalDate endDatum;
     private String ort;
 
-    @ManyToMany
-    @JoinTable(
-            name = "veranstaltung_pruefung",
-            joinColumns = @JoinColumn(name = "veranstaltung_id"),
-            inverseJoinColumns = @JoinColumn(name = "pruefung_id")
-    )
+    @OneToMany(mappedBy = "veranstaltung", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Pruefung> pruefungen = new HashSet<>();
 }
