@@ -47,7 +47,7 @@ public class PruefungController {
     }
 
 
-    @PostMapping("/pruefung")
+    @PostMapping("/pruefungen")
     public Pruefung addPruefung(@RequestBody Pruefung pruefung) {
         return this.pruefungRepository.save(pruefung);
     }

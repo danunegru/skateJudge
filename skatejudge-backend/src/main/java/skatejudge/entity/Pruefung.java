@@ -28,9 +28,6 @@ public class Pruefung {
     @ManyToMany(mappedBy = "pruefungen")
     private Set<Pruefling> prueflinge = new HashSet<>();
 
-    public Pruefung() {}
 
-    public Pruefung(String title) {
-        this.title = title;
-    }
+
 }
