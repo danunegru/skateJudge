@@ -1,0 +1,59 @@
+<p>here shows the selected exams </p>
+<div class="event-details-container" *ngIf="eventDetails">
+  <div class="event-header">
+    <h2>{{ eventDetails.name }}</h2>
+    <div class="button-group">
+      <button class="add-pruefling-button" (click)="addPruefling()">
+        <mat-icon>add</mat-icon>
+        Prüfling hinzufügen
+      </button>
+      <button class="back-button" (click)="goBack()">Zurück</button>
+    </div>
+  </div>
+
+  <div class="event-info">
+    <p>Veranstalter: {{ eventDetails.veranstalter }}</p>
+    <p>Ort: {{ eventDetails.place }}</p>
+    <p>Datum: {{ eventDetails.startDate | date:'dd.MM.yyyy' }} - {{ eventDetails.endDate | date:'dd.MM.yyyy' }}</p>
+  </div>
+
+  <div class="pruefling-info">
+    <mat-icon>group</mat-icon>
+    <span>{{ eventDetails.prueflinge.length || 0 }} Prüflinge</span>
+  </div>
+
+  <div class="exam-section" *ngIf="selectedExams.length > 0">
+    <h3>Ausgewählte Prüfungen</h3>
+    <div class="exam-grid">
+      <mat-accordion>
+        <mat-expansion-panel *ngFor="let exam of selectedExams">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div class="exam-header">
+                <mat-icon>school</mat-icon>
+                <span>{{ exam.name }} ({{ exam.id }})</span>
+              </div>
+            </mat-panel-title>
+            <mat-panel-description>
+              <span class="exam-category">{{ exam.category }}</span>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <!-- Prüflinge List -->
+          <div class="pruefling-list">
+            <div *ngIf="getPrueflingeForExam(exam).length === 0" class="no-prueflinge">
+              Keine Prüflinge für diese Prüfung
+            </div>
+            <mat-list *ngIf="getPrueflingeForExam(exam).length > 0">
+              <mat-list-item *ngFor="let pruefling of getPrueflingeForExam(exam)">
+                <mat-icon matListItemIcon>person</mat-icon>
+                <div matListItemTitle>{{ pruefling.name }}</div>
+                <div matListItemLine>{{ pruefling.verein }}</div>
+              </mat-list-item>
+            </mat-list>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div>
+</div>

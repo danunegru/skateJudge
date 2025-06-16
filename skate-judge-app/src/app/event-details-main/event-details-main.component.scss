@@ -1,0 +1,77 @@
+.back-button {
+  padding: 8px 16px;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+
+  &:hover {
+    background-color: #e0e0e0;
+  }
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.add-pruefling-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 8px 16px;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+
+  mat-icon {
+    font-size: 18px;
+    height: 18px;
+    width: 18px;
+  }
+
+  &:hover {
+    background-color: #1565c0;
+  }
+}
+
+.exam-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+mat-accordion {
+  width: 100%;
+}
+
+.exam-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pruefling-list {
+  padding: 1rem 0;
+}
+
+.no-prueflinge {
+  color: rgba(0, 0, 0, 0.54);
+  font-style: italic;
+  padding: 1rem 0;
+}
+
+mat-panel-description {
+  justify-content: flex-end;
+}
+
+.exam-category {
+  color: rgba(0, 0, 0, 0.54);
+}
+

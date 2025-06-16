@@ -1,26 +1,45 @@
+:host {
+  display: block;
+  width: 100%;
+} // applying CSS directly to the outer <navigation> tag, not the content inside it.
+
 .navigation {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%; // Add this to ensure full width
+  padding-right: 2rem; // Add some right padding
+
   ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
     display: flex;
     gap: 1rem;
-    list-style: none;
-    margin: 0;
-    padding: 0;
+    align-items: center; // Center items vertically
 
     li {
       a {
-        color: #333;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
         text-decoration: none;
+        color: #fffdfd;
         padding: 0.5rem 1rem;
         border-radius: 4px;
-        transition: background-color 0.3s;
+        white-space: nowrap; // Prevent text wrapping
 
         &:hover {
-          background-color: #e9ecef;
+          background-color: rgba(245, 245, 245, 0.1); // Semi-transparent hover
         }
 
         &.active {
-          background-color: #007bff;
-          color: white;
+          background-color: rgba(224, 224, 224, 0.1); // Semi-transparent active state
+        }
+
+        mat-icon {
+          width: 24px;
+          height: 24px;
+          font-size: 24px;
         }
       }
     }

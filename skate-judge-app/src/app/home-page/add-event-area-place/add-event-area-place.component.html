@@ -18,19 +18,20 @@
 
       <ng-template #eventsList>
         <div class="events-grid">
-          <div class="event-details" *ngFor="let event of events; let i = index">
+          <div class="event-details" 
+               *ngFor="let event of events; let i = index" 
+               (click)="navigateToEventDetails(event.id)"
+               style="cursor: pointer;">
             <div class="event-header">
               <h3>{{ event.name }}</h3>
-              <button class="delete-button" (click)="deleteEvent(i)">Löschen</button>
+              <button class="delete-button" (click)="$event.stopPropagation(); deleteEvent(i)">Löschen</button>
             </div>
             <p>Veranstalter: {{ event.veranstalter }}</p>
             <p>Ort: {{ event.place }}</p>
             <p>Datum: {{ event.startDate | date:'dd.MM.yyyy' }} - {{ event.endDate | date:'dd.MM.yyyy' }}</p>
-            <div class="exam-list">
-              <h4>Prüfungen:</h4>
-              <ul>
-                <li *ngFor="let exam of event.selectedExams">{{ exam }}</li>
-              </ul>
+            <div class="pruefling-info">
+              <mat-icon>group</mat-icon>
+              <span>{{ event.prueflinge.length || 0 }} Prüflinge</span>
             </div>
           </div>
         </div>

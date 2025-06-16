@@ -99,3 +99,47 @@
     }
   }
 }
+
+.athlete-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  mat-icon {
+    color: #666;
+  }
+
+  span {
+    color: #333;
+  }
+}
+
+.pruefling-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  mat-icon {
+    color: #666;
+  }
+
+  span {
+    color: #333;
+  }
+}
