@@ -5,7 +5,7 @@ export interface Event {
   place: string;
   startDate: Date;
   endDate: Date;
-  selectedExams: string[];
+  selectedExams:Exam[];
   prueflinge: Pruefling[];
 }
 
@@ -14,4 +14,12 @@ export interface Pruefling {
   name: string;
   verein: string;
   exam: string;
+}
+
+export interface Exam {
+  id: string;
+  name: string;
+  shortCode: string;
+  category: 'Anfänger' | 'Pflicht' | 'Kür';
+  level: number;
 }

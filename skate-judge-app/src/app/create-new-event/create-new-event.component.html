@@ -30,12 +30,16 @@
             <input matInput 
                    [matDatepicker]="startPicker" 
                    formControlName="startDate"
-                   placeholder="TT-MM-JJJJ"
+                   required
+                   placeholder="TT.MM.JJJJ"
                    [matDatepickerFilter]="dateFilter"
                    aria-label="Startdatum auswählen">
-            <mat-hint>Format: TT-MM-JJJJ</mat-hint>
-            <mat-datepicker-toggle matSuffix [for]="startPicker" aria-label="Startdatum Kalender öffnen"></mat-datepicker-toggle>
+            <mat-hint>Format: TT.MM.JJJJ</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
             <mat-datepicker #startPicker></mat-datepicker>
+            <mat-error *ngIf="eventForm.get('startDate')?.errors?.['required']">
+              Startdatum ist erforderlich
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="fill">
@@ -43,12 +47,19 @@
             <input matInput 
                    [matDatepicker]="endPicker" 
                    formControlName="endDate"
-                   placeholder="TT-MM-JJJJ"
+                   required
+                   placeholder="TT.MM.JJJJ"
                    [matDatepickerFilter]="dateFilter"
                    aria-label="Enddatum auswählen">
-            <mat-hint>Format: TT-MM-JJJJ</mat-hint>
-            <mat-datepicker-toggle matSuffix [for]="endPicker" aria-label="Enddatum Kalender öffnen"></mat-datepicker-toggle>
+            <mat-hint>Format: TT.MM.JJJJ</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
             <mat-datepicker #endPicker></mat-datepicker>
+            <mat-error *ngIf="eventForm.get('endDate')?.errors?.['required']">
+              Enddatum ist erforderlich
+            </mat-error>
+            <mat-error *ngIf="eventForm.get('endDate')?.errors?.['invalidRange']">
+              Enddatum muss nach dem Startdatum liegen
+            </mat-error>
           </mat-form-field>
         </div>
 
@@ -68,7 +79,7 @@
                       multiple 
                       aria-label="Prüfungen auswählen">
             <mat-option *ngFor="let exam of examOptions" [value]="exam">
-              {{exam}}
+              {{ exam.name }} ({{ exam.shortCode }})
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -76,7 +87,7 @@
         <mat-form-field appearance="fill" *ngIf="selectedExamList.length > 0">
           <mat-label>Ausgewählte Prüfungen</mat-label>
           <textarea matInput
-            [value]="selectedExamList.join('\n')"
+            [value]="getSelectedExamsDisplay()"
             readonly
             [rows]="selectedExamList.length"
             aria-label="Liste der ausgewählten Prüfungen"
