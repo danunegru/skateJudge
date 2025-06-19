@@ -5,26 +5,37 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.List;
 
-
+@Data
 public class VeranstaltungRequest {
 
     @NotBlank(message = "{veranstaltung.name.notblank}")
-    public String name;
-
+    private String name;
 
     @NotNull(message = "{veranstaltung.datum.notnull}")
-    @JsonFormat(pattern = "dd.MM.yyyy") // Muss noch bearbeitet !!
-    public String datum;       // ISO-Format: "2025-07-15"
+    @JsonFormat(pattern = "dd.MM.yyyy")
+    @DateTimeFormat(pattern = "dd.mm.yyyy")
+    private LocalDate startDatum;
+
+    @NotNull(message = "{veranstaltung.datum.notnull}")
+    @JsonFormat(pattern = "dd.MM.yyyy")
+    @DateTimeFormat(pattern = "dd.mm.yyyy")
+    private LocalDate endDatum;
 
     @NotBlank(message = "{veranstaltung.ort.notblank}")
-    public String ort;
+    private String ort;
 
     @NotNull(message = "{veranstaltung.pruefungIds.notnull}")
     @Size(min = 1, message = "{veranstaltung.pruefungIds.size}")
-    public List<Long> pruefungen;  // Liste von Prüfungs-IDs
+    private List<Long> pruefungen;  // Liste von Prüfungs-IDs
+
+
+    @NotBlank(message = "{veranstaltung.name.notblank}")
+    private String veranstalter;
 
 
 
