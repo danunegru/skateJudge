@@ -1,4 +1,3 @@
-<p>here shows the selected exams </p>
 <div class="event-details-container" *ngIf="eventDetails">
   <div class="event-header">
     <h2>{{ eventDetails.name }}</h2>
@@ -31,7 +30,9 @@
             <mat-panel-title>
               <div class="exam-header">
                 <mat-icon>school</mat-icon>
-                <span>{{ exam.name }} ({{ exam.id }})</span>
+                <a [routerLink]="['/exam', eventDetails.id, exam.id]" >
+                  {{ exam.name }} ({{ exam.id }})
+                </a>
               </div>
             </mat-panel-title>
             <mat-panel-description>

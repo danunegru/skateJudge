@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -11,10 +11,13 @@ import { PrueflingFormComponent } from '../pruefling-form/pruefling-form.compone
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatExpansionModule, MatListModule],
+  imports: [CommonModule,RouterModule, MatIconModule, MatExpansionModule, MatListModule],
   templateUrl: './event-details-main.component.html',
   styleUrls: ['./event-details-main.component.scss']
 })
+
+
+
 export class EventDetailsComponent implements OnInit {
   eventDetails: Event | undefined;
   selectedExams: Exam[] = [];
