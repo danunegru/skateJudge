@@ -14,12 +14,6 @@
           <mat-error *ngIf="eventForm.get('name')?.errors?.['required']">
             Name ist erforderlich
           </mat-error>
-          <mat-error *ngIf="eventForm.get('name')?.errors?.['pattern']">
-            Name muss mit einem Großbuchstaben beginnen
-          </mat-error>
-          <mat-error *ngIf="eventForm.get('name')?.errors?.['capitalizedFirstLetter']">
-            Name muss mit einem Großbuchstaben beginnen
-          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
