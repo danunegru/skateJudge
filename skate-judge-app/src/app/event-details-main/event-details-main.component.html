@@ -30,7 +30,7 @@
             <mat-panel-title>
               <div class="exam-header">
                 <mat-icon>school</mat-icon>
-                <a [routerLink]="['/exam', eventDetails.id, exam.id]">
+                <a [routerLink]="['/exam', eventDetails.id, exam.id.toLowerCase()]">
                   {{ exam.name }} ({{ exam.id }})
                 </a>
               </div>

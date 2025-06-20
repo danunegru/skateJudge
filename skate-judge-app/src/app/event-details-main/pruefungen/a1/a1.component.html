@@ -1,5 +1,11 @@
-<div class="exam-container">
-  <h2>Prüfung A1 - Freiläufer</h2>
-  <p>Event ID: {{ eventId }}</p>
-  <p>Exam ID: {{ examId }}</p>
+<div class="exam-container" *ngIf="event && exam">
+  <h2>{{ exam.name }}</h2>
+  
+  <div class="event-details">
+    <h3>Event Details</h3>
+    <p>Event: {{ event.name }}</p>
+    <p>Veranstalter: {{ event.veranstalter }}</p>
+    <p>Ort: {{ event.place }}</p>
+    <p>Datum: {{ event.startDate | date:'dd.MM.yyyy' }} - {{ event.endDate | date:'dd.MM.yyyy' }}</p>
+  </div>
 </div>
