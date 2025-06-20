@@ -114,18 +114,20 @@ export class EventFormComponent implements OnInit {
   constructor(private fb: FormBuilder, private router: Router) {
     this.eventForm = this.fb.group({
       name: ['', [
-        Validators.required, 
-        Validators.pattern(/^[A-ZÄÖÜ][a-zäöüß\s\-0-9]*$/),
+        Validators.required,
         this.capitalizeFirstLetterValidator()
       ]],
-      veranstalter: ['', [Validators.required, this.capitalizeFirstLetterValidator()]],
+      veranstalter: ['', [
+        Validators.required, 
+        this.capitalizeFirstLetterValidator()
+      ]],
       place: ['', Validators.required],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       selectedExams: [[]]
     });
 
-    // Update the name value changes subscription
+    // Subscribe to name changes
     this.eventForm.get('name')?.valueChanges.subscribe(value => {
       if (value && typeof value === 'string') {
         const capitalized = this.capitalizeFirstLetter(value);
@@ -135,6 +137,7 @@ export class EventFormComponent implements OnInit {
       }
     });
 
+    // Subscribe to veranstalter changes
     this.eventForm.get('veranstalter')?.valueChanges.subscribe(value => {
       if (value && typeof value === 'string') {
         const capitalized = this.capitalizeFirstLetter(value);
