@@ -1,23 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDialog } from '@angular/material/dialog';
+import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatListModule } from '@angular/material/list';
-import { Event, Exam } from '../shared/models/event.interface';
+import { Event, Exam, Pruefling } from '../shared/models/event.interface';
 import { PrueflingFormComponent } from '../pruefling-form/pruefling-form.component';
 
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [CommonModule,RouterModule, MatIconModule, MatExpansionModule, MatListModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    MatExpansionModule,
+    MatIconModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatListModule
+  ],
   templateUrl: './event-details-main.component.html',
   styleUrls: ['./event-details-main.component.scss']
 })
-
-
-
 export class EventDetailsComponent implements OnInit {
   eventDetails: Event | undefined;
   selectedExams: Exam[] = [];
@@ -47,7 +53,7 @@ export class EventDetailsComponent implements OnInit {
   }
 
   addPruefling() {
-    if (this.eventDetails) {  // Check if eventDetails exists
+    if (this.eventDetails) {
       const dialogRef = this.dialog.open(PrueflingFormComponent, {
         data: {
           eventId: this.eventDetails.id,
@@ -55,16 +61,15 @@ export class EventDetailsComponent implements OnInit {
         }
       });
 
-      dialogRef.afterClosed().subscribe(result => {
-        if (result && this.eventDetails) {  // Double check eventDetails still exists
-          // Initialize prueflinge array if it doesn't exist
+      dialogRef.afterClosed().subscribe((result: Pruefling | undefined) => {
+        if (result && this.eventDetails) {
           if (!Array.isArray(this.eventDetails.prueflinge)) {
             this.eventDetails.prueflinge = [];
           }
           
           const newPruefling = {
-            id: crypto.randomUUID(),
-            ...result
+            ...result,
+            id: crypto.randomUUID()  // Add ID after spreading result
           };
           
           this.eventDetails.prueflinge.push(newPruefling);
@@ -75,7 +80,7 @@ export class EventDetailsComponent implements OnInit {
             const events: Event[] = JSON.parse(savedEvents);
             const eventIndex = events.findIndex(e => e.id === this.eventDetails?.id);
             if (eventIndex !== -1 && this.eventDetails) {
-              events[eventIndex] = { ...this.eventDetails };  // Create a copy
+              events[eventIndex] = { ...this.eventDetails };
               localStorage.setItem('events', JSON.stringify(events));
             }
           }

@@ -30,14 +30,11 @@
             <mat-panel-title>
               <div class="exam-header">
                 <mat-icon>school</mat-icon>
-                <a [routerLink]="['/exam', eventDetails.id, exam.id]" >
+                <a [routerLink]="['/exam', eventDetails.id, exam.id]">
                   {{ exam.name }} ({{ exam.id }})
                 </a>
               </div>
             </mat-panel-title>
-            <mat-panel-description>
-              <span class="exam-category">{{ exam.category }}</span>
-            </mat-panel-description>
           </mat-expansion-panel-header>
 
           <!-- Prüflinge List -->
