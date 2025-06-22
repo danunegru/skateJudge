@@ -29,11 +29,16 @@ export class AddEventAreaPlaceComponent implements OnInit {
     }
   }
 
+    /** Route to the event-creation form. */
   openCreateNewEvent() {
     console.log('Opening create new event');
     this.router.navigate(['/create-event']);
   }
 
+    /**
+   * Remove an event from the list and persist the change.
+   * @param index Index of the event to delete.
+   */
   deleteEvent(index: number) {
     console.log('Deleting event at index:', index);
     this.events.splice(index, 1);
@@ -41,6 +46,10 @@ export class AddEventAreaPlaceComponent implements OnInit {
     this.showInitialContent = this.events.length === 0;
   }
 
+    /**
+   * Navigate to the details page for a given event.
+   * @param eventId ID of the event to display.
+   */
   navigateToEventDetails(eventId: string | undefined) {
     console.log('Navigating to event:', eventId);
     if (eventId) {
@@ -48,7 +57,7 @@ export class AddEventAreaPlaceComponent implements OnInit {
     }
   }
 
-  // Add this temporary debug method to AddEventAreaPlaceComponent
+  /** Logs the current event list to the console. */
 checkEvents() {
   console.log('Current events:', this.events);
   this.events.forEach(event => {

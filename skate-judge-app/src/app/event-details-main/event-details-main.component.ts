@@ -34,6 +34,11 @@ export class EventDetailsComponent implements OnInit {
     private dialog: MatDialog
   ) {}
 
+
+   /**
+   * Initializes the component by loading the event details
+   * based on the ID from the URL parameters.
+   */
   ngOnInit() {
     const eventId = this.route.snapshot.paramMap.get('id');
     if (eventId) {
@@ -48,10 +53,18 @@ export class EventDetailsComponent implements OnInit {
     }
   }
 
+   /**
+   * Navigates back to the main/home view.
+   */
+
   goBack() {
     this.router.navigate(['/']);
   }
 
+    /**
+   * Opens a dialog to add a new participant (Pruefling) to the event.
+   * The new entry is saved into the event and updated in localStorage.
+   */
   addPruefling() {
     if (this.eventDetails) {
       const dialogRef = this.dialog.open(PrueflingFormComponent, {
@@ -89,6 +102,13 @@ export class EventDetailsComponent implements OnInit {
     }
   }
 
+  
+  /**
+   * Returns all participants (Prueflinge) registered for a specific exam.
+   * 
+   * @param exam - The exam to filter participants for.
+   * @returns An array of Prueflinge attending the given exam.
+   */
   getPrueflingeForExam(exam: Exam): any[] {
     if (!this.eventDetails?.prueflinge) return [];
     

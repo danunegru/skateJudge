@@ -24,7 +24,10 @@ export const GERMAN_DATE_FORMATS = {
     monthYearA11yLabel: 'MMMM YYYY',
   },
 };
-
+/**
+ * Form component to create a new skating event.
+ * Handles event meta-data, date validation, and exam selection.
+ */
 @Component({
   selector: 'app-event-form',
   standalone: true,
@@ -52,6 +55,9 @@ export const GERMAN_DATE_FORMATS = {
 })
 export class EventFormComponent implements OnInit {
   eventForm: FormGroup;
+
+  /** All exam types that can be assigned to an event. */
+
   examOptions: Exam[] = [
     {
       id: 'A1',
@@ -112,13 +118,16 @@ export class EventFormComponent implements OnInit {
   selectedExamList: Exam[] = [];
 
   constructor(private fb: FormBuilder, private router: Router) {
+       /* --------------------------------------------------------------------
+     * Build the form with validation rules
+     * ------------------------------------------------------------------ */
     this.eventForm = this.fb.group({
       name: ['', [
         Validators.required,
         this.capitalizeFirstLetterValidator()
       ]],
       veranstalter: ['', [
-        Validators.required, 
+        Validators.required,
         this.capitalizeFirstLetterValidator()
       ]],
       place: ['', Validators.required],
@@ -165,6 +174,9 @@ export class EventFormComponent implements OnInit {
     });
   }
 
+  // * Validation & utility logic
+  
+  /** Validates that the end date is not before the start date. */
   validateDateRange() {
     const startDate = this.eventForm.get('startDate')?.value;
     const endDate = this.eventForm.get('endDate')?.value;
@@ -172,7 +184,7 @@ export class EventFormComponent implements OnInit {
     if (startDate && endDate) {
       const start = moment(startDate);
       const end = moment(endDate);
-      
+
       if (end.isBefore(start)) {
         this.eventForm.get('endDate')?.setErrors({ 'invalidRange': true });
       } else {
@@ -191,6 +203,10 @@ export class EventFormComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
+   /**
+   * Disable past dates in the datepicker.
+   * @param date The date to evaluate.
+   */
   dateFilter = (date: Date | null): boolean => {
     if (!date) {
       return false;
@@ -207,13 +223,13 @@ export class EventFormComponent implements OnInit {
         ...this.eventForm.value,
         prueflinge: []
       };
-      
+
       console.log('Creating new event:', newEvent); // Debug log
-      
+
       const existingEvents = JSON.parse(localStorage.getItem('events') || '[]');
       existingEvents.push(newEvent);
       localStorage.setItem('events', JSON.stringify(existingEvents));
-      
+
       this.router.navigate(['/']);
     } else {
       Object.keys(this.eventForm.controls).forEach(key => {
@@ -244,7 +260,7 @@ export class EventFormComponent implements OnInit {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;
       if (!value) return null;
-      
+
       const firstLetter = value.charAt(0);
       if (!/^[A-ZÄÖÜ]/.test(firstLetter)) {
         return { capitalizedFirstLetter: true };
