@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
 
 import { NavigationComponent } from './navigation.component';
 
@@ -7,8 +8,19 @@ describe('NavigationComponent', () => {
   let fixture: ComponentFixture<NavigationComponent>;
 
   beforeEach(async () => {
+    const mockActivatedRoute = {
+      snapshot: {
+        paramMap: {
+          get: jasmine.createSpy('get').and.returnValue('test-id')
+        }
+      }
+    };
+
     await TestBed.configureTestingModule({
-      imports: [NavigationComponent]
+      imports: [NavigationComponent],
+      providers: [
+        { provide: ActivatedRoute, useValue: mockActivatedRoute }
+      ]
     })
     .compileComponents();
 
