@@ -21,6 +21,7 @@ export class AddEventAreaPlaceComponent implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit() {
+    // Loading events
     const savedEvents = localStorage.getItem('events');
     if (savedEvents) {
       this.events = JSON.parse(savedEvents);
@@ -42,6 +43,7 @@ export class AddEventAreaPlaceComponent implements OnInit {
   deleteEvent(index: number) {
     console.log('Deleting event at index:', index);
     this.events.splice(index, 1);
+    // Saving events after deletion
     localStorage.setItem('events', JSON.stringify(this.events));
     this.showInitialContent = this.events.length === 0;
   }

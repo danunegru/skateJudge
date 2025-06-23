@@ -44,6 +44,7 @@ export class EventDetailsComponent implements OnInit {
     if (eventId) {
       const savedEvents = localStorage.getItem('events');
       if (savedEvents) {
+        // Loading events
         const events: Event[] = JSON.parse(savedEvents);
         this.eventDetails = events.find(e => e.id === eventId);
         if (this.eventDetails) {
@@ -87,7 +88,8 @@ export class EventDetailsComponent implements OnInit {
           
           this.eventDetails.prueflinge.push(newPruefling);
           
-          // Update localStorage
+          // ... after adding participant
+          // Update localStorage, Saving updated events
           const savedEvents = localStorage.getItem('events');
           if (savedEvents) {
             const events: Event[] = JSON.parse(savedEvents);
