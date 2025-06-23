@@ -82,11 +82,15 @@
           <mat-label>Prüfungen auswählen</mat-label>
           <mat-select formControlName="selectedExams" 
                       multiple 
+                      required
                       aria-label="Prüfungen auswählen">
             <mat-option *ngFor="let exam of examOptions" [value]="exam">
               {{ exam.name }} ({{ exam.id }})
             </mat-option>
           </mat-select>
+          <mat-error *ngIf="eventForm.get('selectedExams')?.errors?.['required']">
+            Mindestens eine Prüfung muss ausgewählt werden
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill" *ngIf="selectedExamList.length > 0">

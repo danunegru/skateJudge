@@ -118,22 +118,16 @@ export class EventFormComponent implements OnInit {
   selectedExamList: Exam[] = [];
 
   constructor(private fb: FormBuilder, private router: Router) {
-       /* --------------------------------------------------------------------
-     * Build the form with validation rules
-     * ------------------------------------------------------------------ */
+    /* --------------------------------------------------------------------
+  * Build the form with validation rules
+  * ------------------------------------------------------------------ */
     this.eventForm = this.fb.group({
-      name: ['', [
-        Validators.required,
-        this.capitalizeFirstLetterValidator()
-      ]],
-      veranstalter: ['', [
-        Validators.required,
-        this.capitalizeFirstLetterValidator()
-      ]],
-      place: ['', Validators.required],
+      name: ['', Validators.required],
+      veranstalter: ['', [Validators.required, this.capitalizedFirstLetterValidator]],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
-      selectedExams: [[]]
+      place: ['', Validators.required],
+      selectedExams: [[], Validators.required] // Make it required with empty array as default
     });
 
     // Subscribe to name changes
@@ -175,7 +169,7 @@ export class EventFormComponent implements OnInit {
   }
 
   // * Validation & utility logic
-  
+
   /** Validates that the end date is not before the start date. */
   validateDateRange() {
     const startDate = this.eventForm.get('startDate')?.value;
@@ -203,10 +197,10 @@ export class EventFormComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-   /**
-   * Disable past dates in the datepicker.
-   * @param date The date to evaluate.
-   */
+  /**
+  * Disable past dates in the datepicker.
+  * @param date The date to evaluate.
+  */
   dateFilter = (date: Date | null): boolean => {
     if (!date) {
       return false;
@@ -225,7 +219,7 @@ export class EventFormComponent implements OnInit {
       };
 
       console.log('Creating new event:', newEvent); // Debug log
-
+      // Saving events
       const existingEvents = JSON.parse(localStorage.getItem('events') || '[]');
       existingEvents.push(newEvent);
       localStorage.setItem('events', JSON.stringify(existingEvents));
@@ -256,7 +250,7 @@ export class EventFormComponent implements OnInit {
     return firstChar + restOfString;
   }
 
-  private capitalizeFirstLetterValidator() {
+  private capitalizedFirstLetterValidator() {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;
       if (!value) return null;
