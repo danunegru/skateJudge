@@ -7,5 +7,6 @@
     <p>Veranstalter: {{ event.veranstalter }}</p>
     <p>Ort: {{ event.place }}</p>
     <p>Datum: {{ event.startDate | date:'dd.MM.yyyy' }} - {{ event.endDate | date:'dd.MM.yyyy' }}</p>
+    <p>Prüflinge: {{ event.prueflinge.length || 0 }}</p>
   </div>
 </div>
