@@ -120,6 +120,21 @@ export class EventDetailsComponent implements OnInit {
   }
 
   /**
+   * Checks if a participant with the same name already exists in the event
+   */
+  private isDuplicateParticipant(newPruefling: any): boolean {
+    if (!this.eventDetails?.prueflinge) {
+      return false;
+    }
+
+    return this.eventDetails.prueflinge.some(existing => 
+      existing.vorname?.toLowerCase() === newPruefling.vorname?.toLowerCase() &&
+      existing.nachname?.toLowerCase() === newPruefling.nachname?.toLowerCase() &&
+      existing.verein?.toLowerCase() === newPruefling.verein?.toLowerCase()
+    );
+  }
+
+  /**
    * Adds a participant (Pruefling) to a specific exam within the event.
    * Opens the PrueflingFormComponent dialog pre-filled for the selected exam.
    * Updates the event and localStorage upon adding the participant.
@@ -133,29 +148,46 @@ export class EventDetailsComponent implements OnInit {
       width: '500px',
       data: { 
         eventId: this.eventDetails.id, 
-        exams: [exam], // Only pass the selected exam
-        preSelectedExam: exam // Optional: pre-select this exam in the form
+        exams: [exam],
+        preSelectedExam: exam
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result && this.eventDetails) {
-        // Initialize prueflinge array if it doesn't exist
-        if (!this.eventDetails.prueflinge) {
-          this.eventDetails.prueflinge = [];
+        // Check for duplicates
+        if (this.isDuplicateParticipant(result)) {
+          // Instead of adding new, just add the exam to existing participant
+          const existingIndex = this.eventDetails.prueflinge.findIndex(p => 
+            p.vorname?.toLowerCase() === result.vorname?.toLowerCase() &&
+            p.nachname?.toLowerCase() === result.nachname?.toLowerCase() &&
+            p.verein?.toLowerCase() === result.verein?.toLowerCase()
+          );
+          
+          if (existingIndex !== -1) {
+            // Add exam to existing participant if not already there
+            const existingExams = this.eventDetails.prueflinge[existingIndex].exam || [];
+            const examExists = existingExams.some((e: any) => e.id === exam.id);
+            
+            if (!examExists) {
+              this.eventDetails.prueflinge[existingIndex].exam = [...existingExams, exam];
+            }
+          }
+        } else {
+          // Add new participant
+          if (!this.eventDetails.prueflinge) {
+            this.eventDetails.prueflinge = [];
+          }
+          
+          const newPruefling = {
+            ...result,
+            id: crypto.randomUUID(),
+            exam: [exam]
+          };
+          
+          this.eventDetails.prueflinge.push(newPruefling);
         }
         
-        // Create new Pruefling with proper structure
-        const newPruefling = {
-          ...result,
-          id: crypto.randomUUID(), // Add unique ID
-          exam: [exam] // Ensure exam is assigned correctly
-        };
-        
-        // Add to the event's prueflinge array
-        this.eventDetails.prueflinge.push(newPruefling);
-        
-        // Update localStorage
         this.updateEventInStorage();
       }
     });
@@ -176,4 +208,24 @@ export class EventDetailsComponent implements OnInit {
       localStorage.setItem('events', JSON.stringify(events));
     }
   }
+
+  /**
+ * Gets the count of unique participants based on first and last name combination
+ * Prevents counting the same person multiple times if they're in different exams
+ */
+getUniquePrueflingeCount(): number {
+  if (!this.eventDetails?.prueflinge) {
+    return 0;
+  }
+
+  const uniqueNames = new Set<string>();
+  
+  this.eventDetails.prueflinge.forEach(pruefling => {
+    // Create unique identifier using first and last name (case-insensitive)
+    const nameKey = `${pruefling.vorname?.toLowerCase()}-${pruefling.nachname?.toLowerCase()}`;
+    uniqueNames.add(nameKey);
+  });
+
+  return uniqueNames.size;
+}
 }

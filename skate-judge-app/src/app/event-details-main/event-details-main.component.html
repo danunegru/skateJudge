@@ -18,7 +18,7 @@
 
   <div class="pruefling-info">
     <mat-icon>group</mat-icon>
-    <span>{{ eventDetails.prueflinge.length || 0 }} Prüflinge</span>
+    <span>{{ getUniquePrueflingeCount() }} Prüflinge</span>
   </div>
 
   <div class="exam-section" *ngIf="selectedExams.length > 0">
