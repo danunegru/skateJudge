@@ -49,6 +49,14 @@
                 <div matListItemLine>{{ pruefling.verein }}</div>
               </mat-list-item>
             </mat-list>
+
+            <!-- Add Prüfling Button for this specific exam -->
+            <div class="exam-add-button">
+              <button mat-raised-button color="primary" (click)="addPrueflingToExam(exam)">
+                <mat-icon>person_add</mat-icon>
+                Neue Prüfling hinzufügen
+              </button>
+            </div>
           </div>
         </mat-expansion-panel>
       </mat-accordion>

@@ -30,7 +30,7 @@ export class PrueflingFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<PrueflingFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { eventId: string, exams: Exam[] }
+    @Inject(MAT_DIALOG_DATA) public data: { eventId: string, exams: Exam[], preSelectedExam?: Exam }
   ) {
     this.prueflingForm = this.fb.group({
       name: ['', Validators.required],
@@ -39,21 +39,43 @@ export class PrueflingFormComponent implements OnInit {
     });
   }
 
+  private capitalizeFirstLetter(value: string): string {
+    if (!value) return value;
+    return value.charAt(0).toUpperCase() + value.slice(1);
+  }
+
+  private capitalizedFirstLetterValidator() {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      if (!value) return null;
+      
+      const firstLetter = value.charAt(0);
+      if (firstLetter !== firstLetter.toUpperCase()) {
+        return { capitalizedFirstLetter: true };
+      }
+      return null;
+    };
+  }
+
   ngOnInit() {
-    this.prueflingForm = this.fb.group({
-      vorname: ['', [
-        Validators.required,
-        Validators.pattern('^[A-Za-zÄäÖöÜüß\\-]+$'),
-        this.capitalizeFirstLetterValidator()
-      ]],
-      nachname: ['', [
-        Validators.required,
-        Validators.pattern('^[A-Za-zÄäÖöÜüß\\-]+$'),
-        this.capitalizeFirstLetterValidator()
-      ]],
-      verein: ['', Validators.required],
-      exam: [[], Validators.required]
-    });
+    this.availableExams = this.data.exams || [];
+
+    // If a specific exam is pre-selected, set it in the form
+    if (this.data.preSelectedExam) {
+      this.prueflingForm = this.fb.group({
+        vorname: ['', Validators.required],
+        nachname: ['', [Validators.required, Validators.pattern(/^[a-zA-ZäöüÄÖÜß\-\s]+$/)]],
+        verein: ['', Validators.required],
+        exam: [[this.data.preSelectedExam], Validators.required] // Pre-select the exam
+      });
+    } else {
+      this.prueflingForm = this.fb.group({
+        vorname: ['', Validators.required],
+        nachname: ['', [Validators.required, Validators.pattern(/^[a-zA-ZäöüÄÖÜß\-\s]+$/)]],
+        verein: ['', Validators.required],
+        exam: [[], Validators.required]
+      });
+    }
 
     // Add value change listeners to auto-capitalize
     this.prueflingForm.get('vorname')?.valueChanges.subscribe(value => {
@@ -73,26 +95,6 @@ export class PrueflingFormComponent implements OnInit {
         }
       }
     });
-
-    this.availableExams = this.data.exams;
-  }
-
-  private capitalizeFirstLetter(value: string): string {
-    if (!value) return value;
-    return value.charAt(0).toUpperCase() + value.slice(1);
-  }
-
-  private capitalizeFirstLetterValidator() {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const value = control.value;
-      if (!value) return null;
-      
-      const firstLetter = value.charAt(0);
-      if (firstLetter !== firstLetter.toUpperCase()) {
-        return { capitalizedFirstLetter: true };
-      }
-      return null;
-    };
   }
 
   isExamSelected(exam: Exam): boolean {
@@ -122,12 +124,5 @@ export class PrueflingFormComponent implements OnInit {
   onCancel() {
     this.dialogRef.close();
   }
-
-  // Add this new method to handle input restrictions
-  onNameInput(event: KeyboardEvent, controlName: string) {
-    const input = event.key;
-    if (!input.match(/[A-Za-zÄäÖöÜüß\-]/)) {
-      event.preventDefault();
-    }
-  }
+  
 }

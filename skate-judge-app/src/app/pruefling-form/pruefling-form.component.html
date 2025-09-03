@@ -7,16 +7,9 @@
         <mat-label>Vorname</mat-label>
         <input matInput 
                formControlName="vorname" 
-               placeholder="Vorname des Prüflings"
-               (keydown)="onNameInput($event, 'vorname')">
+               placeholder="Vorname des Prüflings">
         <mat-error *ngIf="prueflingForm.get('vorname')?.errors?.['required']">
           Vorname ist erforderlich
-        </mat-error>
-        <mat-error *ngIf="prueflingForm.get('vorname')?.errors?.['pattern']">
-          Vorname darf nur Buchstaben und Bindestriche enthalten
-        </mat-error>
-        <mat-error *ngIf="prueflingForm.get('vorname')?.errors?.['capitalizedFirstLetter']">
-          Vorname muss mit einem Großbuchstaben beginnen
         </mat-error>
       </mat-form-field>
 
@@ -24,16 +17,12 @@
         <mat-label>Nachname</mat-label>
         <input matInput 
                formControlName="nachname" 
-               placeholder="Nachname des Prüflings"
-               (keydown)="onNameInput($event, 'nachname')">
+               placeholder="Nachname des Prüflings">
         <mat-error *ngIf="prueflingForm.get('nachname')?.errors?.['required']">
           Nachname ist erforderlich
         </mat-error>
         <mat-error *ngIf="prueflingForm.get('nachname')?.errors?.['pattern']">
           Nachname darf nur Buchstaben und Bindestriche enthalten
-        </mat-error>
-        <mat-error *ngIf="prueflingForm.get('nachname')?.errors?.['capitalizedFirstLetter']">
-          Nachname muss mit einem Großbuchstaben beginnen
         </mat-error>
       </mat-form-field>
 
@@ -45,7 +34,8 @@
         </mat-error>
       </mat-form-field>
 
-      <div class="exam-selection">
+      <!-- Only show exam selection if no specific exam is pre-selected -->
+      <div class="exam-selection" *ngIf="!data.preSelectedExam">
         <p class="exam-label">Prüfungen</p>
         <div class="checkbox-group">
           <mat-checkbox *ngFor="let exam of availableExams" 
@@ -58,6 +48,8 @@
           Mindestens eine Prüfung muss ausgewählt werden
         </mat-error>
       </div>
+
+    
     </form>
   </mat-dialog-content>
 

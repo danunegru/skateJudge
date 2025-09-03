@@ -75,3 +75,19 @@ mat-panel-description {
   color: rgba(0, 0, 0, 0.54);
 }
 
+.exam-add-button {
+  margin-top: 16px;
+  padding: 16px;
+  text-align: center;
+  border-top: 1px solid #e0e0e0;
+
+  button {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  mat-icon {
+    margin-right: 8px;
+  }
+}
+

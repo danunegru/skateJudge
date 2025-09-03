@@ -118,4 +118,62 @@ export class EventDetailsComponent implements OnInit {
       pruefling.exam.some(e => e.id === exam.id)
     );
   }
+
+  /**
+   * Adds a participant (Pruefling) to a specific exam within the event.
+   * Opens the PrueflingFormComponent dialog pre-filled for the selected exam.
+   * Updates the event and localStorage upon adding the participant.
+   * 
+   * @param exam - The exam to which the participant will be added.
+   */
+  addPrueflingToExam(exam: any) {
+    if (!this.eventDetails) return;
+
+    const dialogRef = this.dialog.open(PrueflingFormComponent, {
+      width: '500px',
+      data: { 
+        eventId: this.eventDetails.id, 
+        exams: [exam], // Only pass the selected exam
+        preSelectedExam: exam // Optional: pre-select this exam in the form
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && this.eventDetails) {
+        // Initialize prueflinge array if it doesn't exist
+        if (!this.eventDetails.prueflinge) {
+          this.eventDetails.prueflinge = [];
+        }
+        
+        // Create new Pruefling with proper structure
+        const newPruefling = {
+          ...result,
+          id: crypto.randomUUID(), // Add unique ID
+          exam: [exam] // Ensure exam is assigned correctly
+        };
+        
+        // Add to the event's prueflinge array
+        this.eventDetails.prueflinge.push(newPruefling);
+        
+        // Update localStorage
+        this.updateEventInStorage();
+      }
+    });
+  }
+
+  /**
+   * Updates the event in localStorage after modifications.
+   * Ensures the event details are saved correctly.
+   */
+  private updateEventInStorage() {
+    if (!this.eventDetails) return;
+    
+    const events = JSON.parse(localStorage.getItem('events') || '[]');
+    const eventIndex = events.findIndex((e: any) => e.id === this.eventDetails!.id);
+    
+    if (eventIndex !== -1) {
+      events[eventIndex] = { ...this.eventDetails }; // Create a copy to avoid reference issues
+      localStorage.setItem('events', JSON.stringify(events));
+    }
+  }
 }
