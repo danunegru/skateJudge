@@ -1,12 +1,111 @@
 <div class="exam-container" *ngIf="event && exam">
-  <h2>{{ exam.name }}</h2>
+  <h1>{{ exam.name }}</h1>
   
-  <div class="event-details">
-    <h3>Event Details</h3>
-    <p>Event: {{ event.name }}</p>
-    <p>Veranstalter: {{ event.veranstalter }}</p>
-    <p>Ort: {{ event.place }}</p>
-    <p>Datum: {{ event.startDate | date:'dd.MM.yyyy' }} - {{ event.endDate | date:'dd.MM.yyyy' }}</p>
-    <p>Prüflinge: {{ event.prueflinge.length || 0 }}</p>
+  <div class="details-container">
+    <div class="event-details">
+      <h3>Event Details</h3>
+      <p><span>Event:</span> {{ event.name }}</p>
+      <p><span>Veranstalter:</span> {{ event.veranstalter }}</p>
+      <p><span>Ort:</span> {{ event.place }}</p>
+      <p><span>Datum:</span> {{ event.startDate | date:'dd.MM.yyyy' }} - {{ event.endDate | date:'dd.MM.yyyy' }}</p>
+      <p><span>Prüflinge:</span> {{ event.prueflinge.length || 0 }}</p>
+    </div>
+    
+    <div class="header-info">
+      <h3>Wertungsrichter:in</h3>
+      <div class="info-grid">
+        <span><strong>Mindestpunktzahl:</strong></span>
+        <span>6,0</span>
+        <span><strong>Durchschnittswert:</strong></span>
+        <span>1,5</span>
+        <span><strong>Keine Note unter:</strong></span>
+        <span>1,0</span>
+      </div>
+    </div>
   </div>
+
+  <table class="score-table">
+    <thead>
+      <tr>
+        <th rowspan="3" class="element-header">Elemente</th>
+        <th colspan="5">Athleten</th>
+      </tr>
+      <tr>
+        <th class="number-cell">1.</th>
+        <th class="number-cell">2.</th>
+        <th class="number-cell">3.</th>
+        <th class="number-cell">4.</th>
+        <th class="number-cell">5.</th>
+      </tr>
+      <tr>
+        <td class="athlete-cell">
+          <input type="text" placeholder="Verein" class="verein-input" data-athlete="1">
+          <br><br>
+          <input type="text" placeholder="Name" class="name-input" data-athlete="1">
+        </td>
+        <td class="athlete-cell">
+          <input type="text" placeholder="Verein" class="verein-input" data-athlete="2">
+          <br><br>
+          <input type="text" placeholder="Name" class="name-input" data-athlete="2">
+        </td>
+        <td class="athlete-cell">
+          <input type="text" placeholder="Verein" class="verein-input" data-athlete="3">
+          <br><br>
+          <input type="text" placeholder="Name" class="name-input" data-athlete="3">
+        </td>
+        <td class="athlete-cell">
+          <input type="text" placeholder="Verein" class="verein-input" data-athlete="4">
+          <br><br>
+          <input type="text" placeholder="Name" class="name-input" data-athlete="4">
+        </td>
+        <td class="athlete-cell">
+          <input type="text" placeholder="Verein" class="verein-input" data-athlete="5">
+          <br><br>
+          <input type="text" placeholder="Name" class="name-input" data-athlete="5">
+        </td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="element-header">1. rechts und links vorwärts übersetzen</td>
+        <td><input type="number" step="0.1" min="1.0" max="6.0" data-element="1" data-athlete="1"></td>
+        <td><input type="number" step="0.1" min="1.0" max="6.0" data-element="1" data-athlete="2"></td>
+        <td><input type="number" step="0.1" min="1.0" max="6.0" data-element="1" data-athlete="3"></td>
+        <td><input type="number" step="0.1" min="1.0" max="6.0" data-element="1" data-athlete="4"></td>
+        <td><input type="number" step="0.1" min="1.0" max="6.0" data-element="1" data-athlete="5"></td>
+      </tr>
+      <tr>
+        <td class="element-header">2. rechts und links rückwärts übersetzen</td>
+        <td><input type="number" step="0.1" min="1.0" max="6.0" data-element="2" data-athlete="1"></td>
+        <td><input type="number" step="0.1" min="1.0" max="6.0" data-element="2" data-athlete="2"></td>
+        <td><input type="number" step="0.1" min="1.0" max="6.0" data-element="2" data-athlete="3"></td>
+        <td><input type="number" step="0.1" min="1.0" max="6.0" data-element="2" data-athlete="4"></td>
+        <td><input type="number" step="0.1" min="1.0" max="6.0" data-element="2" data-athlete="5"></td>
+      </tr>
+      <tr>
+        <td class="element-header">3. Flieger mit Kante</td>
+        <td><input type="number" step="0.1" min="1.0" max="6.0" data-element="3" data-athlete="1"></td>
+        <td><input type="number" step="0.1" min="1.0" max="6.0" data-element="3" data-athlete="2"></td>
+        <td><input type="number" step="0.1" min="1.0" max="6.0" data-element="3" data-athlete="3"></td>
+        <td><input type="number" step="0.1" min="1.0" max="6.0" data-element="3" data-athlete="4"></td>
+        <td><input type="number" step="0.1" min="1.0" max="6.0" data-element="3" data-athlete="5"></td>
+      </tr>
+      <tr>
+        <td class="element-header">4. Bremsen durch Drehung auf rückwärts und auf die Stopper</td>
+        <td><input type="number" step="0.1" min="1.0" max="6.0" data-element="4" data-athlete="1"></td>
+        <td><input type="number" step="0.1" min="1.0" max="6.0" data-element="4" data-athlete="2"></td>
+        <td><input type="number" step="0.1" min="1.0" max="6.0" data-element="4" data-athlete="3"></td>
+        <td><input type="number" step="0.1" min="1.0" max="6.0" data-element="4" data-athlete="4"></td>
+        <td><input type="number" step="0.1" min="1.0" max="6.0" data-element="4" data-athlete="5"></td>
+      </tr>
+      <tr class="total-row">
+        <td class="element-header">Erreichte Gesamtpunktzahl:</td>
+        <td id="total-1">0.0</td>
+        <td id="total-2">0.0</td>
+        <td id="total-3">0.0</td>
+        <td id="total-4">0.0</td>
+        <td id="total-5">0.0</td>
+      </tr>
+    </tbody>
+  </table>
 </div>

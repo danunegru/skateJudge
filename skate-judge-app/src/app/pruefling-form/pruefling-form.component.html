@@ -1,15 +1,16 @@
 <div class="dialog-container">
   <h2 mat-dialog-title>Prüfling hinzufügen</h2>
-  
+
   <mat-dialog-content>
     <form [formGroup]="prueflingForm" class="pruefling-form">
       <mat-form-field appearance="fill">
         <mat-label>Vorname</mat-label>
-        <input matInput 
-               formControlName="vorname" 
-               placeholder="Vorname des Prüflings">
+        <input matInput formControlName="vorname" placeholder="Vorname des Prüflings">
         <mat-error *ngIf="prueflingForm.get('vorname')?.errors?.['required']">
           Vorname ist erforderlich
+        </mat-error>
+        <mat-error *ngIf="prueflingForm.get('vorname')?.errors?.['pattern']">
+          Vorname darf nur Buchstaben und Bindestriche enthalten
         </mat-error>
       </mat-form-field>
 
@@ -24,6 +25,9 @@
         <mat-error *ngIf="prueflingForm.get('nachname')?.errors?.['pattern']">
           Nachname darf nur Buchstaben und Bindestriche enthalten
         </mat-error>
+        <mat-error *ngIf="prueflingForm.get('nachname')?.errors?.['capitalizedFirstLetter']">
+          Nachname muss mit einem Großbuchstaben beginnen
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="fill">
@@ -34,13 +38,11 @@
         </mat-error>
       </mat-form-field>
 
-      <!-- Only show exam selection if no specific exam is pre-selected -->
-      <div class="exam-selection" *ngIf="!data.preSelectedExam">
+      <div class="exam-selection">
         <p class="exam-label">Prüfungen</p>
         <div class="checkbox-group">
-          <mat-checkbox *ngFor="let exam of availableExams" 
-                       [checked]="isExamSelected(exam)"
-                       (change)="onExamChange($event, exam)">
+          <mat-checkbox *ngFor="let exam of availableExams" [checked]="isExamSelected(exam)"
+            (change)="onExamChange($event, exam)">
             {{ exam.name }} ({{ exam.id }})
           </mat-checkbox>
         </div>
@@ -48,8 +50,6 @@
           Mindestens eine Prüfung muss ausgewählt werden
         </mat-error>
       </div>
-
-    
     </form>
   </mat-dialog-content>
 
