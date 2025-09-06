@@ -19,6 +19,8 @@ export class A1Component implements OnInit {
   exam: Exam | undefined;
   isDetailsExpanded: boolean = false;
   prueflingeForExam: Pruefling[] = [];
+  currentPage: number = 0;
+  pageSize: number = 5;
 
   constructor(private route: ActivatedRoute, private router: Router) {}
 
@@ -48,6 +50,28 @@ export class A1Component implements OnInit {
     return this.event.prueflinge.filter(pruefling => 
       pruefling.exam.some(e => e.id === exam.id)
     );
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.prueflingeForExam.length / this.pageSize);
+  }
+
+  get currentPageAthletes(): Pruefling[] {
+    const start = this.currentPage * this.pageSize;
+    const end = start + this.pageSize;
+    return this.prueflingeForExam.slice(start, end);
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages - 1) {
+      this.currentPage++;
+    }
+  }
+
+  previousPage() {
+    if (this.currentPage > 0) {
+      this.currentPage--;
+    }
   }
 
   toggleDetails() {

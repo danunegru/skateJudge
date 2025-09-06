@@ -31,63 +31,93 @@
     </div>
   </div>
 
-  <table class="score-table" *ngIf="prueflingeForExam.length > 0">
-    <thead>
-      <tr>
-        <th rowspan="3" class="element-header">Elemente</th>
-        <th [attr.colspan]="prueflingeForExam.length">Athleten</th>
-      </tr>
-      <tr>
-        <th class="number-cell" *ngFor="let pruefling of prueflingeForExam; let i = index">{{ i + 1 }}.</th>
-      </tr>
-      <tr>
-        <td class="athlete-cell" *ngFor="let pruefling of prueflingeForExam">
-          <div class="athlete-info">
-            <div class="verein-display">{{ pruefling.verein }}</div>
-            <div class="name-display">{{ pruefling.vorname }} {{ pruefling.nachname }}</div>
-          </div>
-        </td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="element-header">
-          <div class="element-content">1. rechts und links vorwärts übersetzen</div>
-        </td>
-        <td *ngFor="let pruefling of prueflingeForExam; let i = index">
-          <input type="number" step="0.1" min="1.0" max="6.0" [attr.data-element]="1" [attr.data-athlete]="i + 1">
-        </td>
-      </tr>
-      <tr>
-        <td class="element-header">
-          <div class="element-content">2. rechts und links rückwärts übersetzen</div>
-        </td>
-        <td *ngFor="let pruefling of prueflingeForExam; let i = index">
-          <input type="number" step="0.1" min="1.0" max="6.0" [attr.data-element]="2" [attr.data-athlete]="i + 1">
-        </td>
-      </tr>
-      <tr>
-        <td class="element-header">
-          <div class="element-content">3. Flieger mit Kante</div>
-        </td>
-        <td *ngFor="let pruefling of prueflingeForExam; let i = index">
-          <input type="number" step="0.1" min="1.0" max="6.0" [attr.data-element]="3" [attr.data-athlete]="i + 1">
-        </td>
-      </tr>
-      <tr>
-        <td class="element-header">
-          <div class="element-content">4. Bremsen durch Drehung auf rückwärts und auf die Stopper</div>
-        </td>
-        <td *ngFor="let pruefling of prueflingeForExam; let i = index">
-          <input type="number" step="0.1" min="1.0" max="6.0" [attr.data-element]="4" [attr.data-athlete]="i + 1">
-        </td>
-      </tr>
-      <tr class="total-row">
-        <td class="element-header">Erreichte Gesamtpunktzahl:</td>
-        <td *ngFor="let pruefling of prueflingeForExam; let i = index" [attr.id]="'total-' + (i + 1)">0.0</td>
-      </tr>
-    </tbody>
-  </table>
+  <!-- Scrollable table with fixed first column -->
+  <div class="table-wrapper" *ngIf="prueflingeForExam.length > 0">
+    <!-- Fixed first column (Elements) -->
+    <div class="fixed-column">
+      <table class="elements-table">
+        <thead>
+          <tr>
+            <th rowspan="3" class="element-header">Elemente</th>
+          </tr>
+          <tr></tr>
+          <tr></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="element-header">
+              <div class="element-content">1. rechts und links vorwärts übersetzen</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="element-header">
+              <div class="element-content">2. rechts und links rückwärts übersetzen</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="element-header">
+              <div class="element-content">3. Flieger mit Kante</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="element-header">
+              <div class="element-content">4. Bremsen durch Drehung auf rückwärts und auf die Stopper</div>
+            </td>
+          </tr>
+          <tr class="total-row">
+            <td class="element-header">Erreichte Gesamtpunktzahl:</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Scrollable athletes section -->
+    <div class="athletes-scroll-container">
+      <table class="athletes-table">
+        <thead>
+          <tr>
+            <th [attr.colspan]="prueflingeForExam.length" class="athletes-header">Athleten</th>
+          </tr>
+          <tr>
+            <th class="number-cell" *ngFor="let pruefling of prueflingeForExam; let i = index">{{ i + 1 }}.</th>
+          </tr>
+          <tr>
+            <td class="athlete-cell" *ngFor="let pruefling of prueflingeForExam">
+              <div class="athlete-info">
+                <div class="verein-display">{{ pruefling.verein }}</div>
+                <div class="name-display">{{ pruefling.vorname }} {{ pruefling.nachname }}</div>
+              </div>
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="score-cell" *ngFor="let pruefling of prueflingeForExam; let i = index">
+              <input type="number" step="0.1" min="1.0" max="6.0" [attr.data-element]="1" [attr.data-athlete]="i + 1">
+            </td>
+          </tr>
+          <tr>
+            <td class="score-cell" *ngFor="let pruefling of prueflingeForExam; let i = index">
+              <input type="number" step="0.1" min="1.0" max="6.0" [attr.data-element]="2" [attr.data-athlete]="i + 1">
+            </td>
+          </tr>
+          <tr>
+            <td class="score-cell" *ngFor="let pruefling of prueflingeForExam; let i = index">
+              <input type="number" step="0.1" min="1.0" max="6.0" [attr.data-element]="3" [attr.data-athlete]="i + 1">
+            </td>
+          </tr>
+          <tr>
+            <td class="score-cell" *ngFor="let pruefling of prueflingeForExam; let i = index">
+              <input type="number" step="0.1" min="1.0" max="6.0" [attr.data-element]="4" [attr.data-athlete]="i + 1">
+            </td>
+          </tr>
+          <tr class="total-row">
+            <td class="score-cell total-cell" *ngFor="let pruefling of prueflingeForExam; let i = index" [attr.id]="'total-' + (i + 1)">0.0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
   <!-- Show message when no participants are registered -->
   <div class="no-participants" *ngIf="prueflingeForExam.length === 0">
@@ -100,7 +130,7 @@
     </mat-card>
   </div>
 
-  <!-- Alternative back button with Material Design -->
+  <!-- Back button -->
   <button mat-stroked-button color="primary" (click)="goBackToEventDetails()" class="back-button-material">
     <mat-icon>arrow_back</mat-icon>
     Zurück zur Veranstaltung
