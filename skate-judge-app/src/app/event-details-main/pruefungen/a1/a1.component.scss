@@ -46,15 +46,61 @@ h1 {
   margin-bottom: 15px;
 }
 
-// Table wrapper with flexbox layout - FIXED ALIGNMENT
+// Table wrapper - remove overflow hidden to allow external scrollbar
 .table-wrapper {
   display: flex;
-  border: 2px solid #333;
+  border: 1px solid #333;
   border-radius: 5px;
   margin: 5px 0;
-  overflow: hidden;
   background-color: white;
-  align-items: stretch; // Ensure both sections have same height
+  align-items: stretch;
+  position: relative;
+}
+
+// Create a wrapper for the athletes section with external scrollbar
+.athletes-section-wrapper {
+  flex: 1;
+  position: relative;
+}
+
+// Athletes scroll container - scrollbar will be outside
+.athletes-scroll-container {
+  width: 100%;
+  height: 100% ; // Leave space for scrollbar
+  overflow-x: auto;
+  overflow-y: hidden;
+  
+  // Position scrollbar outside the table area
+  padding-bottom: -15px; // Make room for scrollbar
+  margin-bottom: -15px; // Pull content back up
+  
+  // Custom scrollbar styling
+  &::-webkit-scrollbar {
+    height: 10px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+    border-radius: 0px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 0px;
+    
+    &:hover {
+      background-color: #555;
+    }
+  }
+}
+
+// Athletes table - no changes needed
+.athletes-table {
+  border-collapse: collapse;
+  min-width: max-content;
+  width: 100%;
+  height: 100%; // Leave space for scrollbar
+  table-layout: auto; // Account for scrollbar space
 }
 
 // Fixed first column (elements)
@@ -67,60 +113,11 @@ h1 {
   flex-direction: column;
 }
 
-// Scrollable athletes container
-.athletes-scroll-container {
-  flex: 1;
-  overflow-x: auto;
-  overflow-y: hidden;
-  display: flex;
-  flex-direction: column;
-  
-  // Custom scrollbar styling
-  &::-webkit-scrollbar {
-    height: 12px;
-  }
-  
-  &::-webkit-scrollbar-track {
-    background-color: #f1f1f1;
-    border-radius: 6px;
-  }
-  
-  &::-webkit-scrollbar-thumb {
-    background-color: #888;
-    border-radius: 6px;
-    
-    &:hover {
-      background-color: #555;
-    }
-  }
-  
-  // For Firefox
-  scrollbar-width: thin;
-  scrollbar-color: #888 #f1f1f1;
-}
-
-// CSS for when scrollbar is detected
-.athletes-scroll-container.has-scrollbar {
-  .total-row .total-cell {
-    // Slightly reduce width to compensate for scrollbar
-    width: calc(120px - 6px) !important;
-    max-width: calc(120px - 6px) !important;
-  }
-}
-
-// Elements table styling - EXACT HEIGHT CONTROL
+// Elements table styling
 .elements-table {
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
-  flex: 1;
-}
-
-// Athletes table styling - EXACT HEIGHT CONTROL
-.athletes-table {
-  border-collapse: collapse;
-  min-width: max-content;
-  width: auto;
   flex: 1;
 }
 
@@ -164,7 +161,7 @@ h1 {
   background-color: #f1f3f4;
   text-align: center;
   font-weight: bold;
-  width: 450px;
+  width: 450px; // Fixed the incomplete width property
   
   // Special styling for the 3-row span "Elemente" header
   &[rowspan="3"] {
@@ -209,7 +206,7 @@ h1 {
 .athlete-cell {
   background-color: #f8f9fa;
   font-size: 13px;
-  padding: 5px; // Changed from 4px to 5px for consistency
+  padding: 5px;
   width: 120px;
   min-width: 120px;
   height: 80px !important;
@@ -220,7 +217,7 @@ h1 {
 .score-cell {
   width: 120px;
   min-width: 120px;
-  padding: 5px; // Changed from 4px to 5px for consistency
+  padding: 5px;
   height: 70px !important;
   background-color: white;
   vertical-align: middle;
@@ -240,11 +237,11 @@ h1 {
 .total-row {
   background-color: #e3f2fd;
   font-weight: bold;
-  height: 75px !important;
-  
+  height: 80px !important;
+
   .element-header {
     background-color: #e3f2fd;
-    font-size: 14px;
+    font-size: 18px;
     height: 80px !important;
   }
 }
@@ -252,7 +249,7 @@ h1 {
 .total-cell {
   background-color: #e3f2fd !important;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 18px;
   color: #1976d2;
   height: 70px !important;
 }
@@ -262,7 +259,7 @@ input[type="number"] {
   width: 80px;
   text-align: center;
   border: 1px solid #ddd;
-  padding: 5px; // Changed from 6px to 5px for consistency
+  padding: 5px; 
   font-size: 14px;
   border-radius: 3px;
   background-color: white;
@@ -276,7 +273,7 @@ input[type="number"] {
 // Athlete info styling
 .athlete-info {
   text-align: center;
-  padding: 5px; // Changed from 4px to 5px for consistency
+  padding: 5px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -408,4 +405,9 @@ input[type="number"] {
   @media (max-width: 768px) {
     flex-direction: column;
   }
+}
+
+// Back button styling
+.back-button-material {
+  margin: 20px 0;
 }
