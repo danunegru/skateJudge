@@ -32,10 +32,11 @@
   </div>
 
   <!-- ORIGINAL TABLE STRUCTURE -->
+  <!-- Add #elementsTable and #athletesTable template references -->
   <div class="table-wrapper" *ngIf="prueflingeForExam.length > 0">
     <!-- Fixed first column (Elements) -->
     <div class="fixed-column">
-      <table class="elements-table">
+      <table class="elements-table" #elementsTable>
         <thead>
           <tr>
             <th rowspan="3" class="element-header">Elemente</th>
@@ -73,7 +74,7 @@
 
     <!-- Scrollable athletes section -->
     <div class="athletes-scroll-container">
-      <table class="athletes-table">
+      <table class="athletes-table" #athletesTable>
         <thead>
           <tr>
             <th [attr.colspan]="prueflingeForExam.length" class="athletes-header">Athleten</th>
@@ -93,26 +94,64 @@
         <tbody>
           <tr>
             <td class="score-cell" *ngFor="let pruefling of prueflingeForExam; let i = index">
-              <input type="number" step="0.1" min="1.0" max="6.0" [attr.data-element]="1" [attr.data-athlete]="i + 1">
+              <button 
+                type="button" 
+                class="score-button" 
+                (click)="openScorePopup(1, i, pruefling)"
+                [attr.data-element]="1" 
+                [attr.data-athlete]="i + 1"
+                [attr.aria-label]="'Bewertung für ' + pruefling.vorname + ' ' + pruefling.nachname + ' - Element 1'"
+                [attr.title]="'Bewertung für Element 1 - ' + pruefling.vorname + ' ' + pruefling.nachname">
+                {{ getScore(1, i) || '0.0' }}
+              </button>
             </td>
           </tr>
           <tr>
             <td class="score-cell" *ngFor="let pruefling of prueflingeForExam; let i = index">
-              <input type="number" step="0.1" min="1.0" max="6.0" [attr.data-element]="2" [attr.data-athlete]="i + 1">
+              <button 
+                type="button" 
+                class="score-button" 
+                (click)="openScorePopup(2, i, pruefling)"
+                [attr.data-element]="2" 
+                [attr.data-athlete]="i + 1"
+                [attr.aria-label]="'Bewertung für ' + pruefling.vorname + ' ' + pruefling.nachname + ' - Element 2'"
+                [attr.title]="'Bewertung für Element 2 - ' + pruefling.vorname + ' ' + pruefling.nachname">
+                {{ getScore(2, i) || '0.0' }}
+              </button>
             </td>
           </tr>
           <tr>
             <td class="score-cell" *ngFor="let pruefling of prueflingeForExam; let i = index">
-              <input type="number" step="0.1" min="1.0" max="6.0" [attr.data-element]="3" [attr.data-athlete]="i + 1">
+              <button 
+                type="button" 
+                class="score-button" 
+                (click)="openScorePopup(3, i, pruefling)"
+                [attr.data-element]="3" 
+                [attr.data-athlete]="i + 1"
+                [attr.aria-label]="'Bewertung für ' + pruefling.vorname + ' ' + pruefling.nachname + ' - Element 3'"
+                [attr.title]="'Bewertung für Element 3 - ' + pruefling.vorname + ' ' + pruefling.nachname">
+                {{ getScore(3, i) || '0.0' }}
+              </button>
             </td>
           </tr>
           <tr>
             <td class="score-cell" *ngFor="let pruefling of prueflingeForExam; let i = index">
-              <input type="number" step="0.1" min="1.0" max="6.0" [attr.data-element]="4" [attr.data-athlete]="i + 1">
+              <button 
+                type="button" 
+                class="score-button" 
+                (click)="openScorePopup(4, i, pruefling)"
+                [attr.data-element]="4" 
+                [attr.data-athlete]="i + 1"
+                [attr.aria-label]="'Bewertung für ' + pruefling.vorname + ' ' + pruefling.nachname + ' - Element 4'"
+                [attr.title]="'Bewertung für Element 4 - ' + pruefling.vorname + ' ' + pruefling.nachname">
+                {{ getScore(4, i) || '0.0' }}
+              </button>
             </td>
           </tr>
           <tr class="total-row">
-            <td class="score-cell total-cell" *ngFor="let pruefling of prueflingeForExam; let i = index" [attr.id]="'total-' + (i + 1)">0.0</td>
+            <td class="score-cell total-cell" *ngFor="let pruefling of prueflingeForExam; let i = index" [attr.id]="'total-' + (i + 1)">
+              {{ getTotal(i) }}
+            </td>
           </tr>
         </tbody>
       </table>
@@ -135,4 +174,73 @@
     <mat-icon>arrow_back</mat-icon>
     Zurück zur Veranstaltung
   </button>
+</div>
+
+<!-- SCORE POPUP -->
+<div class="score-popup-overlay" *ngIf="showScorePopup" (click)="closePopup($event)">
+  <div class="score-popup" (click)="$event.stopPropagation()">
+    <div class="popup-header">
+      <h2>{{ exam?.id }} - {{ currentPopupData?.element }}</h2>
+      
+      <div class="athlete-info">
+        <h4>{{ currentPopupData?.athlete }}</h4>
+        <p class="verein">{{ currentPopupData?.verein }}</p>
+      </div>
+      
+      <button class="close-btn" (click)="closePopup()" type="button">&times;</button>
+    </div>
+    
+    <!-- Navigation buttons -->
+    <div class="navigation-buttons">
+      <button 
+        type="button" 
+        class="nav-btn prev-btn" 
+        (click)="goToPrevious()"
+        [disabled]="!canGoBack()"
+        [attr.title]="'Vorheriger Athlet/Element'">
+        <span class="nav-icon">‹</span>
+        <span class="nav-text">Zurück</span>
+      </button>
+      
+      <div class="progress-indicator">
+        <span class="current-position">
+          Element {{ currentElementIndex }} - Athlet {{ currentAthleteIndex + 1 }} von {{ prueflingeForExam.length }}
+        </span>
+      </div>
+      
+      <button 
+        type="button" 
+        class="nav-btn next-btn" 
+        (click)="goToNext()"
+        [disabled]="!canGoNext()"
+        [attr.title]="'Nächster Athlet/Element'">
+        <span class="nav-text">Weiter</span>
+        <span class="nav-icon">›</span>
+      </button>
+    </div>
+    
+    <div class="popup-content">
+      <div class="score-input-section">
+        <label for="score-input">Punktzahl (1.0 - 2.5):</label>
+        <input 
+          id="score-input"
+          type="number" 
+          step="0.1" 
+          min="1.0" 
+          max="2.5" 
+          [(ngModel)]="currentScore"
+          (keyup.enter)="saveScore()"
+          placeholder="0.0"
+          class="score-input">
+      </div>
+    </div>
+    
+    <div class="popup-actions">
+      <button type="button" class="btn-cancel" (click)="closePopup()">Schließen</button>
+      <button type="button" class="btn-clear" (click)="clearScore()">Löschen</button>
+      <button type="button" class="btn-save" (click)="saveScore()" [disabled]="!isValidScore()">
+        {{ canGoNext() ? 'Speichern & Weiter' : 'Speichern & Fertig' }}
+      </button>
+    </div>
+  </div>
 </div>

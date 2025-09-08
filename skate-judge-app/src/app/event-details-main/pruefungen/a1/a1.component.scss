@@ -121,28 +121,6 @@ h1 {
   flex: 1;
 }
 
-// CRITICAL: Force exact row heights for perfect alignment
-.elements-table thead tr:nth-child(1),
-.athletes-table thead tr:nth-child(1) {
-  height: 60px !important;
-}
-
-.elements-table thead tr:nth-child(2),
-.athletes-table thead tr:nth-child(2) {
-  height: 50px !important;
-}
-
-.elements-table thead tr:nth-child(3),
-.athletes-table thead tr:nth-child(3) {
-  height: 80px !important;
-}
-
-// CRITICAL: Force exact tbody row heights
-.elements-table tbody tr,
-.athletes-table tbody tr {
-  height: 70px !important;
-}
-
 // Common table cell styling
 .elements-table th,
 .elements-table td,
@@ -165,7 +143,7 @@ h1 {
   
   // Special styling for the 3-row span "Elemente" header
   &[rowspan="3"] {
-    height: 190px !important; // 60px + 50px + 80px = 190px
+    height: 170px !important; // 60px + 50px + 80px = 190px
     vertical-align: middle;
     font-size: 20px;
     font-weight: bold;
@@ -195,8 +173,7 @@ h1 {
 .number-cell {
   width: 120px;
   min-width: 120px;
-  background-color: #e9ecef;
-  height: 50px !important;
+  height: 30px !important;
   font-size: 12px;
   font-weight: bold;
   vertical-align: middle;
@@ -355,7 +332,7 @@ input[type="number"] {
 
 .toggle-button {
   width: 100%;
-  background-color: #f4b99b;
+  background-color: #c0c8f4;
   color: white;
   border: none;
   padding: 12px 20px;
@@ -369,11 +346,11 @@ input[type="number"] {
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #f4731d;
+    background-color: #3d75ee;
   }
 
   &:focus {
-    outline: 2px solid #f7d39f;
+    outline: 2px solid #48a7fa;
     outline-offset: 2px;
   }
 }
@@ -410,4 +387,310 @@ input[type="number"] {
 // Back button styling
 .back-button-material {
   margin: 20px 0;
+}
+
+// Popup overlay
+.score-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+// Popup container
+.score-popup {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  width: 90%;
+  max-height: 90vh;
+  animation: popupSlideIn 0.3s ease-out;
+}
+
+@keyframes popupSlideIn {
+  from {
+    transform: scale(0.8) translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+// Popup header
+.popup-header {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid #e0e0e0;
+  background-color: #f8f9fa;
+  
+  h2 {
+    margin: 0 0 8px 0;
+    color: #1976d2;
+    font-size: 1.6em;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  // Athlete info in header - smaller
+  .athlete-info {
+    text-align: center;
+    margin: 8px 0 0 0;
+    padding: 0;
+    background: none;
+    
+    h4 {
+      margin: 0 0 2px 0;
+      color: #333;
+      font-size: 1.1em;
+      font-weight: bold;
+    }
+    
+    .verein {
+      color: #666;
+      font-style: italic;
+      margin: 0;
+      font-size: 0.9em;
+    }
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #666;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+      color: #333;
+    }
+  }
+}
+
+// Popup content
+.popup-content {
+  padding: 24px;
+}
+
+.element-info {
+  margin-bottom: 24px;
+  padding: 12px;
+  background-color: #e3f2fd;
+  border-radius: 6px;
+  
+  h5 {
+    margin: 0;
+    color: #1976d2;
+    font-size: 1.1em;
+  }
+}
+
+.score-input-section {
+  margin-bottom: 24px;
+  
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .score-input {
+    width: 95%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.2s ease;
+    
+    &:focus {
+      outline: none;
+      border-color: #2196f3;
+    }
+    
+    &:invalid {
+      border-color: #f44336;
+    }
+  }
+}
+
+.quick-scores {
+  margin-bottom: 24px;
+  
+  h6 {
+    margin: 0 0 12px 0;
+    color: #333;
+    font-weight: 500;
+  }
+  
+  .score-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .quick-score-btn {
+    min-width: 50px;
+    padding: 8px 12px;
+    border: 2px solid #ddd;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      border-color: #2196f3;
+      background-color: #f0f8ff;
+    }
+    
+    &.selected {
+      background-color: #2196f3;
+      color: white;
+      border-color: #2196f3;
+    }
+  }
+}
+
+// Popup actions
+.popup-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px 24px;
+  border-top: 1px solid #e0e0e0;
+  
+  button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    
+    &.btn-cancel {
+      background: #f5f5f5;
+      color: #666;
+      
+      &:hover {
+        background: #e0e0e0;
+      }
+    }
+    
+    &.btn-clear {
+      background: #fff3e0;
+      color: #f57c00;
+      border: 1px solid #ffb74d;
+      
+      &:hover {
+        background: #ffe0b2;
+      }
+    }
+    
+    &.btn-save {
+      background: #2196f3;
+      color: white;
+      
+      &:hover:not(:disabled) {
+        background: #1976d2;
+      }
+      
+      &:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+// Score button styles (for the table buttons)
+.score-button {
+  width: 80px;
+  height: 40px;
+  border: 2px solid #ddd;
+  background-color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  color: #333;
+
+  &:hover {
+    border-color: #2196f3;
+    background-color: #f0f8ff;
+  }
+
+  &:focus {
+    outline: 2px solid #2196f3;
+    border-color: #2196f3;
+  }
+
+  // Style for buttons with scores vs empty
+  &:not(:empty) {
+    background-color: #e8f5e8;
+    border-color: #4caf50;
+    color: #2e7d32;
+  }
+}
+
+// Responsive design
+@media (max-width: 600px) {
+  .score-popup {
+    width: 95%;
+    margin: 10px;
+  }
+  
+  .popup-header {
+    padding: 16px 20px 12px;
+    
+    h3 {
+      font-size: 1.2em;
+    }
+  }
+  
+  .popup-content {
+    padding: 20px;
+  }
+  
+  .quick-scores .score-buttons {
+    gap: 6px;
+  }
+  
+  .quick-scores .quick-score-btn {
+    min-width: 45px;
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+  
+  .popup-actions {
+    flex-direction: column;
+    gap: 8px;
+    
+    button {
+      width: 100%;
+    }
+  }
 }
