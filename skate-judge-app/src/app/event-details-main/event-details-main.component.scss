@@ -91,3 +91,247 @@ mat-panel-description {
   }
 }
 
+// Athlete management styles
+.athlete-management-list {
+  .athlete-item {
+    position: relative;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+
+    &.hidden {
+      opacity: 0.6; // More visible than before
+
+      .athlete-content {
+        background: #f5f5f5; // Light grey background
+        color: #999; // Grey text
+
+        .athlete-icon {
+          color: #ccc; // Very light grey icon
+        }
+
+        .athlete-name {
+          color: #999 !important; // Grey name
+          text-decoration: line-through; // Strike through effect
+
+          &:hover {
+            color: #666 !important; // Slightly darker on hover
+          }
+        }
+
+        .athlete-verein {
+          color: #bbb; // Light grey verein
+        }
+
+        .exam-badge {
+          background: #e0e0e0 !important; // Grey badge background
+          color: #999 !important; // Grey badge text
+        }
+      }
+    }
+
+    &.editing {
+      .athlete-content {
+        background: #e3f2fd;
+      }
+    }
+  }
+
+  .athlete-content {
+    position: relative;
+    background: white;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 60px;
+
+    .athlete-icon {
+      color: #666;
+      flex-shrink: 0;
+    }
+
+    .athlete-info {
+      flex: 1;
+
+      .athlete-name {
+        font-weight: 500;
+        color: #333;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: color 0.2s ease;
+
+        &:hover {
+          color: #1976d2;
+
+          .edit-icon {
+            opacity: 1;
+          }
+        }
+
+        .edit-icon {
+          font-size: 16px;
+          opacity: 0;
+          transition: opacity 0.2s ease;
+        }
+
+        .hidden-icon {
+          font-size: 16px;
+          color: #ff9800;
+          opacity: 0.8;
+        }
+      }
+
+      .athlete-verein {
+        color: #666;
+        font-size: 14px;
+        margin-top: 4px;
+      }
+    }
+
+    .athlete-edit {
+      flex: 1;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+
+      .edit-form {
+        flex: 1;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 12px;
+
+        mat-form-field {
+          font-size: 14px;
+
+          .mat-mdc-form-field-wrapper {
+            padding-bottom: 0;
+          }
+        }
+
+        .name-field {
+          min-width: 120px;
+        }
+
+        .verein-field {
+          min-width: 150px;
+        }
+      }
+
+      .edit-actions {
+        display: flex;
+        gap: 4px;
+        flex-shrink: 0;
+      }
+    }
+
+    // CONSOLIDATED .athlete-exams section - ONLY ONE VERSION
+    .athlete-exams {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+      align-items: center;
+
+      .exam-badge {
+        background: #e3f2fd;
+        color: #1976d2;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+      }
+
+      // Icon-only action buttons with custom colors
+      .action-buttons {
+        display: flex;
+        gap: 4px;
+        margin-left: 8px;
+        
+        .action-btn {
+          width: 36px;
+          height: 36px;
+          
+          mat-icon {
+            font-size: 20px;
+            width: 20px;
+            height: 20px;
+          }
+          
+          // Hover effects
+          &:hover {
+            transform: scale(1.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+          }
+
+          // Custom colors for visibility toggle button
+          &:first-child {
+            &.mat-primary {
+              background-color: #4caf50 !important; // Green when athlete is visible
+              color: white !important;
+            }
+            
+            &.mat-warn {
+              background-color: #ff9800 !important; // Orange when athlete is hidden
+              color: white !important;
+            }
+          }
+
+          // Keep red for delete button
+          &:last-child {
+            &.mat-warn {
+              background-color: #f44336 !important; // Red for delete
+              color: white !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .athlete-management-list {
+    .athlete-content {
+      .athlete-edit {
+        .edit-form {
+          grid-template-columns: 1fr;
+          gap: 8px;
+        }
+      }
+      
+      .athlete-exams {
+        .action-buttons {
+          .action-btn {
+            width: 32px;
+            height: 32px;
+
+            mat-icon {
+              font-size: 18px;
+              width: 18px;
+              height: 18px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Make sure buttons are visible in hidden state
+.athlete-item.hidden {
+  .athlete-exams {
+    .action-buttons {
+      .action-btn {
+        opacity: 1;
+      }
+    }
+  }
+}
+

@@ -42,13 +42,89 @@
             <div *ngIf="getPrueflingeForExam(exam).length === 0" class="no-prueflinge">
               Keine Prüflinge für diese Prüfung
             </div>
-            <mat-list *ngIf="getPrueflingeForExam(exam).length > 0">
-              <mat-list-item *ngFor="let pruefling of getPrueflingeForExam(exam)">
-                <mat-icon matListItemIcon>person</mat-icon>
-                <div matListItemTitle>{{ pruefling.vorname }} {{ pruefling.nachname }}</div>
-                <div matListItemLine>{{ pruefling.verein }}</div>
-              </mat-list-item>
-            </mat-list>
+            
+            <!-- Enhanced athlete list with management features -->
+            <div *ngIf="getPrueflingeForExam(exam).length > 0" class="athlete-management-list">
+              <div *ngFor="let pruefling of getPrueflingeForExam(exam); let i = index" 
+                   class="athlete-item"
+                   [class.editing]="editingAthleteId === pruefling.id"
+                   [class.hidden]="pruefling.hidden === true">
+                
+                <!-- Main athlete content - removed all swipe events -->
+                <div class="athlete-content">
+                  
+                  <mat-icon class="athlete-icon">person</mat-icon>
+                  
+                  <!-- Editable name section -->
+                  <div class="athlete-info" *ngIf="editingAthleteId !== pruefling.id">
+                    <div class="athlete-name" (click)="startEditing(pruefling)">
+                      {{ pruefling.vorname }} {{ pruefling.nachname }}
+                      <mat-icon class="edit-icon">edit</mat-icon>
+                      <mat-icon class="hidden-icon" *ngIf="pruefling.hidden === true" 
+                                [attr.title]="'Dieser Athlet ist ausgeblendet'">
+                        visibility_off
+                      </mat-icon>
+                    </div>
+                    <div class="athlete-verein">{{ pruefling.verein }}</div>
+                  </div>
+
+                  <!-- Edit mode -->
+                  <div class="athlete-edit" *ngIf="editingAthleteId === pruefling.id">
+                    <div class="edit-form">
+                      <mat-form-field appearance="outline" class="name-field">
+                        <mat-label>Vorname</mat-label>
+                        <input matInput [(ngModel)]="editForm.vorname" (keyup.enter)="saveEdit(pruefling)">
+                      </mat-form-field>
+                      
+                      <mat-form-field appearance="outline" class="name-field">
+                        <mat-label>Nachname</mat-label>
+                        <input matInput [(ngModel)]="editForm.nachname" (keyup.enter)="saveEdit(pruefling)">
+                      </mat-form-field>
+                      
+                      <mat-form-field appearance="outline" class="verein-field">
+                        <mat-label>Verein</mat-label>
+                        <input matInput [(ngModel)]="editForm.verein" (keyup.enter)="saveEdit(pruefling)">
+                      </mat-form-field>
+                    </div>
+                    
+                    <div class="edit-actions">
+                      <button mat-icon-button color="primary" (click)="saveEdit(pruefling)" [disabled]="!isEditFormValid()">
+                        <mat-icon>check</mat-icon>
+                      </button>
+                      <button mat-icon-button (click)="cancelEdit()">
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Exam badges with action buttons -->
+                  <div class="athlete-exams">
+                    <span class="exam-badge" *ngFor="let examRef of pruefling.exam">
+                      {{ examRef.id }}
+                    </span>
+                    
+                    <!-- Action buttons with text labels -->
+                    <div class="action-buttons">
+                      <button mat-icon-button 
+                              [color]="pruefling.hidden === true ? 'primary' : 'warn'"
+                              (click)="toggleAthleteVisibility(pruefling)"
+                              class="action-btn"
+                              [matTooltip]="pruefling.hidden === true ? 'ANZEIGEN' : 'AUSBLENDEN'">
+                        <mat-icon>{{ pruefling.hidden === true ? 'visibility' : 'visibility_off' }}</mat-icon>
+                      </button>
+                      
+                      <button mat-icon-button 
+                              color="warn"
+                              (click)="deleteAthlete(pruefling, exam)"
+                              class="action-btn"
+                              matTooltip="LÖSCHEN">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <!-- Add Prüfling Button for this specific exam -->
             <div class="exam-add-button">

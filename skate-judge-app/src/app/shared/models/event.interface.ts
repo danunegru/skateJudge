@@ -14,7 +14,8 @@ export interface Pruefling {
   vorname: string;
   nachname: string;
   verein: string;
-  exam: Exam[];
+  exam: { id: string; name: string; }[];
+  hidden?: boolean; // Add this optional property
 }
 
 export interface Exam {
