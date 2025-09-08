@@ -33,7 +33,6 @@
   </div>
 
   <!-- ORIGINAL TABLE STRUCTURE -->
-  <!-- Add #elementsTable and #athletesTable template references -->
   <div class="table-wrapper" *ngIf="prueflingeForExam.length > 0">
     <!-- Fixed first column (Elements) -->
     <div class="fixed-column">
@@ -98,12 +97,13 @@
               <button type="button" 
                       class="score-button" 
                       [class.missing-score]="showMissingScoresWarning && !getScore(1, i)"
+                      [class.low-score]="getScore(1, i) && getScore(1, i) < 1.5"
                       (click)="openScorePopup(1, i, pruefling)"
                       [attr.data-element]="1" 
                       [attr.data-athlete]="i + 1"
                       [attr.aria-label]="'Bewertung für ' + pruefling.vorname + ' ' + pruefling.nachname + ' - Element 1'"
                       [attr.title]="'Bewertung für Element 1 - ' + pruefling.vorname + ' ' + pruefling.nachname">
-                {{ getScore(1, i) || '0.0' }}
+                {{ getScore(1, i) || '' }}
               </button>
             </td>
           </tr>
@@ -112,12 +112,13 @@
               <button type="button" 
                       class="score-button" 
                       [class.missing-score]="showMissingScoresWarning && !getScore(2, i)"
+                      [class.low-score]="getScore(2, i) && getScore(2, i) < 1.5"
                       (click)="openScorePopup(2, i, pruefling)"
                       [attr.data-element]="2" 
                       [attr.data-athlete]="i + 1"
                       [attr.aria-label]="'Bewertung für ' + pruefling.vorname + ' ' + pruefling.nachname + ' - Element 2'"
                       [attr.title]="'Bewertung für Element 2 - ' + pruefling.vorname + ' ' + pruefling.nachname">
-                {{ getScore(2, i) || '0.0' }}
+                {{ getScore(2, i) || '' }}
               </button>
             </td>
           </tr>
@@ -126,12 +127,13 @@
               <button type="button" 
                       class="score-button" 
                       [class.missing-score]="showMissingScoresWarning && !getScore(3, i)"
+                      [class.low-score]="getScore(3, i) && getScore(3, i) < 1.5"
                       (click)="openScorePopup(3, i, pruefling)"
                       [attr.data-element]="3" 
                       [attr.data-athlete]="i + 1"
                       [attr.aria-label]="'Bewertung für ' + pruefling.vorname + ' ' + pruefling.nachname + ' - Element 3'"
                       [attr.title]="'Bewertung für Element 3 - ' + pruefling.vorname + ' ' + pruefling.nachname">
-                {{ getScore(3, i) || '0.0' }}
+                {{ getScore(3, i) || '' }}
               </button>
             </td>
           </tr>
@@ -140,12 +142,13 @@
               <button type="button" 
                       class="score-button" 
                       [class.missing-score]="showMissingScoresWarning && !getScore(4, i)"
+                      [class.low-score]="getScore(4, i) && getScore(4, i) < 1.5"
                       (click)="openScorePopup(4, i, pruefling)"
                       [attr.data-element]="4" 
                       [attr.data-athlete]="i + 1"
                       [attr.aria-label]="'Bewertung für ' + pruefling.vorname + ' ' + pruefling.nachname + ' - Element 4'"
                       [attr.title]="'Bewertung für Element 4 - ' + pruefling.vorname + ' ' + pruefling.nachname">
-                {{ getScore(4, i) || '0.0' }}
+                {{ getScore(4, i) || '' }}
               </button>
             </td>
           </tr>
@@ -181,7 +184,6 @@
     <button mat-raised-button 
             color="accent" 
             (click)="confirmFinalScores()" 
-            class="confirm-button-material"
             [disabled]="prueflingeForExam.length === 0">
       <mat-icon>check_circle</mat-icon>
       BESTÄTIGEN
@@ -205,7 +207,6 @@
   <div class="score-popup">
     <div class="popup-header">
       <h2>{{ exam?.id }} - {{ currentPopupData?.element }}</h2>
-
       <div class="athlete-info">
         <h4>{{ currentPopupData?.athlete }}</h4>
         <p class="verein">{{ currentPopupData?.verein }}</p>
@@ -226,7 +227,7 @@
 
       <div class="progress-indicator">
         <span class="current-position">
-          Element {{ currentElementIndex }} - Athlet {{ currentAthleteIndex + 1 }} von {{ prueflingeForExam.length }}
+          Element {{ currentElementIndex }} - Athlete {{ currentAthleteIndex + 1 }} von {{ prueflingeForExam.length }}
         </span>
       </div>
 
@@ -243,7 +244,13 @@
 
       <!-- Show completion message when at the end -->
       <div class="completion-message" *ngIf="!canGoNext()">
-        <span class="completion-text">Alle Athleten bewertet!</span>
+        <button 
+          type="button" 
+          class="completion-btn" 
+          (click)="finishScoring()"
+          [attr.title]="'Bewertung abschließen und Popup schließen'">
+          <span class="completion-text">Fertig</span>
+        </button>
       </div>
     </div>
 
@@ -285,7 +292,9 @@
                 style="left: 100%">2.5</span>
         </div>
 
-        <div class="slider-value">{{ currentScore | number:'1.1-1' }}</div>
+        <div class="slider-value">
+          {{ currentScore | number:'1.1-1' }}
+        </div>
       </div>
     </div>
 

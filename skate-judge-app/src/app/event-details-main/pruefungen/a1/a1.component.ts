@@ -30,8 +30,8 @@ export class A1Component implements OnInit, AfterViewInit {
   isDetailsExpanded: boolean = false;
   prueflingeForExam: Pruefling[] = [];
   
-  // Scoring properties
-  scores: { [key: string]: number } = {};
+  // Fix the scores type definition
+  scores: { [key: string]: { [key: string]: number } } = {};
   
   // Popup properties
   showScorePopup: boolean = false;
@@ -102,22 +102,18 @@ export class A1Component implements OnInit, AfterViewInit {
   }
 
   // Popup management
-  openScorePopup(elementIndex: number, athleteIndex: number, pruefling: any): void {
+  openScorePopup(elementIndex: number, athleteIndex: number, athlete: any): void {
     this.currentElementIndex = elementIndex;
     this.currentAthleteIndex = athleteIndex;
+    this.currentScore = this.getScore(elementIndex, athleteIndex) || 1.5;
     
     this.currentPopupData = {
-      elementIndex,
-      athleteIndex,
-      athlete: `${pruefling.vorname} ${pruefling.nachname}`,
-      verein: pruefling.verein,
-      element: this.getElementName(elementIndex)
+      element: `Element ${elementIndex}`,
+      athlete: `${athlete.vorname} ${athlete.nachname}`,
+      verein: athlete.verein
     };
     
-    const existingScore = this.getScore(elementIndex, athleteIndex);
-    this.currentScore = existingScore > 0 ? existingScore : 1.5;
-    
-    setTimeout(() => this.showScorePopup = true, 0);
+    this.showScorePopup = true;
   }
 
   closePopupDirectly(): void {
@@ -194,25 +190,50 @@ export class A1Component implements OnInit, AfterViewInit {
   }
 
   clearScore(): void {
-    if (this.currentPopupData) {
-      this.setScore(this.currentPopupData.elementIndex, this.currentPopupData.athleteIndex, 0);
-      this.currentScore = 0;
+    this.currentScore = 1.5;
+    
+    // Clear from main data
+    const elementKey = this.currentElementIndex.toString();
+    const athleteKey = this.currentAthleteIndex.toString();
+    
+    if (this.scores[elementKey] && this.scores[elementKey][athleteKey]) {
+      delete this.scores[elementKey][athleteKey];
+    }
+    
+    // Update display
+    const inputElement = document.querySelector(`[data-element="${this.currentElementIndex}"][data-athlete="${this.currentAthleteIndex + 1}"]`) as HTMLElement;
+    if (inputElement) {
+      inputElement.textContent = '';
     }
   }
 
   private autoSaveScore(): void {
     if (this.currentPopupData && this.currentScore > 0) {
-      this.setScore(this.currentPopupData.elementIndex, this.currentPopupData.athleteIndex, this.currentScore);
+      this.setScore(this.currentElementIndex, this.currentAthleteIndex, this.currentScore);
     }
   }
 
   // Score management
   getScore(elementIndex: number, athleteIndex: number): number {
-    return this.scores[`${elementIndex}-${athleteIndex}`] || 0;
+    const elementKey = elementIndex.toString();
+    const athleteKey = athleteIndex.toString();
+    return this.scores[elementKey]?.[athleteKey] || 0;
   }
 
   setScore(elementIndex: number, athleteIndex: number, score: number): void {
-    this.scores[`${elementIndex}-${athleteIndex}`] = score;
+    const elementKey = elementIndex.toString();
+    const athleteKey = athleteIndex.toString();
+    
+    if (!this.scores[elementKey]) {
+      this.scores[elementKey] = {};
+    }
+    this.scores[elementKey][athleteKey] = score;
+    
+    // Update the display immediately
+    const inputElement = document.querySelector(`[data-element="${elementIndex}"][data-athlete="${athleteIndex + 1}"]`) as HTMLElement;
+    if (inputElement) {
+      inputElement.textContent = score.toString();
+    }
   }
 
   getTotal(athleteIndex: number): string {
@@ -306,12 +327,29 @@ export class A1Component implements OnInit, AfterViewInit {
     }
   }
 
-  // Add this method to format the slider labels
+  // Slider formatting
   formatSliderLabel = (value: number): string => {
     const majorValues = [1.0, 1.5, 2.0, 2.5];
     if (majorValues.includes(value)) {
       return value.toFixed(1);
     }
-    return ''; // Don't show labels for intermediate values
+    return '';
   };
+
+  finishScoring(): void {
+    this.saveCurrentScore();
+    this.closePopupDirectly();
+    console.log('Bewertung abgeschlossen!');
+  }
+
+  private saveCurrentScore(): void {
+    if (this.currentPopupData && this.currentScore !== null && this.currentScore !== undefined) {
+      const elementIndex = this.currentElementIndex;
+      const athleteIndex = this.currentAthleteIndex;
+      
+      this.setScore(elementIndex, athleteIndex, this.currentScore);
+      
+      console.log(`Score saved: Element ${elementIndex}, Athlete ${athleteIndex + 1}, Score: ${this.currentScore}`);
+    }
+  }
 }
