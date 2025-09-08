@@ -1,22 +1,23 @@
 <div class="exam-container" *ngIf="event && exam">
   <h1>{{ exam.name }}</h1>
-  
+
   <div class="details-wrapper">
     <button class="toggle-button" (click)="toggleDetails()" type="button">
       <span>{{ isDetailsExpanded ? 'Details ausblenden' : 'Details anzeigen' }}</span>
       <span class="toggle-icon" [class.rotated]="isDetailsExpanded">▼</span>
     </button>
-    
+
     <div class="details-container" [class.collapsed]="!isDetailsExpanded">
       <div class="event-details">
         <h3>Event Details</h3>
         <p><span><strong>Event:</strong></span> {{ event.name }}</p>
         <p><span><strong>Veranstalter:</strong></span> {{ event.veranstalter }}</p>
         <p><span><strong>Ort:</strong></span> {{ event.place }}</p>
-        <p><span><strong>Datum:</strong></span> {{ event.startDate | date:'dd.MM.yyyy' }} - {{ event.endDate | date:'dd.MM.yyyy' }}</p>
+        <p><span><strong>Datum:</strong></span> {{ event.startDate | date:'dd.MM.yyyy' }} - {{ event.endDate |
+          date:'dd.MM.yyyy' }}</p>
         <p><span><strong>Prüflinge:</strong></span> {{ prueflingeForExam.length || 0 }}</p>
       </div>
-      
+
       <div class="header-info">
         <h3>Wertungsrichter:in</h3>
         <div class="info-grid">
@@ -94,62 +95,63 @@
         <tbody>
           <tr>
             <td class="score-cell" *ngFor="let pruefling of prueflingeForExam; let i = index">
-              <button 
-                type="button" 
-                class="score-button" 
-                (click)="openScorePopup(1, i, pruefling)"
-                [attr.data-element]="1" 
-                [attr.data-athlete]="i + 1"
-                [attr.aria-label]="'Bewertung für ' + pruefling.vorname + ' ' + pruefling.nachname + ' - Element 1'"
-                [attr.title]="'Bewertung für Element 1 - ' + pruefling.vorname + ' ' + pruefling.nachname">
+              <button type="button" 
+                      class="score-button" 
+                      [class.missing-score]="showMissingScoresWarning && !getScore(1, i)"
+                      (click)="openScorePopup(1, i, pruefling)"
+                      [attr.data-element]="1" 
+                      [attr.data-athlete]="i + 1"
+                      [attr.aria-label]="'Bewertung für ' + pruefling.vorname + ' ' + pruefling.nachname + ' - Element 1'"
+                      [attr.title]="'Bewertung für Element 1 - ' + pruefling.vorname + ' ' + pruefling.nachname">
                 {{ getScore(1, i) || '0.0' }}
               </button>
             </td>
           </tr>
           <tr>
             <td class="score-cell" *ngFor="let pruefling of prueflingeForExam; let i = index">
-              <button 
-                type="button" 
-                class="score-button" 
-                (click)="openScorePopup(2, i, pruefling)"
-                [attr.data-element]="2" 
-                [attr.data-athlete]="i + 1"
-                [attr.aria-label]="'Bewertung für ' + pruefling.vorname + ' ' + pruefling.nachname + ' - Element 2'"
-                [attr.title]="'Bewertung für Element 2 - ' + pruefling.vorname + ' ' + pruefling.nachname">
+              <button type="button" 
+                      class="score-button" 
+                      [class.missing-score]="showMissingScoresWarning && !getScore(2, i)"
+                      (click)="openScorePopup(2, i, pruefling)"
+                      [attr.data-element]="2" 
+                      [attr.data-athlete]="i + 1"
+                      [attr.aria-label]="'Bewertung für ' + pruefling.vorname + ' ' + pruefling.nachname + ' - Element 2'"
+                      [attr.title]="'Bewertung für Element 2 - ' + pruefling.vorname + ' ' + pruefling.nachname">
                 {{ getScore(2, i) || '0.0' }}
               </button>
             </td>
           </tr>
           <tr>
             <td class="score-cell" *ngFor="let pruefling of prueflingeForExam; let i = index">
-              <button 
-                type="button" 
-                class="score-button" 
-                (click)="openScorePopup(3, i, pruefling)"
-                [attr.data-element]="3" 
-                [attr.data-athlete]="i + 1"
-                [attr.aria-label]="'Bewertung für ' + pruefling.vorname + ' ' + pruefling.nachname + ' - Element 3'"
-                [attr.title]="'Bewertung für Element 3 - ' + pruefling.vorname + ' ' + pruefling.nachname">
+              <button type="button" 
+                      class="score-button" 
+                      [class.missing-score]="showMissingScoresWarning && !getScore(3, i)"
+                      (click)="openScorePopup(3, i, pruefling)"
+                      [attr.data-element]="3" 
+                      [attr.data-athlete]="i + 1"
+                      [attr.aria-label]="'Bewertung für ' + pruefling.vorname + ' ' + pruefling.nachname + ' - Element 3'"
+                      [attr.title]="'Bewertung für Element 3 - ' + pruefling.vorname + ' ' + pruefling.nachname">
                 {{ getScore(3, i) || '0.0' }}
               </button>
             </td>
           </tr>
           <tr>
             <td class="score-cell" *ngFor="let pruefling of prueflingeForExam; let i = index">
-              <button 
-                type="button" 
-                class="score-button" 
-                (click)="openScorePopup(4, i, pruefling)"
-                [attr.data-element]="4" 
-                [attr.data-athlete]="i + 1"
-                [attr.aria-label]="'Bewertung für ' + pruefling.vorname + ' ' + pruefling.nachname + ' - Element 4'"
-                [attr.title]="'Bewertung für Element 4 - ' + pruefling.vorname + ' ' + pruefling.nachname">
+              <button type="button" 
+                      class="score-button" 
+                      [class.missing-score]="showMissingScoresWarning && !getScore(4, i)"
+                      (click)="openScorePopup(4, i, pruefling)"
+                      [attr.data-element]="4" 
+                      [attr.data-athlete]="i + 1"
+                      [attr.aria-label]="'Bewertung für ' + pruefling.vorname + ' ' + pruefling.nachname + ' - Element 4'"
+                      [attr.title]="'Bewertung für Element 4 - ' + pruefling.vorname + ' ' + pruefling.nachname">
                 {{ getScore(4, i) || '0.0' }}
               </button>
             </td>
           </tr>
           <tr class="total-row">
-            <td class="score-cell total-cell" *ngFor="let pruefling of prueflingeForExam; let i = index" [attr.id]="'total-' + (i + 1)">
+            <td class="score-cell total-cell" *ngFor="let pruefling of prueflingeForExam; let i = index"
+              [attr.id]="'total-' + (i + 1)">
               {{ getTotal(i) }}
             </td>
           </tr>
@@ -169,78 +171,134 @@
     </mat-card>
   </div>
 
-  <!-- Back button -->
-  <button mat-stroked-button color="primary" (click)="goBackToEventDetails()" class="back-button-material">
-    <mat-icon>arrow_back</mat-icon>
-    Zurück zur Veranstaltung
-  </button>
+  <!-- Back button and BESTÄTIGEN button -->
+  <div class="action-buttons">
+    <button mat-stroked-button color="primary" (click)="goBackToEventDetails()" class="back-button-material">
+      <mat-icon>arrow_back</mat-icon>
+      Zurück zur Veranstaltung
+    </button>
+
+    <button mat-raised-button 
+            color="accent" 
+            (click)="confirmFinalScores()" 
+            class="confirm-button-material"
+            [disabled]="prueflingeForExam.length === 0">
+      <mat-icon>check_circle</mat-icon>
+      BESTÄTIGEN
+    </button>
+  </div>
+
+  <!-- Warning message for missing scores -->
+  <div class="warning-message" *ngIf="showMissingScoresWarning">
+    <mat-card class="warning-card">
+      <mat-card-content>
+        <h3><mat-icon>warning</mat-icon> Unvollständige Bewertung</h3>
+        <p>Bitte bewerten Sie alle Elemente für alle Athleten, bevor Sie die Prüfung bestätigen.</p>
+        <p><strong>Fehlende Bewertungen:</strong> {{ missingScoresCount }} von {{ totalScoresNeeded }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>
 
 <!-- SCORE POPUP -->
-<div class="score-popup-overlay" *ngIf="showScorePopup" (click)="closePopup($event)">
-  <div class="score-popup" (click)="$event.stopPropagation()">
+<div class="score-popup-overlay" *ngIf="showScorePopup">
+  <div class="score-popup">
     <div class="popup-header">
       <h2>{{ exam?.id }} - {{ currentPopupData?.element }}</h2>
-      
+
       <div class="athlete-info">
         <h4>{{ currentPopupData?.athlete }}</h4>
         <p class="verein">{{ currentPopupData?.verein }}</p>
       </div>
-      
-      <button class="close-btn" (click)="closePopup()" type="button">&times;</button>
     </div>
-    
+
     <!-- Navigation buttons -->
     <div class="navigation-buttons">
       <button 
         type="button" 
         class="nav-btn prev-btn" 
-        (click)="goToPrevious()"
+        (click)="goToPreviousWithSave()"
         [disabled]="!canGoBack()"
         [attr.title]="'Vorheriger Athlet/Element'">
         <span class="nav-icon">‹</span>
         <span class="nav-text">Zurück</span>
       </button>
-      
+
       <div class="progress-indicator">
         <span class="current-position">
           Element {{ currentElementIndex }} - Athlet {{ currentAthleteIndex + 1 }} von {{ prueflingeForExam.length }}
         </span>
       </div>
-      
+
+      <!-- Only show "Weiter" button if not at the end -->
       <button 
         type="button" 
         class="nav-btn next-btn" 
-        (click)="goToNext()"
-        [disabled]="!canGoNext()"
+        *ngIf="canGoNext()"
+        (click)="goToNextWithSave()"
         [attr.title]="'Nächster Athlet/Element'">
         <span class="nav-text">Weiter</span>
         <span class="nav-icon">›</span>
       </button>
-    </div>
-    
-    <div class="popup-content">
-      <div class="score-input-section">
-        <label for="score-input">Punktzahl (1.0 - 2.5):</label>
-        <input 
-          id="score-input"
-          type="number" 
-          step="0.1" 
-          min="1.0" 
-          max="2.5" 
-          [(ngModel)]="currentScore"
-          (keyup.enter)="saveScore()"
-          placeholder="0.0"
-          class="score-input">
+
+      <!-- Show completion message when at the end -->
+      <div class="completion-message" *ngIf="!canGoNext()">
+        <span class="completion-text">Alle Athleten bewertet!</span>
       </div>
     </div>
-    
+
+    <div class="popup-content">
+      <div class="score-input-section">
+        <label for="score-slider">Punktzahl (1.0 - 2.5):</label>
+
+        <mat-slider 
+          id="score-slider"
+          [min]="1.0"
+          [max]="2.5"
+          [step]="0.1"
+          [discrete]="true"
+          [showTickMarks]="true"
+          [(ngModel)]="currentScore"
+          (input)="onSliderChange($event)"
+          [displayWith]="formatLabel">
+          <input matSliderThumb [(ngModel)]="currentScore" [attr.aria-valuetext]="formatLabel(currentScore)">
+        </mat-slider>
+
+        <!-- Custom tick marks with labels -->
+        <div class="slider-labels">
+          <span 
+            class="tick-label major" 
+            [class.active]="currentScore === 1.0"
+            (click)="setQuickScore(1.0)">
+            1.0
+          </span>
+          <span 
+            class="tick-label major" 
+            [class.active]="currentScore === 1.5"
+            (click)="setQuickScore(1.5)">
+            1.5
+          </span>
+          <span 
+            class="tick-label major" 
+            [class.active]="currentScore === 2.0"
+            (click)="setQuickScore(2.0)">
+            2.0
+          </span>
+          <span 
+            class="tick-label major" 
+            [class.active]="currentScore === 2.5"
+            (click)="setQuickScore(2.5)">
+            2.5
+          </span>
+        </div>
+
+        <div class="slider-value">{{ currentScore | number:'1.1-1' }}</div>
+      </div>
+    </div>
+
     <div class="popup-actions">
-      <button type="button" class="btn-cancel" (click)="closePopup()">Schließen</button>
+      <button type="button" class="btn-cancel" (click)="closePopupDirectly()">Schließen</button>
       <button type="button" class="btn-clear" (click)="clearScore()">Löschen</button>
-      <button type="button" class="btn-save" (click)="saveScore()" [disabled]="!isValidScore()">
-        {{ canGoNext() ? 'Speichern & Weiter' : 'Speichern & Fertig' }}
-      </button>
     </div>
   </div>
 </div>
