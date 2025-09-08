@@ -569,55 +569,138 @@ input[type="number"] {
   }
 }
 
-// Optional: Custom slider styling
-.score-popup mat-slider {
-  --mdc-slider-active-track-color: #1976d2;
-  --mdc-slider-inactive-track-color: #e0e0e0;
-  --mdc-slider-handle-color: #1976d2;
-  --mdc-slider-focus-handle-color: #1976d2;
-  --mdc-slider-hover-handle-color: #1565c0;
+// Custom thumb labels styling - SIMPLIFIED
+.slider-thumb-labels {
+  position: relative;
+  width: 100%;
+  height: 30px;
+  margin-top: 5px;
   
-  height: 48px; // tăng chiều cao tổng thể
+  .thumb-label {
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    background: #cce6ff;
+    color: black;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    
+    &.active {
+      background: #cce6ff;
+      transform: translateX(-50%) scale(1.5);
+    }
+  }
+}
 
-  // Enhanced track styling
+// Simplified slider styling
+.score-popup mat-slider {
+  width: 100%;
+  margin: 20px 0 10px 0;
+  
+  .mdc-slider {
+    height: 40px !important;
+  }
+  
+  // Enhanced track
   ::ng-deep .mdc-slider__track {
-    height: 12px !important;              // dày hơn mặc định
+    height: 12px !important;
     border-radius: 6px !important;
   }
 
   ::ng-deep .mdc-slider__track--inactive {
-    background-color: #ddd !important;   // màu track chưa active
+    background-color: #ddd !important;
   }
 
   ::ng-deep .mdc-slider__track--active_fill {
-    background-color: #1976d2 !important; // màu track active
+    background-color: #1976d2 !important;
   }
 
-  // Enhanced thumb (handle) styling
+  // Enhanced thumb
   ::ng-deep .mdc-slider__thumb {
-    width: 28px !important;   // to hơn mặc định
+    width: 28px !important;
     height: 28px !important;
     border: 3px solid white !important;
     box-shadow: 0 0 4px rgba(0,0,0,0.3) !important;
   }
   
-  // Enhanced tick marks - visible dots
+  // Tick marks
   ::ng-deep .mdc-slider__tick-marks {
     .mdc-slider__tick-mark--active {
-      background-color: #1976d2 !important; // xanh đậm
-      width: 4px !important;   // to hơn mặc định (2px)
-      height: 4px !important;  // to hơn mặc định (2px)
-      border-radius: 50% !important; // bo tròn thành chấm
-      opacity: 1 !important;
-    }
-
-    .mdc-slider__tick-mark--inactive {
-      background-color: #666 !important; // xám đậm
+      background-color: #0e3c6a !important;
       width: 4px !important;
       height: 4px !important;
       border-radius: 50% !important;
       opacity: 1 !important;
     }
+
+    .mdc-slider__tick-mark--inactive {
+      background-color: #666 !important;
+      width: 4px !important;
+      height: 4px !important;
+      border-radius: 50% !important;
+      opacity: 1 !important;
+    }
+  }
+}
+
+// Optional: Custom slider styling
+.score-popup mat-slider {
+  width: 100%;
+  margin: 20px 0;
+  
+  // Remove all conflicting ::ng-deep styles and use simple approach
+  .mdc-slider {
+    height: 40px !important;
+  }
+}
+
+.score-popup .score-input-section {
+  margin-bottom: 24px;
+  pointer-events: auto;
+  
+  mat-slider {
+    width: 100%;
+    margin: 16px 0 8px 0;
+    pointer-events: auto !important;
+  }
+}
+
+// Ensure popup content is interactive
+.score-popup {
+  .popup-content {
+    padding: 24px;
+    
+    * {
+      pointer-events: auto;
+    }
+  }
+  
+  .score-input-section {
+    margin-bottom: 24px;
+    
+    mat-slider {
+      pointer-events: auto !important;
+    }
+  }
+}
+
+// Ensure popup content allows interaction
+.score-popup .popup-content {
+  padding: 24px;
+  pointer-events: auto;
+}
+
+.score-popup .score-input-section {
+  margin-bottom: 24px;
+  pointer-events: auto;
+  
+  mat-slider {
+    width: 100%;
+    margin: 16px 0 8px 0;
+    pointer-events: auto !important;
   }
 }
 

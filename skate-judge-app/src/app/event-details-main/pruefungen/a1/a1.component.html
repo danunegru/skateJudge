@@ -249,47 +249,40 @@
 
     <div class="popup-content">
       <div class="score-input-section">
-        <label for="score-slider">Punktzahl (1.0 - 2.5):</label>
+        <label for="score-slider-input">Punktzahl (1.0 - 2.5):</label>
 
         <mat-slider 
           id="score-slider"
-          [min]="1.0"
-          [max]="2.5"
-          [step]="0.1"
-          [discrete]="true"
-          [showTickMarks]="true"
-          [(ngModel)]="currentScore"
-          (input)="onSliderChange($event)"
-          [displayWith]="formatLabel">
-          <input matSliderThumb [(ngModel)]="currentScore" [attr.aria-valuetext]="formatLabel(currentScore)">
+          min="1.0"
+          max="2.5"
+          step="0.1"
+          discrete="true"
+          showTickMarks="true"
+          [displayWith]="formatSliderLabel">
+          <input 
+            id="score-slider-input"
+            matSliderThumb 
+            [(ngModel)]="currentScore"
+            (ngModelChange)="onSliderChange()"
+            [attr.aria-label]="'Punktzahl Slider'"
+            [attr.title]="'Punktzahl zwischen 1.0 und 2.5'"
+            placeholder="1.5">
         </mat-slider>
 
-        <!-- Custom tick marks with labels -->
-        <div class="slider-labels">
-          <span 
-            class="tick-label major" 
-            [class.active]="currentScore === 1.0"
-            (click)="setQuickScore(1.0)">
-            1.0
-          </span>
-          <span 
-            class="tick-label major" 
-            [class.active]="currentScore === 1.5"
-            (click)="setQuickScore(1.5)">
-            1.5
-          </span>
-          <span 
-            class="tick-label major" 
-            [class.active]="currentScore === 2.0"
-            (click)="setQuickScore(2.0)">
-            2.0
-          </span>
-          <span 
-            class="tick-label major" 
-            [class.active]="currentScore === 2.5"
-            (click)="setQuickScore(2.5)">
-            2.5
-          </span>
+        <!-- Custom thumb labels positioned above slider -->
+        <div class="slider-thumb-labels">
+          <span class="thumb-label" 
+                [class.active]="currentScore === 1.0"
+                style="left: 0%">1.0</span>
+          <span class="thumb-label" 
+                [class.active]="currentScore === 1.5"
+                style="left: 33.33%">1.5</span>
+          <span class="thumb-label" 
+                [class.active]="currentScore === 2.0"
+                style="left: 66.67%">2.0</span>
+          <span class="thumb-label" 
+                [class.active]="currentScore === 2.5"
+                style="left: 100%">2.5</span>
         </div>
 
         <div class="slider-value">{{ currentScore | number:'1.1-1' }}</div>
