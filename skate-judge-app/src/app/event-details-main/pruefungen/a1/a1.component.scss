@@ -794,6 +794,32 @@ input[type="number"] {
   }
 }
 
+// Update the action-buttons styling
+.action-buttons {
+  display: flex;
+  justify-content: space-between; // This will push buttons to opposite sides
+  align-items: center;
+  margin: 20px 0;
+  gap: 20px; // Add space between buttons
+
+  @media (max-width: 768px) {
+    flex-direction: column; // Stack vertically on mobile
+    gap: 15px;
+  }
+}
+
+// Style for the confirm button specifically
+.confirm-button-material {
+  margin-left: auto; // This pushes the button to the right
+  min-width: 150px;
+  font-weight: bold;
+}
+
+// Back button styling (keep existing)
+.back-button-material {
+  margin: 0; // Remove the existing margin since we're using flexbox
+}
+
 // Score button styles (for the table buttons)
 .score-button {
   width: 80px;
@@ -1030,6 +1056,45 @@ input[type="number"] {
     
     .completion-text {
       font-size: 14px;
+    }
+  }
+}
+
+// Add this to your existing SCSS file
+.warning-message {
+  margin: 20px 0;
+  
+  .warning-card {
+    background-color: #fff3cd !important; // Yellow background
+    border: 2px solid #ffc107 !important; // Yellow border
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(255, 193, 7, 0.2);
+    
+    mat-card-content {
+      padding: 20px;
+      
+      h3 {
+        color: #856404; // Dark yellow/brown text
+        margin: 0 0 15px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        
+        mat-icon {
+          color: #ff9800; // Orange warning icon
+          font-size: 24px;
+        }
+      }
+      
+      p {
+        color: #856404; // Dark yellow/brown text
+        margin: 8px 0;
+        font-weight: 500;
+        
+        strong {
+          color: #d68910; // Slightly darker for emphasis
+        }
+      }
     }
   }
 }
