@@ -49,17 +49,18 @@ export class A1Component implements OnInit, AfterViewInit {
   @ViewChild('elementsTable', { static: false }) elementsTable!: ElementRef;
   @ViewChild('athletesTable', { static: false }) athletesTable!: ElementRef;
 
+  // Add this property for the elements array
+  elements: string[] = [
+    'rechts und links vorwärts übersetzen',
+    'rechts und links rückwärts übersetzen', 
+    'Flieger mit Kante',
+    'Bremsen durch Drehung auf rückwärts und auf die Stopper'
+  ];
+
   constructor(private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit() {
     this.loadEventData();
-    
-    // Listen for storage changes to update when athletes are hidden/shown
-    window.addEventListener('storage', (e) => {
-      if (e.key === 'events') {
-        this.loadEventData();
-      }
-    });
   }
 
   ngAfterViewInit() {
@@ -80,9 +81,7 @@ export class A1Component implements OnInit, AfterViewInit {
         if (this.event) {
           this.exam = this.event.selectedExams.find(e => e.id.toLowerCase() === 'a1');
           if (this.exam) {
-            // Always get fresh filtered list
             this.prueflingeForExam = this.getPrueflingeForExam(this.exam);
-            console.log('Loaded athletes for A1:', this.prueflingeForExam.length, 'visible athletes');
           }
         }
       }
@@ -138,7 +137,8 @@ export class A1Component implements OnInit, AfterViewInit {
   }
 
   canGoNext(): boolean {
-    return !(this.currentElementIndex === 4 && this.currentAthleteIndex === this.prueflingeForExam.length - 1);
+    return !(this.currentElementIndex === this.elements.length && 
+             this.currentAthleteIndex === this.prueflingeForExam.length - 1);
   }
 
   goToPreviousWithSave(): void {
@@ -168,7 +168,7 @@ export class A1Component implements OnInit, AfterViewInit {
   private goToNext(): void {
     if (this.currentAthleteIndex < this.prueflingeForExam.length - 1) {
       this.currentAthleteIndex++;
-    } else if (this.currentElementIndex < 4) {
+    } else if (this.currentElementIndex < this.elements.length) {
       this.currentElementIndex++;
       this.currentAthleteIndex = 0;
     }
@@ -247,7 +247,7 @@ export class A1Component implements OnInit, AfterViewInit {
 
   getTotal(athleteIndex: number): string {
     let total = 0;
-    for (let i = 1; i <= 4; i++) {
+    for (let i = 1; i <= this.elements.length; i++) {
       total += this.getScore(i, athleteIndex);
     }
     return total.toFixed(1);
@@ -260,7 +260,7 @@ export class A1Component implements OnInit, AfterViewInit {
     if (missingScores.length > 0) {
       this.showMissingScoresWarning = true;
       this.missingScoresCount = missingScores.length;
-      this.totalScoresNeeded = this.prueflingeForExam.length * 4;
+      this.totalScoresNeeded = this.prueflingeForExam.length * this.elements.length; // Dynamic
       
       setTimeout(() => this.showMissingScoresWarning = false, 5000);
       this.scrollToFirstMissingScore(missingScores[0]);
@@ -272,7 +272,7 @@ export class A1Component implements OnInit, AfterViewInit {
   private checkForMissingScores(): { elementIndex: number, athleteIndex: number }[] {
     const missing: { elementIndex: number, athleteIndex: number }[] = [];
     
-    for (let elementIndex = 1; elementIndex <= 4; elementIndex++) {
+    for (let elementIndex = 1; elementIndex <= this.elements.length; elementIndex++) {
       for (let athleteIndex = 0; athleteIndex < this.prueflingeForExam.length; athleteIndex++) {
         const score = this.getScore(elementIndex, athleteIndex);
         if (!score || score === 0) {
@@ -314,34 +314,22 @@ export class A1Component implements OnInit, AfterViewInit {
 
   // Utility methods
   getElementName(index: number): string {
-    const elements = [
-      'rechts und links vorwärts übersetzen',
-      'rechts und links rückwärts übersetzen', 
-      'Flieger mit Kante',
-      'Bremsen durch Drehung auf rückwärts und auf die Stopper'
-    ];
-    return `${index}. ${elements[index - 1]}`;
+    return `${index}. ${this.elements[index - 1]}`;
+  }
+
+  // Add a method to get just the element text (without number)
+  getElementText(index: number): string {
+    return this.elements[index - 1];
   }
 
   // Update the getPrueflingeForExam method to filter out hidden athletes
   getPrueflingeForExam(exam: Exam): Pruefling[] {
     if (!this.event?.prueflinge) return [];
     
-    const visibleAthletes = this.event.prueflinge.filter(pruefling => 
+    return this.event.prueflinge.filter(pruefling => 
       pruefling.exam.some(e => e.id === exam.id) &&
-      pruefling.hidden !== true // Exclude hidden athletes
+      pruefling.hidden !== true // Filter out hidden athletes
     );
-    
-    console.log('Total athletes:', this.event.prueflinge.length);
-    console.log('Athletes in this exam:', this.event.prueflinge.filter(p => p.exam.some(e => e.id === exam.id)).length);
-    console.log('Visible athletes:', visibleAthletes.length);
-    
-    return visibleAthletes;
-  }
-
-  // Add method to refresh data when returning from event details
-  ionViewWillEnter() {
-    this.loadEventData();
   }
 
   goBackToEventDetails() {
