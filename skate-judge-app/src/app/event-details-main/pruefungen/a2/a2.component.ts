@@ -29,6 +29,16 @@ export class A2Component implements OnInit, AfterViewInit {
   exam: Exam | undefined;
   isDetailsExpanded: boolean = false;
   prueflingeForExam: Pruefling[] = [];
+   elements: string[] = [
+    'Bogenachter Rva und Lva',
+    'Bogenachter Rra und Lra',
+    'Fuchsdreier Lva und Rva (mit oder ohne Zeichnung)',
+    'Flieger vorwärts und rückwärts',
+    'Dreiersprung mit Mohawkanlauf',
+    'Salchow mit langem Auslauf',
+    'Zweibeinpirouette mit 4 Umdrehungen oder Einbeinpirouette mit 2–3 Umdrehungen',
+    'Zirkel ra oder Mond'
+  ];
   
   // Fix the scores type definition
   scores: { [key: string]: { [key: string]: number } } = {};
@@ -37,7 +47,7 @@ export class A2Component implements OnInit, AfterViewInit {
   showScorePopup: boolean = false;
   currentScore: number = 1.5;
   currentPopupData: any = null;
-  currentElementIndex: number = 1;
+  currentElementIndex: number = 0;
   currentAthleteIndex: number = 0;
 
   // Validation properties
@@ -134,11 +144,11 @@ export class A2Component implements OnInit, AfterViewInit {
 
   // Navigation
   canGoBack(): boolean {
-    return !(this.currentElementIndex === 1 && this.currentAthleteIndex === 0);
+    return !(this.currentElementIndex === 0 && this.currentAthleteIndex === 0);
   }
 
   canGoNext(): boolean {
-    return !(this.currentElementIndex === 4 && this.currentAthleteIndex === this.prueflingeForExam.length - 1);
+    return !(this.currentElementIndex === this.elements.length && this.currentAthleteIndex === this.prueflingeForExam.length - 1);
   }
 
   goToPreviousWithSave(): void {
@@ -168,7 +178,7 @@ export class A2Component implements OnInit, AfterViewInit {
   private goToNext(): void {
     if (this.currentAthleteIndex < this.prueflingeForExam.length - 1) {
       this.currentAthleteIndex++;
-    } else if (this.currentElementIndex < 4) {
+    } else if (this.currentElementIndex < this.elements.length) {
       this.currentElementIndex++;
       this.currentAthleteIndex = 0;
     }
@@ -312,16 +322,26 @@ export class A2Component implements OnInit, AfterViewInit {
     }
   }
 
-  // Utility methods
-  getElementName(index: number): string {
-    const elements = [
-      'rechts und links vorwärts übersetzen',
-      'rechts und links rückwärts übersetzen', 
-      'Flieger mit Kante',
-      'Bremsen durch Drehung auf rückwärts und auf die Stopper'
-    ];
-    return `${index}. ${elements[index - 1]}`;
+  // nutzung???? Property erstellt. angepasste Variante um outof bound zu merken 
+ getElementName(index: number): string {
+  const elements = [
+    'Bogenachter Rva und Lva',
+    'Bogenachter Rra und Lra',
+    'Fuchsdreier Lva und Rva (mit oder ohne Zeichnung)',
+    'Flieger vorwärts und rückwärts',
+    'Dreiersprung mit Mohawkanlauf',
+    'Salchow mit langem Auslauf',
+    'Zweibeinpirouette mit 4 Umdrehungen oder Einbeinpirouette mit 2–3 Umdrehungen',
+    'Zirkel ra oder Mond'
+  ];
+
+  if (index < 1 || index > elements.length) {
+    return `Unbekanntes Element (${index})`;
   }
+
+  return `${index}. ${elements[index - 1]}`;
+}
+
 
   // Update the getPrueflingeForExam method to filter out hidden athletes
   getPrueflingeForExam(exam: Exam): Pruefling[] {
