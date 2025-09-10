@@ -293,10 +293,13 @@ export class A1Component implements OnInit, AfterViewInit {
     return `${index}. ${elements[index - 1]}`;
   }
 
+  // Update the getPrueflingeForExam method to filter out hidden athletes
   getPrueflingeForExam(exam: Exam): Pruefling[] {
     if (!this.event?.prueflinge) return [];
+    
     return this.event.prueflinge.filter(pruefling => 
-      pruefling.exam.some(e => e.id === exam.id)
+      pruefling.exam.some(e => e.id === exam.id) &&
+      pruefling.hidden !== true // Filter out hidden athletes
     );
   }
 
