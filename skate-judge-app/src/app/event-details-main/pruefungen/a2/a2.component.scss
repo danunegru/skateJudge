@@ -1,0 +1,1100 @@
+.exam-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+// Additional styles for the scoring form
+:host {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  background-color: #f5f5f5;
+  display: block;
+}
+
+.container {
+  background-color: white;
+  padding: 5px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.header-info {
+  background-color: #f8f9fa;
+  padding: 5px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.header-info h2 {
+  margin-top: 0;
+  color: #495057;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+// Table wrapper - remove overflow hidden to allow external scrollbar
+.table-wrapper {
+  display: flex;
+  border: 1px solid #333;
+  border-radius: 5px;
+  margin: 5px 0;
+  background-color: white;
+  align-items: stretch;
+  position: relative;
+}
+
+// Create a wrapper for the athletes section with external scrollbar
+.athletes-section-wrapper {
+  flex: 1;
+  position: relative;
+}
+
+// Athletes scroll container - scrollbar will be outside
+.athletes-scroll-container {
+  width: 100%;
+  height: 100% ; // Leave space for scrollbar
+  overflow-x: auto;
+  overflow-y: hidden;
+  
+  // Position scrollbar outside the table area
+  padding-bottom: -15px; // Make room for scrollbar
+  margin-bottom: -15px; // Pull content back up
+  
+  // Custom scrollbar styling
+  &::-webkit-scrollbar {
+    height: 10px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+    border-radius: 0px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 0px;
+    
+    &:hover {
+      background-color: #555;
+    }
+  }
+}
+
+// Athletes table - no changes needed
+.athletes-table {
+  border-collapse: collapse;
+  min-width: max-content;
+  width: 100%;
+  height: 100%; // Leave space for scrollbar
+  table-layout: auto; // Account for scrollbar space
+}
+
+// Fixed first column (elements)
+.fixed-column {
+  flex-shrink: 0;
+  width: 450px;
+  border-right: 3px solid #333;
+  background-color: #f1f3f4;
+  display: flex;
+  flex-direction: column;
+}
+
+// Elements table styling
+.elements-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  flex: 1;
+}
+
+// Common table cell styling
+.elements-table th,
+.elements-table td,
+.athletes-table th,
+.athletes-table td {
+  border: 1px solid #333;
+  padding: 5px; 
+  font-weight: bold;
+  text-align: center;
+  vertical-align: middle;
+  box-sizing: border-box;
+}
+
+// Element header styling - EXACT HEIGHT FOR ROWSPAN
+.element-header {
+  background-color: #f1f3f4;
+  text-align: center;
+  font-weight: bold;
+  width: 450px; // Fixed the incomplete width property
+  
+  // Special styling for the 3-row span "Elemente" header
+  &[rowspan="3"] {
+    height: 170px !important; // 60px + 50px + 80px = 190px
+    vertical-align: middle;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    line-height: 1.2;
+  }
+  
+  // Regular element headers in tbody - EXACT HEIGHT
+  &:not([rowspan]) {
+    height: 70px !important;
+    vertical-align: middle;
+    font-size: 14px;
+  }
+}
+
+// Athletes header styling (first row) - EXACT HEIGHT
+.athletes-header {
+  background-color: #e9ecef;
+  text-align: center;
+  height: 60px !important;
+  font-size: 16px;
+  font-weight: bold;
+  vertical-align: middle;
+}
+
+// Number cells (second row) - EXACT HEIGHT
+.number-cell {
+  width: 120px;
+  min-width: 120px;
+  height: 30px !important;
+  font-size: 12px;
+  font-weight: bold;
+  vertical-align: middle;
+}
+
+// Athlete cells (third row) - EXACT HEIGHT
+.athlete-cell {
+  background-color: #f8f9fa;
+  font-size: 13px;
+  padding: 5px;
+  width: 120px;
+  min-width: 120px;
+  height: 80px !important;
+  vertical-align: middle;
+}
+
+// Score cells in tbody - EXACT HEIGHT
+.score-cell {
+  width: 120px;
+  min-width: 120px;
+  padding: 5px;
+  height: 70px !important;
+  background-color: white;
+  vertical-align: middle;
+}
+
+// Element content styling
+.element-content {
+  text-align: left;
+  display: block;
+  width: 100%;
+  padding: 5px;
+  font-size: 14.5px;
+  line-height: 1.3;
+}
+
+// Total row styling - EXACT HEIGHT MATCH
+.total-row {
+  background-color: #e3f2fd;
+  font-weight: bold;
+  height: 80px !important;
+
+  .element-header {
+    background-color: #e3f2fd;
+    font-size: 18px;
+    height: 80px !important;
+  }
+}
+
+.total-cell {
+  background-color: #e3f2fd !important;
+  font-weight: bold;
+  font-size: 18px;
+  color: #1976d2;
+  height: 70px !important;
+}
+
+// Input styling
+input[type="number"] {
+  width: 80px;
+  text-align: center;
+  border: 1px solid #ddd;
+  padding: 5px; 
+  font-size: 14px;
+  border-radius: 3px;
+  background-color: white;
+  
+  &:focus {
+    outline: 2px solid #007bff;
+    border-color: #007bff;
+  }
+}
+
+// Athlete info styling
+.athlete-info {
+  text-align: center;
+  padding: 5px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.verein-display,
+.name-display {
+  font-size: 14px;
+  margin: 2px 0;
+  font-weight: bold;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.verein-display {
+  color: #666;
+  font-style: italic;
+}
+
+.name-display {
+  color: #333;
+}
+
+// No participants message
+.no-participants {
+  margin: 20px 0;
+  text-align: center;
+
+  mat-card {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #f8f9fa;
+  }
+
+  h3 {
+    color: #495057;
+    margin-bottom: 15px;
+  }
+
+  p {
+    color: #6c757d;
+    margin: 10px 0;
+  }
+}
+
+// Horizontal container for details
+.details-container {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+.event-details {
+  flex: 1;
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.header-info {
+  flex: 1;
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 0;
+}
+
+// Collapsible functionality
+.details-wrapper {
+  margin-bottom: 20px;
+}
+
+.toggle-button {
+  width: 100%;
+  background-color: #c0c8f4;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #3d75ee;
+  }
+
+  &:focus {
+    outline: 2px solid #48a7fa;
+    outline-offset: 2px;
+  }
+}
+
+.toggle-icon {
+  transition: transform 0.3s ease;
+  font-size: 14px;
+
+  &.rotated {
+    transform: rotate(180deg);
+  }
+}
+
+.details-container {
+  display: flex;
+  gap: 20px;
+  margin-top: 15px;
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  max-height: 300px;
+  opacity: 1;
+
+  &.collapsed {
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+// Back button styling
+.back-button-material {
+  margin: 20px 0;
+}
+
+// Popup overlay
+.score-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+// Popup container
+.score-popup {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  max-width: 700px;
+  width: 90%;
+  max-height: 90vh;
+  animation: popupSlideIn 0.3s ease-out;
+}
+
+@keyframes popupSlideIn {
+  from {
+    transform: scale(0.8) translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+// Popup header
+.popup-header {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid #e0e0e0;
+  background-color: #f8f9fa;
+  
+  h2 {
+    margin: 0 0 8px 0;
+    color: #1976d2;
+    font-size: 1.6em;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  // Athlete info in header - smaller
+  .athlete-info {
+    text-align: center;
+    margin: 8px 0 0 0;
+    padding: 0;
+    background: none;
+    
+    h4 {
+      margin: 0 0 2px 0;
+      color: #333;
+      font-size: 1.1em;
+      font-weight: bold;
+    }
+    
+    .verein {
+      color: #666;
+      font-style: italic;
+      margin: 0;
+      font-size: 0.9em;
+    }
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #666;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+      color: #333;
+    }
+  }
+}
+
+// Popup content
+.popup-content {
+  padding: 24px;
+}
+
+.element-info {
+  margin-bottom: 24px;
+  padding: 12px;
+  background-color: #e3f2fd;
+  border-radius: 6px;
+  
+  h5 {
+    margin: 0;
+    color: #1976d2;
+    font-size: 1.1em;
+  }
+}
+
+.score-input-section {
+  margin-bottom: 24px;
+  
+  label {
+    display: block;
+    margin-bottom: 16px;
+    font-weight: 500;
+    color: #333;
+    font-size: 16px;
+  }
+  
+  mat-slider {
+    width: 60%;
+    margin: 16px 0 8px 0;
+  }
+  
+  .slider-labels {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 12px 16px 12px;
+    position: relative;
+    
+    .tick-label {
+      font-size: 12px;
+      color: #666;
+      font-weight: 500;
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      
+      &.major {
+        background-color: #f8f9fa;
+        border: 1px solid #e0e0e0;
+        font-weight: bold;
+      }
+      
+      &:hover {
+        background-color: #e3f2fd;
+        color: #1976d2;
+      }
+      
+      &.active {
+        background-color: #1976d2;
+        color: white;
+        font-weight: bold;
+      }
+    }
+  }
+  
+  .slider-value {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #1976d2;
+    background: #e3f2fd;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 16px;
+  }
+}
+
+// Custom thumb labels styling - SIMPLIFIED
+.slider-thumb-labels {
+  position: relative;
+  width: 100%;
+  height: 20px;
+  margin-top: 5px;
+  
+  .thumb-label {
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    transform: translateY(-22px);
+    background: #cce6ff;
+    color: black;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    
+    &.active {
+      background: #cce6ff;
+      transform: translateX(-50%) scale(1.5);
+    }
+  }
+}
+
+// Simplified slider styling
+.score-popup mat-slider {
+  width: 100%;
+  margin: 20px 0 10px 0;
+  
+  .mdc-slider {
+    height: 40px !important;
+  }
+  
+  // Enhanced track
+  ::ng-deep .mdc-slider__track {
+    height: 12px !important;
+    border-radius: 6px !important;
+  }
+
+  ::ng-deep .mdc-slider__track--inactive {
+    background-color: #ddd !important;
+  }
+
+  ::ng-deep .mdc-slider__track--active_fill {
+    background-color: #1976d2 !important;
+  }
+
+  // Enhanced thumb
+  ::ng-deep .mdc-slider__thumb {
+    width: 28px !important;
+    height: 28px !important;
+    border: 3px solid white !important;
+    box-shadow: 0 0 4px rgba(0,0,0,0.3) !important;
+  }
+  
+  // Tick marks
+  ::ng-deep .mdc-slider__tick-marks {
+    .mdc-slider__tick-mark--active {
+      background-color: #0e3c6a !important;
+      width: 4px !important;
+      height: 4px !important;
+      border-radius: 50% !important;
+      opacity: 1 !important;
+    }
+
+    .mdc-slider__tick-mark--inactive {
+      background-color: #666 !important;
+      width: 4px !important;
+      height: 4px !important;
+      border-radius: 50% !important;
+      opacity: 1 !important;
+    }
+  }
+}
+
+// Optional: Custom slider styling
+.score-popup mat-slider {
+  width: 100%;
+  margin: 20px 0;
+  
+  // Remove all conflicting ::ng-deep styles and use simple approach
+  .mdc-slider {
+    height: 40px !important;
+  }
+}
+
+.score-popup .score-input-section {
+  margin-bottom: 24px;
+  pointer-events: auto;
+  
+  mat-slider {
+    width: 100%;
+    margin: 16px 0 8px 0;
+    pointer-events: auto !important;
+  }
+}
+
+// Ensure popup content is interactive
+.score-popup {
+  .popup-content {
+    padding: 24px;
+    
+    * {
+      pointer-events: auto;
+    }
+  }
+  
+  .score-input-section {
+    margin-bottom: 24px;
+    
+    mat-slider {
+      pointer-events: auto !important;
+    }
+  }
+}
+
+// Ensure popup content allows interaction
+.score-popup .popup-content {
+  padding: 24px;
+  pointer-events: auto;
+}
+
+.score-popup .score-input-section {
+  margin-bottom: 24px;
+  pointer-events: auto;
+  
+  mat-slider {
+    width: 100%;
+    margin: 16px 0 8px 0;
+    pointer-events: auto !important;
+  }
+}
+
+.quick-scores {
+  margin-bottom: 24px;
+  
+  h6 {
+    margin: 0 0 12px 0;
+    color: #333;
+    font-weight: 500;
+  }
+  
+  .score-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .quick-score-btn {
+    min-width: 50px;
+    padding: 8px 12px;
+    border: 2px solid #ddd;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      border-color: #2196f3;
+      background-color: #f0f8ff;
+    }
+    
+    &.selected {
+      background-color: #2196f3;
+      color: white;
+      border-color: #2196f3;
+    }
+  }
+}
+
+// Popup actions
+.popup-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px 24px;
+  border-top: 1px solid #e0e0e0;
+  
+  button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    
+    &.btn-cancel {
+      background: #f5f5f5;
+      color: #666;
+      
+      &:hover {
+        background: #e0e0e0;
+      }
+    }
+    
+    &.btn-clear {
+      background: #fff3e0;
+      color: #f57c00;
+      border: 1px solid #ffb74d;
+      
+      &:hover {
+        background: #ffe0b2;
+      }
+    }
+    
+    &.btn-save {
+      background: #2196f3;
+      color: white;
+      
+      &:hover:not(:disabled) {
+        background: #1976d2;
+      }
+      
+      &:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+// Update the action-buttons styling
+.action-buttons {
+  display: flex;
+  justify-content: space-between; // This will push buttons to opposite sides
+  align-items: center;
+  margin: 20px 0;
+  gap: 20px; // Add space between buttons
+
+  @media (max-width: 768px) {
+    flex-direction: column; // Stack vertically on mobile
+    gap: 15px;
+  }
+}
+
+// Style for the confirm button specifically
+.confirm-button-material {
+  margin-left: auto; // This pushes the button to the right
+  min-width: 150px;
+  font-weight: bold;
+}
+
+// Back button styling (keep existing)
+.back-button-material {
+  margin: 0; // Remove the existing margin since we're using flexbox
+}
+
+// Score button styles (for the table buttons)
+.score-button {
+  width: 80px;
+  height: 40px;
+  border: 1px solid #ddd;
+  background-color: white;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+  color: black; // Ensure text is always black
+
+  &:hover {
+    background-color: #f5f5f5;
+    border-color: #007bff;
+  }
+
+  &:focus {
+    outline: 2px solid #007bff;
+    border-color: #007bff;
+  }
+
+  // Red background for scores under 1.5
+  &.low-score {
+    background-color: #ff4444 !important; // Red fill
+    color: black !important; // Keep text black
+    border: 1px solid #ddd !important; // Keep original border, no red border
+
+    &:hover {
+      background-color: #ff6666 !important; // Slightly lighter red on hover
+      color: black !important; // Keep text black on hover
+      border-color: #007bff !important; // Blue border on hover for focus indication
+    }
+
+    &:focus {
+      background-color: #ff4444 !important; // Keep red background on focus
+      color: black !important; // Keep text black on focus
+      outline: 2px solid #007bff !important; // Blue outline for accessibility
+      border-color: #007bff !important;
+    }
+  }
+
+  // Missing score styling (if you want to keep this separate)
+  &.missing-score {
+    background-color: #fff3cd;
+    border-color: #ffeaa7;
+    color: black;
+  }
+
+  // Handle case where both low-score and missing-score might apply
+  &.low-score.missing-score {
+    background-color: #ff4444 !important; // Prioritize low-score styling
+    border-color: #ddd !important;
+    color: black !important;
+  }
+}
+
+// Navigation buttons section - ONLY in popup
+.score-popup .navigation-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid #e0e0e0;
+  background-color: #fafafa;
+}
+
+.score-popup .nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 2px solid #2196f3;
+  background: white;
+  color: #2196f3;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  min-width: 100px;
+  justify-content: center;
+
+  &:hover:not(:disabled) {
+    background: #2196f3;
+    color: white;
+  }
+
+  &:disabled {
+    border-color: #ccc;
+    color: #ccc;
+    cursor: not-allowed;
+    background: #f5f5f5;
+  }
+}
+
+.score-popup .nav-btn .nav-icon {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.score-popup .nav-btn .nav-text {
+  font-size: 14px;
+}
+
+.score-popup .prev-btn {
+  flex-direction: row;
+}
+
+.score-popup .next-btn {
+  flex-direction: row-reverse;
+}
+
+.score-popup .progress-indicator {
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.score-popup .progress-indicator .current-position {
+  background: #e3f2fd;
+  padding: 8px 16px;
+  border-radius: 20px;
+  color: #1976d2;
+}
+
+// Update save button text - ONLY in popup
+.score-popup .popup-actions .btn-save {
+  min-width: 140px; // Make room for longer text
+}
+
+// Responsive design for navigation - ONLY in popup
+@media (max-width: 600px) {
+  .score-popup .navigation-buttons {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 16px;
+  }
+
+  .score-popup .nav-btn {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .score-popup .progress-indicator {
+    order: -1;
+    margin-bottom: 8px;
+  }
+}
+
+.score-popup .slider-description {
+  font-size: 12px;
+  color: #666;
+  margin: 8px 0;
+  text-align: center;
+}
+
+// Add this to your a2.component.scss file
+
+.score-popup .completion-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  .completion-btn {
+    background-color: #4caf50; // Green color for completion
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
+    &:hover {
+      background-color: #45a049;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transform: translateY(-1px);
+    }
+    
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    &:focus {
+      outline: 2px solid #66bb6a;
+      outline-offset: 2px;
+    }
+    
+    .completion-text {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      
+      // Optional: Add a checkmark icon
+      &::before {
+        content: '✓';
+        font-size: 18px;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+// Alternative styling without icon
+.completion-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  .completion-btn {
+    background-color: #2196f3; // Blue color to match your theme
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    
+    &:hover {
+      background-color: #1976d2;
+    }
+    
+    &:focus {
+      outline: 2px solid #42a5f5;
+      outline-offset: 2px;
+    }
+    
+    .completion-text {
+      font-size: 14px;
+    }
+  }
+}
+
+// Add this to your existing SCSS file
+.warning-message {
+  margin: 20px 0;
+  
+  .warning-card {
+    background-color: #fff3cd !important; // Yellow background
+    border: 2px solid #ffc107 !important; // Yellow border
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(255, 193, 7, 0.2);
+    
+    mat-card-content {
+      padding: 20px;
+      
+      h3 {
+        color: #856404; // Dark yellow/brown text
+        margin: 0 0 15px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        
+        mat-icon {
+          color: #ff9800; // Orange warning icon
+          font-size: 24px;
+        }
+      }
+      
+      p {
+        color: #856404; // Dark yellow/brown text
+        margin: 8px 0;
+        font-weight: 500;
+        
+        strong {
+          color: #d68910; // Slightly darker for emphasis
+        }
+      }
+    }
+  }
+}

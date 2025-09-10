@@ -11,7 +11,7 @@ describe('A2Component', () => {
     const mockActivatedRoute = {
       snapshot: {
         paramMap: {
-          get: jasmine.createSpy('get').and.returnValues('test-event-id', 'a2')
+          get: jasmine.createSpy('get').and.returnValues('test-event-id', 'A2')
         }
       }
     };
