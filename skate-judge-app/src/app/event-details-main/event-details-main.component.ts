@@ -13,6 +13,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Event, Exam, Pruefling } from '../shared/models/event.interface';
 import { PrueflingFormComponent } from '../pruefling-form/pruefling-form.component';
+import { IndexedDbService } from '../indexeddb.service';
 
 @Component({
   selector: 'app-event-details',
@@ -46,7 +47,8 @@ export class EventDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private indexedDbService: IndexedDbService // Add this
   ) {}
 
   /**
@@ -88,19 +90,31 @@ export class EventDetailsComponent implements OnInit {
         }
       });
 
-      dialogRef.afterClosed().subscribe((result: Pruefling | undefined) => {
+      dialogRef.afterClosed().subscribe(async (result: Pruefling | undefined) => {
         if (result && this.eventDetails) {
-          if (!Array.isArray(this.eventDetails.prueflinge)) {
-            this.eventDetails.prueflinge = [];
+          // Save to IndexedDB instead of localStorage
+          try {
+            const skaterId = await this.indexedDbService.addSkater({
+              name: result.vorname,
+              lastname: result.nachname,
+              verein: result.verein
+            });
+            
+            console.log('Athlete saved to IndexedDB with ID:', skaterId);
+            
+            // Also update your local array
+            const newPruefling = {
+              ...result,
+              id: crypto.randomUUID(),
+              dbId: skaterId // Store the IndexedDB ID
+            };
+            
+            this.eventDetails.prueflinge.push(newPruefling);
+            this.updateEventInStorage(); // Keep localStorage as backup
+          } catch (error) {
+            console.error('Error saving to IndexedDB:', error);
+            // Fallback to localStorage only
           }
-          
-          const newPruefling = {
-            ...result,
-            id: crypto.randomUUID()  // Add ID after spreading result
-          };
-          
-          this.eventDetails.prueflinge.push(newPruefling);
-          this.updateEventInStorage();
         }
       });
     }
@@ -305,6 +319,18 @@ export class EventDetailsComponent implements OnInit {
     if (eventIndex !== -1) {
       events[eventIndex] = { ...this.eventDetails }; // Create a copy to avoid reference issues
       localStorage.setItem('events', JSON.stringify(events));
+    }
+  }
+
+  // Load athletes from IndexedDB
+  async loadAthletesFromIndexedDB() {
+    try {
+      const skaters = await this.indexedDbService.getAllSkaters();
+      console.log('Athletes from IndexedDB:', skaters);
+      return skaters;
+    } catch (error) {
+      console.error('Error loading from IndexedDB:', error);
+      return [];
     }
   }
 }
