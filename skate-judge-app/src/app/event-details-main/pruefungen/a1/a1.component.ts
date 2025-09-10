@@ -318,7 +318,7 @@ export class A1Component implements OnInit, AfterViewInit {
       'rechts und links vorwärts übersetzen',
       'rechts und links rückwärts übersetzen', 
       'Flieger mit Kante',
-      'Bremsen durch Drehung auf rückwärts und auf die Stopper'
+      'Bremsen durch Drehung auf rückwärts und auf die Stopperdsdsdsd'
     ];
     return `${index}. ${elements[index - 1]}`;
   }

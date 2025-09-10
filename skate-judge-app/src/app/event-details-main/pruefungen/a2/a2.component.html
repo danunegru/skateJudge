@@ -45,26 +45,59 @@
           <tr></tr>
         </thead>
         <tbody>
-          <tr>
-            <td class="element-header">
-              <div class="element-content">1. rechts und links vorwärts übersetzen</div>
-            </td>
-          </tr>
-          <tr>
-            <td class="element-header">
-              <div class="element-content">2. rechts und links rückwärts übersetzen</div>
-            </td>
-          </tr>
-          <tr>
-            <td class="element-header">
-              <div class="element-content">3. Flieger mit Kante</div>
-            </td>
-          </tr>
-          <tr>
-            <td class="element-header">
-              <div class="element-content">4. Bremsen durch Drehung auf rückwärts und auf die Stopper</div>
-            </td>
-          </tr>
+          
+
+<!-- Elemente generieren -->
+
+  <tr *ngFor="let element of elements; let i = index">
+  <td class="element-header">
+    <div class="element-content">{{ i + 1 }}. {{ element }}</div>
+  </td>
+</tr>
+
+
+<!--           
+<tr>
+  <td class="element-header">
+    <div class="element-content">3.a) Bogenachter Rva und Lva</div>
+  </td>
+</tr>
+<tr>
+  <td class="element-header">
+    <div class="element-content">3.b) Bogenachter Rra und Lra</div>
+  </td>
+</tr>
+<tr>
+  <td class="element-header">
+    <div class="element-content">3.c) Fuchsdreier Lva und Rva (mit oder ohne Zeichnung)</div>
+  </td>
+</tr>
+<tr>
+  <td class="element-header">
+    <div class="element-content">3.d) Flieger vorwärts und rückwärts</div>
+  </td>
+</tr>
+<tr>
+  <td class="element-header">
+    <div class="element-content">3.e) Dreiersprung mit Mohawkanlauf</div>
+  </td>
+</tr>
+<tr>
+  <td class="element-header">
+    <div class="element-content">3.f) Salchow mit langem Auslauf</div>
+  </td>
+</tr>
+<tr>
+  <td class="element-header">
+    <div class="element-content">3.g) Zweibeinpirouette mit 4 Umdrehungen oder Einbeinpirouette mit 2–3 Umdrehungen</div>
+  </td>
+</tr>
+<tr>
+  <td class="element-header">
+    <div class="element-content">3.h) Zirkel ra oder Mond</div>
+  </td>
+</tr> -->
+
           <tr class="total-row">
             <td class="element-header">Erreichte Gesamtpunktzahl:</td>
           </tr>
@@ -92,7 +125,36 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+  
+          
+
+
+
+
+
+<tr *ngFor="let element of elements; let eIndex = index">
+  <td class="score-cell" *ngFor="let pruefling of prueflingeForExam; let pIndex = index">
+    <button type="button" class="score-button"
+      [class.missing-score]="showMissingScoresWarning && !getScore(eIndex + 1, pIndex)"
+      [class.low-score]="getScore(eIndex + 1, pIndex) && getScore(eIndex + 1, pIndex) < 1.5"
+      (click)="openScorePopup(eIndex + 1, pIndex, pruefling)"
+      [attr.data-element]="eIndex + 1"
+      [attr.data-athlete]="pIndex + 1"
+      [attr.aria-label]="'Bewertung für ' + pruefling.vorname + ' ' + pruefling.nachname + ' - Element ' + (eIndex + 1)"
+      [attr.title]="'Bewertung für Element ' + (eIndex + 1) + ' - ' + pruefling.vorname + ' ' + pruefling.nachname">
+      {{ getScore(eIndex + 1, pIndex) || '' }}
+    </button>
+  </td>
+</tr>
+<tr class="total-row">
+            <td class="score-cell total-cell" *ngFor="let pruefling of prueflingeForExam; let i = index"
+              [attr.id]="'total-' + (i + 1)">
+              {{ getTotal(i) }}
+            </td>
+          </tr>
+
+
+          <!-- <tr>
             <td class="score-cell" *ngFor="let pruefling of prueflingeForExam; let i = index">
               <button type="button" class="score-button"
                 [class.missing-score]="showMissingScoresWarning && !getScore(1, i)"
@@ -103,7 +165,13 @@
                 {{ getScore(1, i) || '' }}
               </button>
             </td>
-          </tr>
+          </tr> -->
+
+
+
+
+<!-- 
+
           <tr>
             <td class="score-cell" *ngFor="let pruefling of prueflingeForExam; let i = index">
               <button type="button" class="score-button"
@@ -145,7 +213,7 @@
               [attr.id]="'total-' + (i + 1)">
               {{ getTotal(i) }}
             </td>
-          </tr>
+          </tr> -->
         </tbody>
       </table>
     </div>
