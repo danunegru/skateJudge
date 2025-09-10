@@ -4,7 +4,6 @@
   margin: 0 auto;
 }
 
-// Additional styles for the scoring form
 :host {
   font-family: Arial, sans-serif;
   margin: 20px;
@@ -29,14 +28,14 @@ h1 {
 
 .header-info {
   background-color: #f8f9fa;
-  padding: 5px;
+  padding: 15px;
   border-radius: 5px;
-  margin-bottom: 5px;
-}
-
-.header-info h2 {
-  margin-top: 0;
-  color: #495057;
+  margin-bottom: 0;
+  
+  h2 {
+    margin-top: 0;
+    color: #495057;
+  }
 }
 
 .info-grid {
@@ -46,7 +45,7 @@ h1 {
   margin-bottom: 15px;
 }
 
-// Table wrapper - remove overflow hidden to allow external scrollbar
+// Table wrapper
 .table-wrapper {
   display: flex;
   border: 1px solid #333;
@@ -57,24 +56,13 @@ h1 {
   position: relative;
 }
 
-// Create a wrapper for the athletes section with external scrollbar
-.athletes-section-wrapper {
-  flex: 1;
-  position: relative;
-}
-
-// Athletes scroll container - scrollbar will be outside
+// Athletes scroll container
 .athletes-scroll-container {
   width: 100%;
-  height: 100% ; // Leave space for scrollbar
+  height: 100%;
   overflow-x: auto;
   overflow-y: hidden;
   
-  // Position scrollbar outside the table area
-  padding-bottom: -15px; // Make room for scrollbar
-  margin-bottom: -15px; // Pull content back up
-  
-  // Custom scrollbar styling
   &::-webkit-scrollbar {
     height: 10px;
   }
@@ -94,13 +82,12 @@ h1 {
   }
 }
 
-// Athletes table - no changes needed
 .athletes-table {
   border-collapse: collapse;
   min-width: max-content;
   width: 100%;
-  height: 100%; // Leave space for scrollbar
-  table-layout: auto; // Account for scrollbar space
+  height: 100%;
+  table-layout: auto;
 }
 
 // Fixed first column (elements)
@@ -113,7 +100,6 @@ h1 {
   flex-direction: column;
 }
 
-// Elements table styling
 .elements-table {
   width: 100%;
   border-collapse: collapse;
@@ -134,16 +120,15 @@ h1 {
   box-sizing: border-box;
 }
 
-// Element header styling - EXACT HEIGHT FOR ROWSPAN
+// Element header styling
 .element-header {
   background-color: #f1f3f4;
   text-align: center;
   font-weight: bold;
-  width: 450px; // Fixed the incomplete width property
+  width: 450px;
   
-  // Special styling for the 3-row span "Elemente" header
   &[rowspan="3"] {
-    height: 170px !important; // 60px + 50px + 80px = 190px
+    height: 170px !important;
     vertical-align: middle;
     font-size: 20px;
     font-weight: bold;
@@ -151,7 +136,6 @@ h1 {
     line-height: 1.2;
   }
   
-  // Regular element headers in tbody - EXACT HEIGHT
   &:not([rowspan]) {
     height: 70px !important;
     vertical-align: middle;
@@ -159,7 +143,7 @@ h1 {
   }
 }
 
-// Athletes header styling (first row) - EXACT HEIGHT
+// Athletes header styling
 .athletes-header {
   background-color: #e9ecef;
   text-align: center;
@@ -169,7 +153,7 @@ h1 {
   vertical-align: middle;
 }
 
-// Number cells (second row) - EXACT HEIGHT
+// Number cells
 .number-cell {
   width: 120px;
   min-width: 120px;
@@ -179,7 +163,7 @@ h1 {
   vertical-align: middle;
 }
 
-// Athlete cells (third row) - EXACT HEIGHT
+// Athlete cells
 .athlete-cell {
   background-color: #f8f9fa;
   font-size: 13px;
@@ -190,7 +174,7 @@ h1 {
   vertical-align: middle;
 }
 
-// Score cells in tbody - EXACT HEIGHT
+// Score cells
 .score-cell {
   width: 120px;
   min-width: 120px;
@@ -210,7 +194,7 @@ h1 {
   line-height: 1.3;
 }
 
-// Total row styling - EXACT HEIGHT MATCH
+// Total row styling
 .total-row {
   background-color: #e3f2fd;
   font-weight: bold;
@@ -229,22 +213,6 @@ h1 {
   font-size: 18px;
   color: #1976d2;
   height: 70px !important;
-}
-
-// Input styling
-input[type="number"] {
-  width: 80px;
-  text-align: center;
-  border: 1px solid #ddd;
-  padding: 5px; 
-  font-size: 14px;
-  border-radius: 3px;
-  background-color: white;
-  
-  &:focus {
-    outline: 2px solid #007bff;
-    border-color: #007bff;
-  }
 }
 
 // Athlete info styling
@@ -299,7 +267,7 @@ input[type="number"] {
   }
 }
 
-// Horizontal container for details
+// Details container
 .details-container {
   display: flex;
   gap: 20px;
@@ -315,14 +283,6 @@ input[type="number"] {
   background-color: #f8f9fa;
   padding: 15px;
   border-radius: 5px;
-}
-
-.header-info {
-  flex: 1;
-  background-color: #f8f9fa;
-  padding: 15px;
-  border-radius: 5px;
-  margin-bottom: 0;
 }
 
 // Collapsible functionality
@@ -384,12 +344,125 @@ input[type="number"] {
   }
 }
 
-// Back button styling
-.back-button-material {
+// Action buttons
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin: 20px 0;
+  gap: 20px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 15px;
+  }
 }
 
-// Popup overlay
+.confirm-button-material {
+  margin-left: auto;
+  min-width: 150px;
+  font-weight: bold;
+}
+
+.back-button-material {
+  margin: 0;
+}
+
+// Score button styles
+.score-button {
+  width: 80px;
+  height: 40px;
+  border: 1px solid #ddd;
+  background-color: white;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+  color: black;
+
+  &:hover {
+    background-color: #f5f5f5;
+    border-color: #007bff;
+  }
+
+  &:focus {
+    outline: 2px solid #007bff;
+    border-color: #007bff;
+  }
+
+  &.low-score {
+    background-color: #ff4444 !important;
+    color: black !important;
+    border: 1px solid #ddd !important;
+
+    &:hover {
+      background-color: #ff6666 !important;
+      color: black !important;
+      border-color: #007bff !important;
+    }
+
+    &:focus {
+      background-color: #ff4444 !important;
+      color: black !important;
+      outline: 2px solid #007bff !important;
+      border-color: #007bff !important;
+    }
+  }
+
+  &.missing-score {
+    background-color: #fff3cd;
+    border-color: #ffeaa7;
+    color: black;
+  }
+
+  &.low-score.missing-score {
+    background-color: #ff4444 !important;
+    border-color: #ddd !important;
+    color: black !important;
+  }
+}
+
+// Warning message
+.warning-message {
+  margin: 20px 0;
+  
+  .warning-card {
+    background-color: #fff3cd !important;
+    border: 2px solid #ffc107 !important;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(255, 193, 7, 0.2);
+    
+    mat-card-content {
+      padding: 20px;
+      
+      h3 {
+        color: #856404;
+        margin: 0 0 15px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        
+        mat-icon {
+          color: #ff9800;
+          font-size: 24px;
+        }
+      }
+      
+      p {
+        color: #856404;
+        margin: 8px 0;
+        font-weight: 500;
+        
+        strong {
+          color: #d68910;
+        }
+      }
+    }
+  }
+}
+
+// POPUP STYLES
 .score-popup-overlay {
   position: fixed;
   top: 0;
@@ -403,7 +476,6 @@ input[type="number"] {
   z-index: 1000;
 }
 
-// Popup container
 .score-popup {
   background: white;
   border-radius: 12px;
@@ -442,7 +514,6 @@ input[type="number"] {
     text-align: center;
   }
   
-  // Athlete info in header - smaller
   .athlete-info {
     text-align: center;
     margin: 8px 0 0 0;
@@ -463,28 +534,120 @@ input[type="number"] {
       font-size: 0.9em;
     }
   }
+}
+
+// Navigation buttons
+.navigation-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid #e0e0e0;
+  background-color: #fafafa;
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 2px solid #2196f3;
+  background: white;
+  color: #2196f3;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  min-width: 100px;
+  justify-content: center;
+
+  &:hover:not(:disabled) {
+    background: #2196f3;
+    color: white;
+  }
+
+  &:disabled {
+    border-color: #ccc;
+    color: #ccc;
+    cursor: not-allowed;
+    background: #f5f5f5;
+  }
+
+  .nav-icon {
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .nav-text {
+    font-size: 14px;
+  }
+}
+
+.prev-btn {
+  flex-direction: row;
+}
+
+.next-btn {
+  flex-direction: row-reverse;
+}
+
+.progress-indicator {
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+  font-weight: 500;
+
+  .current-position {
+    background: #e3f2fd;
+    padding: 8px 16px;
+    border-radius: 20px;
+    color: #1976d2;
+  }
+}
+
+.completion-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   
-  .close-btn {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    background: none;
+  .completion-btn {
+    background-color: #4caf50;
+    color: white;
     border: none;
-    font-size: 28px;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
-    color: #666;
-    padding: 0;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     
     &:hover {
-      background-color: rgba(0, 0, 0, 0.1);
-      color: #333;
+      background-color: #45a049;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transform: translateY(-1px);
+    }
+    
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    &:focus {
+      outline: 2px solid #66bb6a;
+      outline-offset: 2px;
+    }
+    
+    .completion-text {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      
+      &::before {
+        content: '✓';
+        font-size: 18px;
+        font-weight: bold;
+      }
     }
   }
 }
@@ -492,19 +655,6 @@ input[type="number"] {
 // Popup content
 .popup-content {
   padding: 24px;
-}
-
-.element-info {
-  margin-bottom: 24px;
-  padding: 12px;
-  background-color: #e3f2fd;
-  border-radius: 6px;
-  
-  h5 {
-    margin: 0;
-    color: #1976d2;
-    font-size: 1.1em;
-  }
 }
 
 .score-input-section {
@@ -523,40 +673,6 @@ input[type="number"] {
     margin: 16px 0 8px 0;
   }
   
-  .slider-labels {
-    display: flex;
-    justify-content: space-between;
-    margin: 0 12px 16px 12px;
-    position: relative;
-    
-    .tick-label {
-      font-size: 12px;
-      color: #666;
-      font-weight: 500;
-      padding: 4px 8px;
-      border-radius: 4px;
-      transition: all 0.2s ease;
-      cursor: pointer;
-      
-      &.major {
-        background-color: #f8f9fa;
-        border: 1px solid #e0e0e0;
-        font-weight: bold;
-      }
-      
-      &:hover {
-        background-color: #e3f2fd;
-        color: #1976d2;
-      }
-      
-      &.active {
-        background-color: #1976d2;
-        color: white;
-        font-weight: bold;
-      }
-    }
-  }
-  
   .slider-value {
     text-align: center;
     font-size: 24px;
@@ -565,20 +681,19 @@ input[type="number"] {
     border-radius: 8px;
     margin-top: 16px;
     transition: all 0.3s ease;
+    color: #1976d2;
+    background: #e3f2fd;
     
-    // RED for range 1.0-1.4
     &.insufficient-range {
-      background: #fc6574 !important;  // BOLD Red
+      background: #fc6574 !important;
       color: white !important;
     }
     
-    // ORANGE for range 1.5-1.9 (sufficient)
     &.sufficient-range {
-      background: #fd7e14 !important;  // BOLD Orange
+      background: #f78b33 !important;
       color: white !important;
     }
     
-    // Keep your existing classes for exact values
     &.satisfactory-score {
       background: #fff3cd !important;
       color: #856404 !important;
@@ -596,64 +711,33 @@ input[type="number"] {
   }
 }
 
-// Custom thumb labels styling - SIMPLIFIED
-.slider-thumb-labels {
-  position: relative;
-  width: 100%;
-  height: 20px;
-  margin-top: 5px;
-  
-  .thumb-label {
-    position: absolute;
-    top: 0;
-    transform: translateX(-50%);
-    transform: translateY(-22px);
-    background: #cce6ff;
-    color: black;
-    padding: 2px 5px;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: bold;
-    transition: all 0.2s ease;
-    
-    &.active {
-      background: #cce6ff;
-      transform: translateX(-50%) scale(1.5);
-    }
-  }
-}
-
-// Simplified slider styling
+// Slider styling
 .score-popup mat-slider {
   width: 100%;
   margin: 20px 0 10px 0;
   
-  // Enhanced track with grading scale colors
   ::ng-deep .mdc-slider__track--inactive {
     height: 12px !important;
     border-radius: 6px !important;
-    // Use the same colors as your grading scale
     background: linear-gradient(
       to right,
-      #f8d7da 0%,           // Insufficient - Red (1.0)
-      #f8d7da 20%,          // Insufficient end
-      #ffeaa7 20%,          // Sufficient - Orange (1.5)
-      #ffeaa7 40%,          // Sufficient end
-      #fff3cd 40%,          // Satisfactory - Yellow (2.0)
-      #fff3cd 60%,          // Satisfactory end
-      #d1ecf1 60%,          // Good - Light Blue (2.3)
-      #d1ecf1 80%,          // Good end
-      #d4edda 80%,          // Excellent - Green (2.5)
-      #d4edda 100%          // Excellent end
+      #f8d7da 0%,
+      #f8d7da 20%,
+      #ffeaa7 20%,
+      #ffeaa7 40%,
+      #fff3cd 40%,
+      #fff3cd 60%,
+      #d1ecf1 60%,
+      #d1ecf1 80%,
+      #d4edda 80%,
+      #d4edda 100%
     ) !important;
   }
 
-  // Active fill (the blue part that moves with thumb)
   ::ng-deep .mdc-slider__track--active_fill {
     background-color: #1976d2 !important;
   }
 
-  // Thumb styling
   ::ng-deep .mdc-slider__thumb {
     width: 24px !important;
     height: 24px !important;
@@ -662,13 +746,11 @@ input[type="number"] {
     box-shadow: 0 2px 4px rgba(0,0,0,0.3) !important;
   }
 
-  // Track container
   ::ng-deep .mdc-slider__track {
     height: 12px !important;
     border-radius: 6px !important;
   }
 
-  // Tick marks with matching colors
   ::ng-deep .mdc-slider__tick-mark--active {
     background-color: #1976d2 !important;
     width: 3px !important;
@@ -684,18 +766,7 @@ input[type="number"] {
   }
 }
 
-// Update slider value display to match current score color
-.slider-value {
-  text-align: center;
-  font-size: 24px;
-  font-weight: bold;
-  padding: 12px;
-  border-radius: 8px;
-  margin-top: 16px;
-  transition: all 0.3s ease; 
-}
-
-// Update thumb labels to match grading colors
+// Slider thumb labels
 .slider-thumb-labels {
   position: relative;
   width: 100%;
@@ -705,43 +776,98 @@ input[type="number"] {
   .thumb-label {
     position: absolute;
     top: 0;
-    transform: translateX(-50%);
-    transform: translateY(-22px);
+    transform: translateX(-50%) translateY(-22px);
     padding: 2px 5px;
     border-radius: 4px;
     font-size: 12px;
     font-weight: bold;
     transition: all 0.2s ease;
-    
-    // Default styling
     background: #cce6ff;
     color: black;
     
-    // Match grading scale colors
-    &[style*="left: 0%"] {           // 1.0 - Insufficient
-      background: #f8d7da !important;
-      color: #721c24 !important;
+    &.label-1-0 {
+      left: 0%;
+      background: #dc3545 !important;
+      color: white !important;
     }
     
-    &[style*="left: 33.33%"] {       // 1.5 - Sufficient
-      background: #ffeaa7 !important;
-      color: #8e5c1a !important;
+    &.label-1-5 {
+      left: 33.33%;
+      background: #fd7e14 !important;
+      color: white !important;
     }
     
-    &[style*="left: 66.67%"] {       // 2.0 - Satisfactory
-      background: #fff3cd !important;
-      color: #856404 !important;
+    &.label-2-0 {
+      left: 66.67%;
+      background: #ffc107 !important;
+      color: #212529 !important;
     }
     
-    &[style*="left: 100%"] {         // 2.5 - Excellent
-      background: #d4edda !important;
-      color: #155724 !important;
+    &.label-2-5 {
+      left: 100%;
+      background: #28a745 !important;
+      color: white !important;
     }
     
     &.active {
-      transform: translateX(-50%) scale(1.2);
-      border: 1px solid rgba(0,0,0,0.2);
+      transform: translateX(-50%) translateY(-22px) scale(1.2);
+      border: 2px solid white;
+      box-shadow: 0 0 8px rgba(0,0,0,0.3);
     }
+  }
+}
+
+// Popup grading info
+.popup-grading-compact {
+  margin-top: 16px;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+  text-align: center;
+}
+
+.popup-grading-title {
+  font-size: 12px;
+  font-weight: bold;
+  color: #495057;
+  margin-bottom: 6px;
+}
+
+.popup-grading-items {
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.popup-scale-item {
+  font-weight: 500;
+  padding: 2px 4px;
+  border-radius: 8px;
+  white-space: nowrap;
+
+  &.excellent {
+    background: #28a745 !important;
+    color: white !important;
+  }
+
+  &.good {
+    background: #17a2b8 !important;
+    color: white !important;
+  }
+
+  &.satisfactory {
+    background: #ffc107 !important;
+    color: #212529 !important;
+  }
+
+  &.sufficient {
+    background: #fd7e14 !important;
+    color: white !important;
+  }
+
+  &.insufficient {
+    background: #dc3545 !important;
+    color: white !important;
   }
 }
 
@@ -779,381 +905,24 @@ input[type="number"] {
         background: #ffe0b2;
       }
     }
-    
-    &.btn-save {
-      background: #2196f3;
-      color: white;
-      
-      &:hover:not(:disabled) {
-        background: #1976d2;
-      }
-      
-      &:disabled {
-        background: #ccc;
-        cursor: not-allowed;
-      }
-    }
   }
 }
 
-// Update the action-buttons styling
-.action-buttons {
-  display: flex;
-  justify-content: space-between; // This will push buttons to opposite sides
-  align-items: center;
-  margin: 20px 0;
-  gap: 20px; // Add space between buttons
-
-  @media (max-width: 768px) {
-    flex-direction: column; // Stack vertically on mobile
-    gap: 15px;
-  }
-}
-
-// Style for the confirm button specifically
-.confirm-button-material {
-  margin-left: auto; // This pushes the button to the right
-  min-width: 150px;
-  font-weight: bold;
-}
-
-// Back button styling (keep existing)
-.back-button-material {
-  margin: 0; // Remove the existing margin since we're using flexbox
-}
-
-// Score button styles (for the table buttons)
-.score-button {
-  width: 80px;
-  height: 40px;
-  border: 1px solid #ddd;
-  background-color: white;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: bold;
-  border-radius: 3px;
-  transition: all 0.3s ease;
-  color: black; // Ensure text is always black
-
-  &:hover {
-    background-color: #f5f5f5;
-    border-color: #007bff;
-  }
-
-  &:focus {
-    outline: 2px solid #007bff;
-    border-color: #007bff;
-  }
-
-  // Red background for scores under 1.5
-  &.low-score {
-    background-color: #ff4444 !important; // Red fill
-    color: black !important; // Keep text black
-    border: 1px solid #ddd !important; // Keep original border, no red border
-
-    &:hover {
-      background-color: #ff6666 !important; // Slightly lighter red on hover
-      color: black !important; // Keep text black on hover
-      border-color: #007bff !important; // Blue border on hover for focus indication
-    }
-
-    &:focus {
-      background-color: #ff4444 !important; // Keep red background on focus
-      color: black !important; // Keep text black on focus
-      outline: 2px solid #007bff !important; // Blue outline for accessibility
-      border-color: #007bff !important;
-    }
-  }
-
-  // Missing score styling (if you want to keep this separate)
-  &.missing-score {
-    background-color: #fff3cd;
-    border-color: #ffeaa7;
-    color: black;
-  }
-
-  // Handle case where both low-score and missing-score might apply
-  &.low-score.missing-score {
-    background-color: #ff4444 !important; // Prioritize low-score styling
-    border-color: #ddd !important;
-    color: black !important;
-  }
-}
-
-// Navigation buttons section - ONLY in popup
-.score-popup .navigation-buttons {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 24px;
-  border-bottom: 1px solid #e0e0e0;
-  background-color: #fafafa;
-}
-
-.score-popup .nav-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  border: 2px solid #2196f3;
-  background: white;
-  color: #2196f3;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  min-width: 100px;
-  justify-content: center;
-
-  &:hover:not(:disabled) {
-    background: #2196f3;
-    color: white;
-  }
-
-  &:disabled {
-    border-color: #ccc;
-    color: #ccc;
-    cursor: not-allowed;
-    background: #f5f5f5;
-  }
-}
-
-.score-popup .nav-btn .nav-icon {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.score-popup .nav-btn .nav-text {
-  font-size: 14px;
-}
-
-.score-popup .prev-btn {
-  flex-direction: row;
-}
-
-.score-popup .next-btn {
-  flex-direction: row-reverse;
-}
-
-.score-popup .progress-indicator {
-  text-align: center;
-  color: #666;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.score-popup .progress-indicator .current-position {
-  background: #e3f2fd;
-  padding: 8px 16px;
-  border-radius: 20px;
-  color: #1976d2;
-}
-
-// Update save button text - ONLY in popup
-.score-popup .popup-actions .btn-save {
-  min-width: 140px; // Make room for longer text
-}
-
-// Responsive design for navigation - ONLY in popup
+// Responsive design
 @media (max-width: 600px) {
-  .score-popup .navigation-buttons {
+  .navigation-buttons {
     flex-direction: column;
     gap: 12px;
     padding: 12px 16px;
   }
 
-  .score-popup .nav-btn {
+  .nav-btn {
     width: 100%;
     min-width: auto;
   }
 
-  .score-popup .progress-indicator {
+  .progress-indicator {
     order: -1;
     margin-bottom: 8px;
-  }
-}
-
-.score-popup .slider-description {
-  font-size: 12px;
-  color: #666;
-  margin: 8px 0;
-  text-align: center;
-}
-
-// Add this to your a1.component.scss file
-
-.score-popup .completion-message {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
-  .completion-btn {
-    background-color: #4caf50; // Green color for completion
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 6px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    
-    &:hover {
-      background-color: #45a049;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      transform: translateY(-1px);
-    }
-    
-    &:active {
-      transform: translateY(0);
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    
-    &:focus {
-      outline: 2px solid #66bb6a;
-      outline-offset: 2px;
-    }
-    
-    .completion-text {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      
-      // Optional: Add a checkmark icon
-      &::before {
-        content: '✓';
-        font-size: 18px;
-        font-weight: bold;
-      }
-    }
-  }
-}
-
-// Alternative styling without icon
-.completion-message {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
-  .completion-btn {
-    background-color: #2196f3; // Blue color to match your theme
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    
-    &:hover {
-      background-color: #1976d2;
-    }
-    
-    &:focus {
-      outline: 2px solid #42a5f5;
-      outline-offset: 2px;
-    }
-    
-    .completion-text {
-      font-size: 14px;
-    }
-  }
-}
-
-// Add this to your existing SCSS file
-.warning-message {
-  margin: 20px 0;
-  
-  .warning-card {
-    background-color: #fff3cd !important; // Yellow background
-    border: 2px solid #ffc107 !important; // Yellow border
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(255, 193, 7, 0.2);
-    
-    mat-card-content {
-      padding: 20px;
-      
-      h3 {
-        color: #856404; // Dark yellow/brown text
-        margin: 0 0 15px 0;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        
-        mat-icon {
-          color: #ff9800; // Orange warning icon
-          font-size: 24px;
-        }
-      }
-      
-      p {
-        color: #856404; // Dark yellow/brown text
-        margin: 8px 0;
-        font-weight: 500;
-        
-        strong {
-          color: #d68910; // Slightly darker for emphasis
-        }
-      }
-    }
-  }
-}
-
-// Add this to a1.component.scss - moved from HTML
-
-/* Compact popup grading info */
-.popup-grading-compact {
-  margin-top: 16px;
-  padding: 10px;
-  background: #f8f9fa;
-  border-radius: 6px;
-  border: 1px solid #e0e0e0;
-  text-align: center;
-}
-
-.popup-grading-title {
-  font-size: 12px;
-  font-weight: bold;
-  color: #495057;
-  margin-bottom: 6px;
-}
-
-.popup-grading-items {
-  font-size: 11px;
-  line-height: 1.4;
-}
-
-.popup-scale-item {
-  font-weight: 500;
-  padding: 2px 4px;
-  border-radius: 8px;
-  white-space: nowrap;
-
-  // Apply the bold colors we discussed earlier
-  &.excellent {
-    background: #28a745 !important;  // BOLD Green
-    color: white !important;
-  }
-
-  &.good {
-    background: #17a2b8 !important;  // BOLD Blue
-    color: white !important;
-  }
-
-  &.satisfactory {
-    background: #ffc107 !important;  // BOLD Yellow
-    color: #212529 !important;       // Dark text for yellow
-  }
-
-  &.sufficient {
-    background: #fd7e14 !important;  // BOLD Orange
-    color: white !important;
-  }
-
-  &.insufficient {
-    background: #dc3545 !important;  // BOLD Red
-    color: white !important;
   }
 }

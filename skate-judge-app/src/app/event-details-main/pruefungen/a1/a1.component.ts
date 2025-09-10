@@ -54,7 +54,7 @@ export class A1Component implements OnInit, AfterViewInit {
     'rechts und links vorwärts übersetzen',
     'rechts und links rückwärts übersetzen', 
     'Flieger mit Kante',
-    'Bremsen durch Drehung auf rückwärts und auf die Stopper'
+    'Bremsen durch Drehung auf rückwärts und auf die Stopper',
   ];
 
   constructor(private route: ActivatedRoute, private router: Router) {}
