@@ -247,8 +247,25 @@
           <span class="thumb-label" [class.active]="currentScore === 2.5" style="left: 100%">2.5</span>
         </div>
 
-        <div class="slider-value">
+        <div class="slider-value" 
+             [class.insufficient-range]="currentScore >= 1.0 && currentScore <= 1.4"
+             [class.sufficient-range]="currentScore >= 1.5 && currentScore <= 1.9"
+             [class.satisfactory-score]="currentScore >= 2.0 && currentScore <= 2.2"
+             [class.good-score]="currentScore >= 2.3 && currentScore <= 2.4"
+             [class.excellent-score]="currentScore === 2.5">
           {{ currentScore | number:'1.1-1' }}
+        </div>
+      </div>
+
+      <!-- Compact version for popup -->
+      <div class="popup-grading-compact">
+        <div class="popup-grading-title">Wertungsschema:</div>
+        <div class="popup-grading-items">
+          <span class="popup-scale-item insufficient">1.0 Mangelhaft</span> •
+          <span class="popup-scale-item sufficient">1.5 Ausreichend</span> •
+          <span class="popup-scale-item satisfactory">2.0 Befriedigend</span> •
+          <span class="popup-scale-item good">2.3 Gut</span> •
+          <span class="popup-scale-item excellent">2.5 Sehr gut</span>
         </div>
       </div>
     </div>
@@ -259,3 +276,4 @@
     </div>
   </div>
 </div>
+

@@ -561,11 +561,38 @@ input[type="number"] {
     text-align: center;
     font-size: 24px;
     font-weight: bold;
-    color: #1976d2;
-    background: #e3f2fd;
     padding: 12px;
     border-radius: 8px;
     margin-top: 16px;
+    transition: all 0.3s ease;
+    
+    // RED for range 1.0-1.4
+    &.insufficient-range {
+      background: #fc6574 !important;  // BOLD Red
+      color: white !important;
+    }
+    
+    // ORANGE for range 1.5-1.9 (sufficient)
+    &.sufficient-range {
+      background: #fd7e14 !important;  // BOLD Orange
+      color: white !important;
+    }
+    
+    // Keep your existing classes for exact values
+    &.satisfactory-score {
+      background: #fff3cd !important;
+      color: #856404 !important;
+    }
+    
+    &.good-score {
+      background: #d1ecf1 !important;
+      color: #0c5460 !important;
+    }
+    
+    &.excellent-score {
+      background: #d4edda !important;
+      color: #155724 !important;
+    }
   }
 }
 
@@ -601,144 +628,119 @@ input[type="number"] {
   width: 100%;
   margin: 20px 0 10px 0;
   
-  .mdc-slider {
-    height: 40px !important;
+  // Enhanced track with grading scale colors
+  ::ng-deep .mdc-slider__track--inactive {
+    height: 12px !important;
+    border-radius: 6px !important;
+    // Use the same colors as your grading scale
+    background: linear-gradient(
+      to right,
+      #f8d7da 0%,           // Insufficient - Red (1.0)
+      #f8d7da 20%,          // Insufficient end
+      #ffeaa7 20%,          // Sufficient - Orange (1.5)
+      #ffeaa7 40%,          // Sufficient end
+      #fff3cd 40%,          // Satisfactory - Yellow (2.0)
+      #fff3cd 60%,          // Satisfactory end
+      #d1ecf1 60%,          // Good - Light Blue (2.3)
+      #d1ecf1 80%,          // Good end
+      #d4edda 80%,          // Excellent - Green (2.5)
+      #d4edda 100%          // Excellent end
+    ) !important;
   }
-  
-  // Enhanced track
+
+  // Active fill (the blue part that moves with thumb)
+  ::ng-deep .mdc-slider__track--active_fill {
+    background-color: #1976d2 !important;
+  }
+
+  // Thumb styling
+  ::ng-deep .mdc-slider__thumb {
+    width: 24px !important;
+    height: 24px !important;
+    background-color: #1976d2 !important;
+    border: 2px solid white !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3) !important;
+  }
+
+  // Track container
   ::ng-deep .mdc-slider__track {
     height: 12px !important;
     border-radius: 6px !important;
   }
 
-  ::ng-deep .mdc-slider__track--inactive {
-    background-color: #ddd !important;
-  }
-
-  ::ng-deep .mdc-slider__track--active_fill {
+  // Tick marks with matching colors
+  ::ng-deep .mdc-slider__tick-mark--active {
     background-color: #1976d2 !important;
+    width: 3px !important;
+    height: 3px !important;
+    border-radius: 50% !important;
   }
 
-  // Enhanced thumb
-  ::ng-deep .mdc-slider__thumb {
-    width: 28px !important;
-    height: 28px !important;
-    border: 3px solid white !important;
-    box-shadow: 0 0 4px rgba(0,0,0,0.3) !important;
-  }
-  
-  // Tick marks
-  ::ng-deep .mdc-slider__tick-marks {
-    .mdc-slider__tick-mark--active {
-      background-color: #0e3c6a !important;
-      width: 4px !important;
-      height: 4px !important;
-      border-radius: 50% !important;
-      opacity: 1 !important;
-    }
-
-    .mdc-slider__tick-mark--inactive {
-      background-color: #666 !important;
-      width: 4px !important;
-      height: 4px !important;
-      border-radius: 50% !important;
-      opacity: 1 !important;
-    }
+  ::ng-deep .mdc-slider__tick-mark--inactive {
+    background-color: #999 !important;
+    width: 3px !important;
+    height: 3px !important;
+    border-radius: 50% !important;
   }
 }
 
-// Optional: Custom slider styling
-.score-popup mat-slider {
+// Update slider value display to match current score color
+.slider-value {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 16px;
+  transition: all 0.3s ease; 
+}
+
+// Update thumb labels to match grading colors
+.slider-thumb-labels {
+  position: relative;
   width: 100%;
-  margin: 20px 0;
+  height: 20px;
+  margin-top: 5px;
   
-  // Remove all conflicting ::ng-deep styles and use simple approach
-  .mdc-slider {
-    height: 40px !important;
-  }
-}
-
-.score-popup .score-input-section {
-  margin-bottom: 24px;
-  pointer-events: auto;
-  
-  mat-slider {
-    width: 100%;
-    margin: 16px 0 8px 0;
-    pointer-events: auto !important;
-  }
-}
-
-// Ensure popup content is interactive
-.score-popup {
-  .popup-content {
-    padding: 24px;
-    
-    * {
-      pointer-events: auto;
-    }
-  }
-  
-  .score-input-section {
-    margin-bottom: 24px;
-    
-    mat-slider {
-      pointer-events: auto !important;
-    }
-  }
-}
-
-// Ensure popup content allows interaction
-.score-popup .popup-content {
-  padding: 24px;
-  pointer-events: auto;
-}
-
-.score-popup .score-input-section {
-  margin-bottom: 24px;
-  pointer-events: auto;
-  
-  mat-slider {
-    width: 100%;
-    margin: 16px 0 8px 0;
-    pointer-events: auto !important;
-  }
-}
-
-.quick-scores {
-  margin-bottom: 24px;
-  
-  h6 {
-    margin: 0 0 12px 0;
-    color: #333;
-    font-weight: 500;
-  }
-  
-  .score-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  
-  .quick-score-btn {
-    min-width: 50px;
-    padding: 8px 12px;
-    border: 2px solid #ddd;
-    background: white;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 500;
+  .thumb-label {
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    transform: translateY(-22px);
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
     transition: all 0.2s ease;
     
-    &:hover {
-      border-color: #2196f3;
-      background-color: #f0f8ff;
+    // Default styling
+    background: #cce6ff;
+    color: black;
+    
+    // Match grading scale colors
+    &[style*="left: 0%"] {           // 1.0 - Insufficient
+      background: #f8d7da !important;
+      color: #721c24 !important;
     }
     
-    &.selected {
-      background-color: #2196f3;
-      color: white;
-      border-color: #2196f3;
+    &[style*="left: 33.33%"] {       // 1.5 - Sufficient
+      background: #ffeaa7 !important;
+      color: #8e5c1a !important;
+    }
+    
+    &[style*="left: 66.67%"] {       // 2.0 - Satisfactory
+      background: #fff3cd !important;
+      color: #856404 !important;
+    }
+    
+    &[style*="left: 100%"] {         // 2.5 - Excellent
+      background: #d4edda !important;
+      color: #155724 !important;
+    }
+    
+    &.active {
+      transform: translateX(-50%) scale(1.2);
+      border: 1px solid rgba(0,0,0,0.2);
     }
   }
 }
@@ -1096,5 +1098,62 @@ input[type="number"] {
         }
       }
     }
+  }
+}
+
+// Add this to a1.component.scss - moved from HTML
+
+/* Compact popup grading info */
+.popup-grading-compact {
+  margin-top: 16px;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+  text-align: center;
+}
+
+.popup-grading-title {
+  font-size: 12px;
+  font-weight: bold;
+  color: #495057;
+  margin-bottom: 6px;
+}
+
+.popup-grading-items {
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.popup-scale-item {
+  font-weight: 500;
+  padding: 2px 4px;
+  border-radius: 8px;
+  white-space: nowrap;
+
+  // Apply the bold colors we discussed earlier
+  &.excellent {
+    background: #28a745 !important;  // BOLD Green
+    color: white !important;
+  }
+
+  &.good {
+    background: #17a2b8 !important;  // BOLD Blue
+    color: white !important;
+  }
+
+  &.satisfactory {
+    background: #ffc107 !important;  // BOLD Yellow
+    color: #212529 !important;       // Dark text for yellow
+  }
+
+  &.sufficient {
+    background: #fd7e14 !important;  // BOLD Orange
+    color: white !important;
+  }
+
+  &.insufficient {
+    background: #dc3545 !important;  // BOLD Red
+    color: white !important;
   }
 }
