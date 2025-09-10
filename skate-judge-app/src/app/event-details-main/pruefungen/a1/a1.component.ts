@@ -53,6 +53,13 @@ export class A1Component implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.loadEventData();
+    
+    // Listen for storage changes to update when athletes are hidden/shown
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'events') {
+        this.loadEventData();
+      }
+    });
   }
 
   ngAfterViewInit() {
@@ -73,7 +80,9 @@ export class A1Component implements OnInit, AfterViewInit {
         if (this.event) {
           this.exam = this.event.selectedExams.find(e => e.id.toLowerCase() === 'a1');
           if (this.exam) {
+            // Always get fresh filtered list
             this.prueflingeForExam = this.getPrueflingeForExam(this.exam);
+            console.log('Loaded athletes for A1:', this.prueflingeForExam.length, 'visible athletes');
           }
         }
       }
@@ -318,10 +327,21 @@ export class A1Component implements OnInit, AfterViewInit {
   getPrueflingeForExam(exam: Exam): Pruefling[] {
     if (!this.event?.prueflinge) return [];
     
-    return this.event.prueflinge.filter(pruefling => 
+    const visibleAthletes = this.event.prueflinge.filter(pruefling => 
       pruefling.exam.some(e => e.id === exam.id) &&
-      pruefling.hidden !== true // Filter out hidden athletes
+      pruefling.hidden !== true // Exclude hidden athletes
     );
+    
+    console.log('Total athletes:', this.event.prueflinge.length);
+    console.log('Athletes in this exam:', this.event.prueflinge.filter(p => p.exam.some(e => e.id === exam.id)).length);
+    console.log('Visible athletes:', visibleAthletes.length);
+    
+    return visibleAthletes;
+  }
+
+  // Add method to refresh data when returning from event details
+  ionViewWillEnter() {
+    this.loadEventData();
   }
 
   goBackToEventDetails() {
