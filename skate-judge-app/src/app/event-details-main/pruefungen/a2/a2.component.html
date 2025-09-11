@@ -1,11 +1,329 @@
 <div class="exam-container" *ngIf="event && exam">
-  <h2>{{ exam.name }}</h2>
+  <h1>{{ exam.name }}</h1>
+
+  <div class="details-wrapper">
+    <button class="toggle-button" (click)="toggleDetails()" type="button">
+      <span>{{ isDetailsExpanded ? 'Details ausblenden' : 'Details anzeigen' }}</span>
+      <span class="toggle-icon" [class.rotated]="isDetailsExpanded">▼</span>
+    </button>
+
+    <div class="details-container" [class.collapsed]="!isDetailsExpanded">
+      <div class="event-details">
+        <h3>Event Details</h3>
+        <p><span><strong>Event:</strong></span> {{ event.name }}</p>
+        <p><span><strong>Veranstalter:</strong></span> {{ event.veranstalter }}</p>
+        <p><span><strong>Ort:</strong></span> {{ event.place }}</p>
+        <p><span><strong>Datum:</strong></span> {{ event.startDate | date:'dd.MM.yyyy' }} - {{ event.endDate |
+          date:'dd.MM.yyyy' }}</p>
+        <p><span><strong>Prüflinge:</strong></span> {{ prueflingeForExam.length || 0 }}</p>
+      </div>
+
+      <div class="header-info">
+        <h3>Wertungsrichter:in</h3>
+        <div class="info-grid">
+          <span><strong>Mindestpunktzahl:</strong></span>
+          <span>6,0</span>
+          <span><strong>Durchschnittswert:</strong></span>
+          <span>1,5</span>
+          <span><strong>Keine Note unter:</strong></span>
+          <span>1,0</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORIGINAL TABLE STRUCTURE -->
+  <div class="table-wrapper" *ngIf="prueflingeForExam.length > 0">
+    <!-- Fixed first column (Elements) -->
+    <div class="fixed-column">
+      <table class="elements-table" #elementsTable>
+        <thead>
+          <tr>
+            <th rowspan="3" class="element-header">Elemente</th>
+          </tr>
+          <tr></tr>
+          <tr></tr>
+        </thead>
+        <tbody>
+          
+
+<!-- Elemente generieren -->
+
+  <tr *ngFor="let element of elements; let i = index">
+  <td class="element-header">
+    <div class="element-content">{{ i + 1 }}. {{ element }}</div>
+  </td>
+</tr>
+
+
+<!--           
+<tr>
+  <td class="element-header">
+    <div class="element-content">3.a) Bogenachter Rva und Lva</div>
+  </td>
+</tr>
+<tr>
+  <td class="element-header">
+    <div class="element-content">3.b) Bogenachter Rra und Lra</div>
+  </td>
+</tr>
+<tr>
+  <td class="element-header">
+    <div class="element-content">3.c) Fuchsdreier Lva und Rva (mit oder ohne Zeichnung)</div>
+  </td>
+</tr>
+<tr>
+  <td class="element-header">
+    <div class="element-content">3.d) Flieger vorwärts und rückwärts</div>
+  </td>
+</tr>
+<tr>
+  <td class="element-header">
+    <div class="element-content">3.e) Dreiersprung mit Mohawkanlauf</div>
+  </td>
+</tr>
+<tr>
+  <td class="element-header">
+    <div class="element-content">3.f) Salchow mit langem Auslauf</div>
+  </td>
+</tr>
+<tr>
+  <td class="element-header">
+    <div class="element-content">3.g) Zweibeinpirouette mit 4 Umdrehungen oder Einbeinpirouette mit 2–3 Umdrehungen</div>
+  </td>
+</tr>
+<tr>
+  <td class="element-header">
+    <div class="element-content">3.h) Zirkel ra oder Mond</div>
+  </td>
+</tr> -->
+
+          <tr class="total-row">
+            <td class="element-header">Erreichte Gesamtpunktzahl:</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Scrollable athletes section -->
+    <div class="athletes-scroll-container">
+      <table class="athletes-table" #athletesTable>
+        <thead>
+          <tr>
+            <th [attr.colspan]="prueflingeForExam.length" class="athletes-header">Athleten</th>
+          </tr>
+          <tr>
+            <th class="number-cell" *ngFor="let pruefling of prueflingeForExam; let i = index">{{ i + 1 }}.</th>
+          </tr>
+          <tr>
+            <td class="athlete-cell" *ngFor="let pruefling of prueflingeForExam">
+              <div class="athlete-info">
+                <div class="verein-display">{{ pruefling.verein }}</div>
+                <div class="name-display">{{ pruefling.vorname }} {{ pruefling.nachname }}</div>
+              </div>
+            </td>
+          </tr>
+        </thead>
+        <tbody>
   
-  <div class="event-details">
-    <h3>Event Details</h3>
-    <p>Event: {{ event.name }}</p>
-    <p>Veranstalter: {{ event.veranstalter }}</p>
-    <p>Ort: {{ event.place }}</p>
-    <p>Datum: {{ event.startDate | date:'dd.MM.yyyy' }} - {{ event.endDate | date:'dd.MM.yyyy' }}</p>
+          
+
+
+
+
+
+<tr *ngFor="let element of elements; let eIndex = index">
+  <td class="score-cell" *ngFor="let pruefling of prueflingeForExam; let pIndex = index">
+    <button type="button" class="score-button"
+      [class.missing-score]="showMissingScoresWarning && !getScore(eIndex + 1, pIndex)"
+      [class.low-score]="getScore(eIndex + 1, pIndex) && getScore(eIndex + 1, pIndex) < 1.5"
+      (click)="openScorePopup(eIndex + 1, pIndex, pruefling)"
+      [attr.data-element]="eIndex + 1"
+      [attr.data-athlete]="pIndex + 1"
+      [attr.aria-label]="'Bewertung für ' + pruefling.vorname + ' ' + pruefling.nachname + ' - Element ' + (eIndex + 1)"
+      [attr.title]="'Bewertung für Element ' + (eIndex + 1) + ' - ' + pruefling.vorname + ' ' + pruefling.nachname">
+      {{ getScore(eIndex + 1, pIndex) || '' }}
+    </button>
+  </td>
+</tr>
+<tr class="total-row">
+            <td class="score-cell total-cell" *ngFor="let pruefling of prueflingeForExam; let i = index"
+              [attr.id]="'total-' + (i + 1)">
+              {{ getTotal(i) }}
+            </td>
+          </tr>
+
+
+          <!-- <tr>
+            <td class="score-cell" *ngFor="let pruefling of prueflingeForExam; let i = index">
+              <button type="button" class="score-button"
+                [class.missing-score]="showMissingScoresWarning && !getScore(1, i)"
+                [class.low-score]="getScore(1, i) && getScore(1, i) < 1.5" (click)="openScorePopup(1, i, pruefling)"
+                [attr.data-element]="1" [attr.data-athlete]="i + 1"
+                [attr.aria-label]="'Bewertung für ' + pruefling.vorname + ' ' + pruefling.nachname + ' - Element 1'"
+                [attr.title]="'Bewertung für Element 1 - ' + pruefling.vorname + ' ' + pruefling.nachname">
+                {{ getScore(1, i) || '' }}
+              </button>
+            </td>
+          </tr> -->
+
+
+
+
+<!-- 
+
+          <tr>
+            <td class="score-cell" *ngFor="let pruefling of prueflingeForExam; let i = index">
+              <button type="button" class="score-button"
+                [class.missing-score]="showMissingScoresWarning && !getScore(2, i)"
+                [class.low-score]="getScore(2, i) && getScore(2, i) < 1.5" (click)="openScorePopup(2, i, pruefling)"
+                [attr.data-element]="2" [attr.data-athlete]="i + 1"
+                [attr.aria-label]="'Bewertung für ' + pruefling.vorname + ' ' + pruefling.nachname + ' - Element 2'"
+                [attr.title]="'Bewertung für Element 2 - ' + pruefling.vorname + ' ' + pruefling.nachname">
+                {{ getScore(2, i) || '' }}
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td class="score-cell" *ngFor="let pruefling of prueflingeForExam; let i = index">
+              <button type="button" class="score-button"
+                [class.missing-score]="showMissingScoresWarning && !getScore(3, i)"
+                [class.low-score]="getScore(3, i) && getScore(3, i) < 1.5" (click)="openScorePopup(3, i, pruefling)"
+                [attr.data-element]="3" [attr.data-athlete]="i + 1"
+                [attr.aria-label]="'Bewertung für ' + pruefling.vorname + ' ' + pruefling.nachname + ' - Element 3'"
+                [attr.title]="'Bewertung für Element 3 - ' + pruefling.vorname + ' ' + pruefling.nachname">
+                {{ getScore(3, i) || '' }}
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td class="score-cell" *ngFor="let pruefling of prueflingeForExam; let i = index">
+              <button type="button" class="score-button"
+                [class.missing-score]="showMissingScoresWarning && !getScore(4, i)"
+                [class.low-score]="getScore(4, i) && getScore(4, i) < 1.5" (click)="openScorePopup(4, i, pruefling)"
+                [attr.data-element]="4" [attr.data-athlete]="i + 1"
+                [attr.aria-label]="'Bewertung für ' + pruefling.vorname + ' ' + pruefling.nachname + ' - Element 4'"
+                [attr.title]="'Bewertung für Element 4 - ' + pruefling.vorname + ' ' + pruefling.nachname">
+                {{ getScore(4, i) || '' }}
+              </button>
+            </td>
+          </tr>
+          <tr class="total-row">
+            <td class="score-cell total-cell" *ngFor="let pruefling of prueflingeForExam; let i = index"
+              [attr.id]="'total-' + (i + 1)">
+              {{ getTotal(i) }}
+            </td>
+          </tr> -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Show message when no participants are registered -->
+  <div class="no-participants" *ngIf="prueflingeForExam.length === 0">
+    <mat-card>
+      <mat-card-content>
+        <h3>Keine Teilnehmer für {{ exam.name }}</h3>
+        <p>Es sind noch keine Prüflinge für diese Prüfung angemeldet.</p>
+        <p>Bitte fügen Sie Teilnehmer über die Veranstaltungsdetails hinzu.</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Back button and BESTÄTIGEN button -->
+  <div class="action-buttons">
+    <button mat-stroked-button color="primary" (click)="goBackToEventDetails()" class="back-button-material">
+      <mat-icon>arrow_back</mat-icon>
+      Zurück zur Veranstaltung
+    </button>
+
+    <button mat-raised-button class="confirm-button-material" color="accent" (click)="confirmFinalScores()"
+      [disabled]="prueflingeForExam.length === 0">
+      <mat-icon>check_circle</mat-icon>
+      BESTÄTIGEN
+    </button>
+  </div>
+
+  <!-- Warning message for missing scores -->
+  <div class="warning-message" *ngIf="showMissingScoresWarning">
+    <mat-card class="warning-card">
+      <mat-card-content>
+        <h3><mat-icon>warning</mat-icon> Unvollständige Bewertung</h3>
+        <p>Bitte bewerten Sie alle Elemente für alle Athleten, bevor Sie die Prüfung bestätigen.</p>
+        <p><strong>Fehlende Bewertungen:</strong> {{ missingScoresCount }} von {{ totalScoresNeeded }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+<!-- SCORE POPUP -->
+<div class="score-popup-overlay" *ngIf="showScorePopup">
+  <div class="score-popup">
+    <div class="popup-header">
+      <h2>{{ exam?.id }} - {{ currentPopupData?.element }}</h2>
+      <div class="athlete-info">
+        <h4>{{ currentPopupData?.athlete }}</h4>
+        <p class="verein">{{ currentPopupData?.verein }}</p>
+      </div>
+    </div>
+
+    <!-- Navigation buttons -->
+    <div class="navigation-buttons">
+      <button type="button" class="nav-btn prev-btn" (click)="goToPreviousWithSave()" [disabled]="!canGoBack()"
+        [attr.title]="'Vorheriger Athlet/Element'">
+        <span class="nav-icon">‹</span>
+        <span class="nav-text">Zurück</span>
+      </button>
+
+      <div class="progress-indicator">
+        <span class="current-position">
+          Element {{ currentElementIndex }} - Athlete {{ currentAthleteIndex + 1 }} von {{ prueflingeForExam.length }}
+        </span>
+      </div>
+
+      <!-- Only show "Weiter" button if not at the end -->
+      <button type="button" class="nav-btn next-btn" *ngIf="canGoNext()" (click)="goToNextWithSave()"
+        [attr.title]="'Nächster Athlet/Element'">
+        <span class="nav-text">Weiter</span>
+        <span class="nav-icon">›</span>
+      </button>
+
+      <!-- Show completion message when at the end -->
+      <div class="completion-message" *ngIf="!canGoNext()">
+        <button type="button" class="completion-btn" (click)="finishScoring()"
+          [attr.title]="'Bewertung abschließen und Popup schließen'">
+          <span class="completion-text">Fertig</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="popup-content">
+      <div class="score-input-section">
+        <label for="score-slider-input">Punktzahl (1.0 - 2.5):</label>
+
+        <mat-slider id="score-slider" min="1.0" max="2.5" step="0.1" discrete="true" showTickMarks="true"
+          [displayWith]="formatSliderLabel">
+          <input id="score-slider-input" matSliderThumb [(ngModel)]="currentScore" (ngModelChange)="onSliderChange()"
+            [attr.aria-label]="'Punktzahl Slider'" [attr.title]="'Punktzahl zwischen 1.0 und 2.5'" placeholder="1.5">
+        </mat-slider>
+
+        <!-- Custom thumb labels positioned above slider -->
+        <div class="slider-thumb-labels">
+          <span class="thumb-label" [class.active]="currentScore === 1.0" style="left: 0%">1.0</span>
+          <span class="thumb-label" [class.active]="currentScore === 1.5" style="left: 33.33%">1.5</span>
+          <span class="thumb-label" [class.active]="currentScore === 2.0" style="left: 66.67%">2.0</span>
+          <span class="thumb-label" [class.active]="currentScore === 2.5" style="left: 100%">2.5</span>
+        </div>
+
+        <div class="slider-value">
+          {{ currentScore | number:'1.1-1' }}
+        </div>
+      </div>
+    </div>
+
+    <div class="popup-actions">
+      <button type="button" class="btn-cancel" (click)="closePopupDirectly()">Schließen</button>
+      <button type="button" class="btn-clear" (click)="clearScore()">Löschen</button>
+    </div>
   </div>
 </div>
