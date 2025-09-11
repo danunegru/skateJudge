@@ -1,1 +1,34 @@
-<p>sidebar works!</p>
+<div class="sidebar" *ngIf="visible || animating" [class.visible]="visible" [class.expanded]="expanded" (transitionend)="onTransitionEnd()">
+  <button class="hide-btn" (click)="hide()">⨯</button>
+  <div class="icon-row">
+    <div class="icon">
+      <i class="fa fa-home"></i>
+      <span class="icon-label" *ngIf="expanded">Home</span>
+    </div>
+    <div class="icon">
+      <i class="fa fa-star"></i>
+      <span class="icon-label" *ngIf="expanded">Favoriten</span>
+    </div>
+    <div class="icon">
+      <i class="fa fa-trophy"></i>
+      <span class="icon-label" *ngIf="expanded">Erfolge</span>
+    </div>
+    <div class="icon">
+      <i class="fa fa-plus"></i>
+      <span class="icon-label" *ngIf="expanded">Neu</span>
+    </div>
+    <div class="icon">
+      <i class="fa fa-user"></i>
+      <span class="icon-label" *ngIf="expanded">Profil</span>
+    </div>
+    <div class="icon">
+      <i class="fa fa-wrench"></i>
+      <span class="icon-label" *ngIf="expanded">Einstellungen</span>
+    </div>
+  </div>
+ <div class="icon bottom-icon" (click)="toggleExpand()">
+  <i class="fa fa-arrows-h"></i>
+  <span class="icon-label" *ngIf="expanded"></span>
+</div>
+</div>
+<button *ngIf="!visible" class="show-btn" (click)="show()">☰</button>
