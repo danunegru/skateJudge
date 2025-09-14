@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,ElementRef, HostListener } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
@@ -15,6 +15,8 @@ export class SidebarComponent {
   visible = true;
   animating = false;
   expanded = false;
+
+  constructor(private elRef: ElementRef) {}
 
   hide() {
     this.visible = false;
@@ -35,4 +37,13 @@ export class SidebarComponent {
   toggleExpand() {
     this.expanded = !this.expanded;
   }
+  // Klick außerhalb der Sidebar -> toggleExpand ausführen
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent) {
+    const clickedInside = this.elRef.nativeElement.contains(event.target);
+    if (!clickedInside) {
+      this.toggleExpand();
+    }
+  }
+
 }

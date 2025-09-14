@@ -21,21 +21,29 @@ import { AppComponent } from './app.component';
 export const routes: Routes = [
   {
     path: '',
-    component: AddEventAreaPlaceComponent
-  }, { path: 'create-event', component: EventFormComponent },
-  {
-    path: 'add-event-area-place',
-    component: AddEventAreaPlaceComponent
-  }, {
-    path: 'users', 
-    component: UsersComponent},
-  {
-    path: 'event/:id',
-    component: EventDetailsComponent
+    component: AddEventAreaPlaceComponent,
+    data: { title: 'Startseite' }
+  }, { path: 'create-event', component: EventFormComponent,
+    data: { title: 'Veranstaltung erstellen' }
   },
   {
+    path: 'add-event-area-place',
+    component: AddEventAreaPlaceComponent,
+    data: { title: 'Veranstaltungübersicht' }
+  }, {
+    path: 'users', 
+    component: UsersComponent,
+    data: { title: 'Benutzer' }},
+    
+  {
+    path: 'event/:id',
+    component: EventDetailsComponent,
+    data: { title: 'Veranstaltung:id' }},
+  
+  {
     path: 'pruefling-form',
-    component: PrueflingFormComponent
+    component: PrueflingFormComponent,
+    data: { title: 'Prüflingsformular' }
   },
   { path: 'exam/:eventId/a1', component: A1Component },
   { path: 'exam/:eventId/a2', component: A2Component },
