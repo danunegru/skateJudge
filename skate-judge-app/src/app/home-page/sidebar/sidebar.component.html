@@ -1,9 +1,13 @@
 <div class="sidebar" *ngIf="visible || animating" [class.visible]="visible" [class.expanded]="expanded" (transitionend)="onTransitionEnd()">
   <button class="hide-btn" (click)="hide()">⨯</button>
   <div class="icon-row">
-    <div class="icon">
+    
+    <div class="icon" [routerLink]="['/add-event-area-place']">
+      
       <i class="fa fa-home"></i>
+      
       <span class="icon-label" *ngIf="expanded">Home</span>
+      
     </div>
     <div class="icon">
       <i class="fa fa-star"></i>
@@ -17,10 +21,14 @@
       <i class="fa fa-plus"></i>
       <span class="icon-label" *ngIf="expanded">Neu</span>
     </div>
-    <div class="icon">
+     
+    <div class="icon" [routerLink]="['/users']">
+     
       <i class="fa fa-user"></i>
-      <span class="icon-label" *ngIf="expanded">Profil</span>
+      <span class="icon-label" *ngIf="expanded">User</span>
+      
     </div>
+    
     <div class="icon">
       <i class="fa fa-wrench"></i>
       <span class="icon-label" *ngIf="expanded">Einstellungen</span>
