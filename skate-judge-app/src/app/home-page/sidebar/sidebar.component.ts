@@ -1,15 +1,13 @@
-import { Component,ElementRef, HostListener } from '@angular/core';
+import { Component, ElementRef, HostListener } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
-
-
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
   imports: [NgIf, RouterLink],
   templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.scss'
+  styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent {
   visible = true;
@@ -37,13 +35,15 @@ export class SidebarComponent {
   toggleExpand() {
     this.expanded = !this.expanded;
   }
-  // Klick außerhalb der Sidebar -> toggleExpand ausführen
+
+  // Klick außerhalb der Sidebar -> toggleExpand nur ausführen, wenn expanded true
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent) {
-    const clickedInside = this.elRef.nativeElement.contains(event.target);
-    if (!clickedInside) {
+    const clickedInsideSidebar = this.elRef.nativeElement.contains(event.target);
+    const clickedShowButton = (event.target as HTMLElement).classList.contains('show-btn');
+
+    if (!clickedInsideSidebar && !clickedShowButton && this.expanded) {
       this.toggleExpand();
     }
   }
-
 }
