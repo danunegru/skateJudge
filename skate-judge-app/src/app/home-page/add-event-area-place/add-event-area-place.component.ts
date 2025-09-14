@@ -31,6 +31,7 @@ export class AddEventAreaPlaceComponent implements OnInit {
   }
 
     /** Route to the event-creation form. */
+    //Muss in die HTML über routerLink 
   openCreateNewEvent() {
     console.log('Opening create new event');
     this.router.navigate(['/create-event']);
