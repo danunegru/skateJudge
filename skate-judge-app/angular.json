@@ -36,7 +36,9 @@
             ],
             "styles": [
               "@angular/material/prebuilt-themes/rose-red.css",
-              "src/styles.scss"
+              "src/styles.scss",
+           "node_modules/font-awesome/css/font-awesome.min.css",
+  "src/assets/css/roboto.css"
             ],
             "scripts": []
           },
@@ -97,7 +99,10 @@
             ],
             "styles": [
               "@angular/material/prebuilt-themes/rose-red.css",
-              "src/styles.scss"
+              "src/styles.scss",
+   "node_modules/font-awesome/css/font-awesome.min.css",
+  "src/assets/css/roboto.css"
+
             ],
             "scripts": []
           }
