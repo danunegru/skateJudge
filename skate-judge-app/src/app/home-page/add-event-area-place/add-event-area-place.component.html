@@ -31,7 +31,7 @@
             <p>Datum: {{ event.startDate | date:'dd.MM.yyyy' }} - {{ event.endDate | date:'dd.MM.yyyy' }}</p>
             <div class="pruefling-info">
               <mat-icon>group</mat-icon>
-              <span>{{ event.prueflinge.length || 0 }} Prüflinge</span>
+              <span>{{ getAthleteCount(event) }} Prüflinge</span>
             </div>
           </div>
         </div>

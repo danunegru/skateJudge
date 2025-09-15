@@ -16,6 +16,8 @@ export interface Pruefling {
   verein: string;
   exam: { id: string; name: string; }[];
   hidden?: boolean; // Add this optional property
+  eventId?: string; // Link to parent event
+  createdAt?: string; // When athlete was created
 }
 
 export interface Exam {

@@ -13,6 +13,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Event, Exam, Pruefling } from '../shared/models/event.interface';
 import { PrueflingFormComponent } from '../pruefling-form/pruefling-form.component';
+import { IndexedDbService } from '../shared/service/db/indexeddb.service'; // ✅ Add this import
 
 @Component({
   selector: 'app-event-details',
@@ -46,24 +47,31 @@ export class EventDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private indexedDb: IndexedDbService // ✅ Add this injection
   ) {}
 
   /**
-   * Initializes the component by loading the event details
-   * based on the ID from the URL parameters.
+   * Initializes the component by loading the event details from IndexedDB
    */
-  ngOnInit() {
+  async ngOnInit() {
     const eventId = this.route.snapshot.paramMap.get('id');
     if (eventId) {
-      const savedEvents = localStorage.getItem('events');
-      if (savedEvents) {
-        // Loading events
-        const events: Event[] = JSON.parse(savedEvents);
+      try {
+        // ✅ Load from IndexedDB instead of localStorage
+        const events: Event[] = await this.indexedDb.getAll<Event>('events');
         this.eventDetails = events.find(e => e.id === eventId);
+        
         if (this.eventDetails) {
           this.selectedExams = this.eventDetails.selectedExams;
+          // Load athletes from separate prueflinge table
+          await this.loadAthletesFromPrueflingeTable();
+          console.log('📋 Event loaded from IndexedDB:', this.eventDetails);
+        } else {
+          console.warn('⚠️ Event not found in IndexedDB');
         }
+      } catch (error) {
+        console.error('❌ Error loading events from IndexedDB:', error);
       }
     }
   }
@@ -88,7 +96,9 @@ export class EventDetailsComponent implements OnInit {
         }
       });
 
-      dialogRef.afterClosed().subscribe((result: Pruefling | undefined) => {
+      dialogRef.afterClosed().subscribe(async (result: Pruefling | undefined) => {
+        console.log('🎯 Dialog closed with result:', result);
+        
         if (result && this.eventDetails) {
           if (!Array.isArray(this.eventDetails.prueflinge)) {
             this.eventDetails.prueflinge = [];
@@ -96,11 +106,33 @@ export class EventDetailsComponent implements OnInit {
           
           const newPruefling = {
             ...result,
-            id: crypto.randomUUID()  // Add ID after spreading result
+            id: crypto.randomUUID(),  // Add ID after spreading result
+            eventId: this.eventDetails.id,  // Link to event
+            createdAt: new Date().toISOString(),
+            hidden: false
           };
           
-          this.eventDetails.prueflinge.push(newPruefling);
-          this.updateEventInStorage();
+          console.log('👤 Adding new athlete:', newPruefling);
+          
+          try {
+            // Save to prueflinge table (separate athlete management)
+            console.log('💽 Saving athlete to prueflinge table:', newPruefling);
+            await this.indexedDb.saveItem<Pruefling>('prueflinge', newPruefling);
+            console.log('💾 Athlete saved to prueflinge table');
+            
+            // Also add to event for event-specific data
+            this.eventDetails.prueflinge.push(newPruefling);
+            console.log('📋 Total athletes now:', this.eventDetails.prueflinge.length);
+            
+            // Update event in IndexedDB
+            this.updateEventInStorage();
+            
+            console.log('✅ Athlete saved to both locations');
+          } catch (error) {
+            console.error('❌ Error saving athlete:', error);
+          }
+        } else {
+          console.log('❌ No result or no event details');
         }
       });
     }
@@ -293,18 +325,77 @@ export class EventDetailsComponent implements OnInit {
   }
 
   /**
-   * Updates the event in localStorage after modifications.
-   * Ensures the event details are saved correctly.
+   * Updates the event in IndexedDB after modifications.
    */
-  private updateEventInStorage() {
+  private async updateEventInStorage() {
     if (!this.eventDetails) return;
     
-    const events = JSON.parse(localStorage.getItem('events') || '[]');
-    const eventIndex = events.findIndex((e: any) => e.id === this.eventDetails!.id);
+    try {
+      // ✅ Save to IndexedDB instead of localStorage
+      await this.indexedDb.saveItem<Event>('events', this.eventDetails);
+      console.log('💾 Event updated in IndexedDB');
+    } catch (error) {
+      console.error('❌ Error updating event in IndexedDB:', error);
+    }
+  }
+
+  /**
+   * Loads athletes from the separate prueflinge table
+   */
+  private async loadAthletesFromPrueflingeTable() {
+    if (!this.eventDetails) return;
     
-    if (eventIndex !== -1) {
-      events[eventIndex] = { ...this.eventDetails }; // Create a copy to avoid reference issues
-      localStorage.setItem('events', JSON.stringify(events));
+    try {
+      console.log('🔍 Attempting to load athletes from prueflinge table...');
+      const allAthletes: Pruefling[] = await this.indexedDb.getAll<Pruefling>('prueflinge');
+      console.log('🗃️ All athletes in prueflinge table:', allAthletes);
+      console.log('🎯 Looking for eventId:', this.eventDetails.id);
+      
+      const eventAthletes = allAthletes.filter(athlete => {
+        console.log(`👤 Athlete ${athlete.vorname} ${athlete.nachname} has eventId: ${athlete.eventId}`);
+        return athlete.eventId === this.eventDetails?.id;
+      });
+      
+      // Update event with athletes from prueflinge table
+      this.eventDetails.prueflinge = eventAthletes;
+      console.log('📊 Loaded athletes from prueflinge table:', eventAthletes.length);
+      console.log('📋 Final event prueflinge:', this.eventDetails.prueflinge);
+    } catch (error) {
+      console.error('❌ Error loading athletes from prueflinge table:', error);
+    }
+  }
+
+  /**
+   * Cleans up orphaned athletes whose events no longer exist
+   */
+  async cleanupOrphanedAthletes() {
+    try {
+      console.log('🧹 Starting cleanup of orphaned athletes...');
+      
+      // Get all athletes and events
+      const allAthletes: Pruefling[] = await this.indexedDb.getAll<Pruefling>('prueflinge');
+      const allEvents: Event[] = await this.indexedDb.getAll<Event>('events');
+      
+      const existingEventIds = new Set(allEvents.map(event => event.id));
+      
+      // Find orphaned athletes
+      const orphanedAthletes = allAthletes.filter(athlete => 
+        athlete.eventId && !existingEventIds.has(athlete.eventId)
+      );
+      
+      console.log(`🗑️ Found ${orphanedAthletes.length} orphaned athletes to delete`);
+      
+      // Delete orphaned athletes
+      for (const athlete of orphanedAthletes) {
+        await this.indexedDb.deleteItem('prueflinge', athlete.id);
+        console.log(`🗑️ Deleted orphaned athlete: ${athlete.vorname} ${athlete.nachname} (Event: ${athlete.eventId})`);
+      }
+      
+      console.log('✅ Cleanup completed');
+      return orphanedAthletes.length;
+    } catch (error) {
+      console.error('❌ Error during cleanup:', error);
+      return 0;
     }
   }
 }

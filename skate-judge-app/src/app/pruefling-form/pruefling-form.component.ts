@@ -32,11 +32,8 @@ export class PrueflingFormComponent implements OnInit {
     private dialogRef: MatDialogRef<PrueflingFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { eventId: string, exams: Exam[], preSelectedExam?: Exam }
   ) {
-    this.prueflingForm = this.fb.group({
-      name: ['', Validators.required],
-      verein: ['', Validators.required],
-      exam: [[], Validators.required]
-    });
+    // Form will be initialized in ngOnInit
+    this.prueflingForm = this.fb.group({});
   }
 
   private capitalizeFirstLetter(value: string): string {
@@ -117,7 +114,11 @@ export class PrueflingFormComponent implements OnInit {
 
   onSubmit() {
     if (this.prueflingForm.valid) {
-      this.dialogRef.close(this.prueflingForm.value);
+      const formData = this.prueflingForm.value;
+      console.log('📝 Form submitted with data:', formData);
+      this.dialogRef.close(formData);
+    } else {
+      console.log('❌ Form is invalid:', this.prueflingForm.errors);
     }
   }
 

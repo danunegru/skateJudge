@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSliderModule } from '@angular/material/slider';
 import { FormsModule } from '@angular/forms';
 import { Event as SkateEvent, Exam, Pruefling } from '../../../shared/models/event.interface';
+import { IndexedDbService } from '../../../shared/service/db/indexeddb.service';
 
 @Component({
   selector: 'app-a3',
@@ -58,7 +59,11 @@ export class A3Component implements OnInit, AfterViewInit {
     'Einbeinpinrouette (min. 3 Umdrehungen)'
   ];
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute, 
+    private router: Router,
+    private indexedDb: IndexedDbService
+  ) {}
 
   ngOnInit() {
     this.loadEventData();
@@ -70,21 +75,25 @@ export class A3Component implements OnInit, AfterViewInit {
   }
 
   // Data loading
-  private loadEventData(): void {
+  private async loadEventData(): Promise<void> {
     this.eventId = this.route.snapshot.paramMap.get('eventId');
     
     if (this.eventId) {
-      const savedEvents = localStorage.getItem('events');
-      if (savedEvents) {
-        const events: SkateEvent[] = JSON.parse(savedEvents);
+      try {
+        const events: SkateEvent[] = await this.indexedDb.getAll<SkateEvent>('events');
         this.event = events.find(e => e.id === this.eventId);
         
         if (this.event) {
           this.exam = this.event.selectedExams.find(e => e.id.toLowerCase() === 'a3');
           if (this.exam) {
             this.prueflingeForExam = this.getPrueflingeForExam(this.exam);
+            console.log('📋 A3 Event loaded from IndexedDB:', this.event);
           }
+        } else {
+          console.warn('⚠️ A3 Event not found in IndexedDB');
         }
+      } catch (error) {
+        console.error('❌ Error loading A3 events from IndexedDB:', error);
       }
     }
   }

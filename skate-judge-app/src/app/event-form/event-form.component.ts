@@ -1,22 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, AbstractControl, ValidationErrors, Validators } from '@angular/forms';
+import {
+  ReactiveFormsModule, FormBuilder, FormGroup,
+  AbstractControl, ValidationErrors, Validators
+} from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import {
+  DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE
+} from '@angular/material/core';
+import {
+  MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS
+} from '@angular/material-moment-adapter';
 import moment from 'moment';
 import { Router } from '@angular/router';
 import { Event, Exam } from '../shared/models/event.interface';
 import { TextFieldModule } from '@angular/cdk/text-field';
+import { IndexedDbService } from '../shared/service/db/indexeddb.service';
 
-// Define custom date formats
 export const GERMAN_DATE_FORMATS = {
-  parse: {
-    dateInput: 'DD.MM.YYYY',
-  },
+  parse: { dateInput: 'DD.MM.YYYY' },
   display: {
     dateInput: 'DD.MM.YYYY',
     monthYearLabel: 'MMMM YYYY',
@@ -24,10 +29,7 @@ export const GERMAN_DATE_FORMATS = {
     monthYearA11yLabel: 'MMMM YYYY',
   },
 };
-/**
- * Form component to create a new skating event.
- * Handles event meta-data, date validation, and exam selection.
- */
+
 @Component({
   selector: 'app-event-form',
   standalone: true,
@@ -56,210 +58,136 @@ export const GERMAN_DATE_FORMATS = {
 export class EventFormComponent implements OnInit {
   eventForm: FormGroup;
 
-  /** All exam types that can be assigned to an event. */
-
   examOptions: Exam[] = [
-    {
-      id: 'A1',
-      name: 'Anfängerprüfung - Freiläufer',
-      category: 'Anfänger'
-    },
-    {
-      id: 'A2',
-      name: 'Anfängerprüfung - Figurenläufer',
-      category: 'Anfänger'
-    },
-    {
-      id: 'A3',
-      name: 'Anfängerprüfung - Kunstläufer',
-      category: 'Anfänger'
-    },
-    {
-      id: 'P4',
-      name: 'Pflichtklasse 4',
-      category: 'Pflicht'
-    },
-    {
-      id: 'P3',
-      name: 'Pflichtklasse 3',
-      category: 'Pflicht'
-    },
-    {
-      id: 'P2',
-      name: 'Pflichtklasse 2',
-      category: 'Pflicht'
-    },
-    {
-      id: 'P1',
-      name: 'Pflichtklasse 1',
-      category: 'Pflicht'
-    },
-    {
-      id: 'K4',
-      name: 'Kürklasse 4',
-      category: 'Kür'
-    },
-    {
-      id: 'K3',
-      name: 'Kürklasse 3 - Nachwuchsklasse',
-      category: 'Kür'
-    },
-    {
-      id: 'K2',
-      name: 'Kürklasse 2 - Juniorenklasse',
-      category: 'Kür'
-    },
-    {
-      id: 'K1',
-      name: 'Kürklasse 1 - Meisterklasse',
-      category: 'Kür'
-    }
+    { id: 'A1', name: 'Anfängerprüfung - Freiläufer', category: 'Anfänger' },
+    { id: 'A2', name: 'Anfängerprüfung - Figurenläufer', category: 'Anfänger' },
+    { id: 'A3', name: 'Anfängerprüfung - Kunstläufer', category: 'Anfänger' },
+    { id: 'P4', name: 'Pflichtklasse 4', category: 'Pflicht' },
+    { id: 'P3', name: 'Pflichtklasse 3', category: 'Pflicht' },
+    { id: 'P2', name: 'Pflichtklasse 2', category: 'Pflicht' },
+    { id: 'P1', name: 'Pflichtklasse 1', category: 'Pflicht' },
+    { id: 'K4', name: 'Kürklasse 4', category: 'Kür' },
+    { id: 'K3', name: 'Kürklasse 3 - Nachwuchsklasse', category: 'Kür' },
+    { id: 'K2', name: 'Kürklasse 2 - Juniorenklasse', category: 'Kür' },
+    { id: 'K1', name: 'Kürklasse 1 - Meisterklasse', category: 'Kür' },
   ];
+
   selectedExamList: Exam[] = [];
 
-  constructor(private fb: FormBuilder, private router: Router) {
-    /* --------------------------------------------------------------------
-  * Build the form with validation rules
-  * ------------------------------------------------------------------ */
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private indexedDb: IndexedDbService
+  ) {
     this.eventForm = this.fb.group({
       name: ['', Validators.required],
-      veranstalter: ['', [Validators.required, this.capitalizedFirstLetterValidator]],
+      veranstalter: ['', [Validators.required, this.capitalizedFirstLetterValidator()]],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       place: ['', Validators.required],
-      selectedExams: [[], Validators.required] // Make it required with empty array as default
+      selectedExams: [[], Validators.required]
     });
 
-    // Subscribe to name changes
-    this.eventForm.get('name')?.valueChanges.subscribe(value => {
-      if (value && typeof value === 'string') {
-        const capitalized = this.capitalizeFirstLetter(value);
-        if (capitalized !== value) {
-          this.eventForm.patchValue({ name: capitalized }, { emitEvent: false });
-        }
-      }
-    });
+    this.autoCapitalize('name');
+    this.autoCapitalize('veranstalter');
 
-    // Subscribe to veranstalter changes
-    this.eventForm.get('veranstalter')?.valueChanges.subscribe(value => {
-      if (value && typeof value === 'string') {
-        const capitalized = this.capitalizeFirstLetter(value);
-        if (capitalized !== value) {
-          this.eventForm.patchValue({ veranstalter: capitalized }, { emitEvent: false });
-        }
-      }
-    });
-
-    // Subscribe to changes in the selectedExams form control
     this.eventForm.get('selectedExams')?.valueChanges.subscribe((values: Exam[]) => {
       this.selectedExamList = values;
-      console.log('Selected exams:', this.selectedExamList); // Debug log
+      console.log('📋 Ausgewählte Prüfungen:', this.selectedExamList);
     });
   }
 
   ngOnInit() {
-    // Add validation for date range
-    this.eventForm.get('endDate')?.valueChanges.subscribe(() => {
-      this.validateDateRange();
-    });
+    this.eventForm.get('startDate')?.valueChanges.subscribe(() => this.validateDateRange());
+    this.eventForm.get('endDate')?.valueChanges.subscribe(() => this.validateDateRange());
 
-    this.eventForm.get('startDate')?.valueChanges.subscribe(() => {
-      this.validateDateRange();
+    this.indexedDb.getAll<Event>('events').then(events => {
+      console.log('📦 Bereits gespeicherte Events in IndexedDB:', events);
     });
   }
 
-  // * Validation & utility logic
-
-  /** Validates that the end date is not before the start date. */
   validateDateRange() {
-    const startDate = this.eventForm.get('startDate')?.value;
-    const endDate = this.eventForm.get('endDate')?.value;
-
-    if (startDate && endDate) {
-      const start = moment(startDate);
-      const end = moment(endDate);
-
-      if (end.isBefore(start)) {
+    const start = this.eventForm.get('startDate')?.value;
+    const end = this.eventForm.get('endDate')?.value;
+    if (start && end) {
+      const startDate = moment(start);
+      const endDate = moment(end);
+      if (endDate.isBefore(startDate)) {
         this.eventForm.get('endDate')?.setErrors({ 'invalidRange': true });
       } else {
-        const currentErrors = this.eventForm.get('endDate')?.errors;
-        if (currentErrors) {
-          delete currentErrors['invalidRange'];
-          this.eventForm.get('endDate')?.setErrors(
-            Object.keys(currentErrors).length ? currentErrors : null
-          );
+        const errors = this.eventForm.get('endDate')?.errors;
+        if (errors) {
+          delete errors['invalidRange'];
+          this.eventForm.get('endDate')?.setErrors(Object.keys(errors).length ? errors : null);
         }
       }
     }
   }
+
+  dateFilter = (date: Date | null): boolean => {
+    if (!date) return false;
+    return moment(date).isSameOrAfter(moment().startOf('day'));
+  };
 
   closeCreateNewEvent() {
     this.router.navigate(['/']);
   }
 
-  /**
-  * Disable past dates in the datepicker.
-  * @param date The date to evaluate.
-  */
-  dateFilter = (date: Date | null): boolean => {
-    if (!date) {
-      return false;
-    }
-    const today = moment().startOf('day');
-    const checkDate = moment(date);
-    return checkDate.isSameOrAfter(today);
-  };
-
-  onSubmit() {
+  async onSubmit() {
     if (this.eventForm.valid) {
+      const raw = this.eventForm.value;
+
       const newEvent: Event = {
         id: crypto.randomUUID(),
-        ...this.eventForm.value,
+        name: raw.name,
+        veranstalter: raw.veranstalter,
+        place: raw.place,
+        startDate: moment(raw.startDate, 'YYYY-MM-DD').toDate(), // ✅ korrekter Date-Typ
+        endDate: moment(raw.endDate, 'YYYY-MM-DD').toDate(),     // ✅ korrekter Date-Typ
+        selectedExams: raw.selectedExams,
         prueflinge: []
       };
 
-      console.log('Creating new event:', newEvent); // Debug log
-      // Saving events
-      const existingEvents = JSON.parse(localStorage.getItem('events') || '[]');
-      existingEvents.push(newEvent);
-      localStorage.setItem('events', JSON.stringify(existingEvents));
+      console.log('✅ Neuer Event erstellt:', newEvent);
 
-      this.router.navigate(['/']);
+      try {
+        await this.indexedDb.saveItem<Event>('events', newEvent);
+        console.log('💾 Event wurde in IndexedDB gespeichert.');
+        this.router.navigate(['/']);
+      } catch (error) {
+        console.error('❌ Fehler beim Speichern in IndexedDB:', error);
+      }
     } else {
-      Object.keys(this.eventForm.controls).forEach(key => {
-        const control = this.eventForm.get(key);
-        if (control?.invalid) {
-          control.markAsTouched();
-        }
+      Object.values(this.eventForm.controls).forEach(control => {
+        if (control.invalid) control.markAsTouched();
       });
     }
   }
 
-  // Helper method to format exam display
   getSelectedExamsDisplay(): string {
-    return this.selectedExamList
-      .map(exam => `${exam.name} (${exam.id})`)
-      .join('\n');
+    return this.selectedExamList.map(e => `${e.name} (${e.id})`).join('\n');
   }
 
-  // Add these new methods
+  private autoCapitalize(controlName: string) {
+    this.eventForm.get(controlName)?.valueChanges.subscribe(value => {
+      if (value && typeof value === 'string') {
+        const capitalized = this.capitalizeFirstLetter(value);
+        if (capitalized !== value) {
+          this.eventForm.patchValue({ [controlName]: capitalized }, { emitEvent: false });
+        }
+      }
+    });
+  }
+
   private capitalizeFirstLetter(value: string): string {
-    if (!value) return value;
-    const firstChar = value.charAt(0).toUpperCase();
-    const restOfString = value.slice(1);
-    return firstChar + restOfString;
+    return value ? value.charAt(0).toUpperCase() + value.slice(1) : value;
   }
 
   private capitalizedFirstLetterValidator() {
     return (control: AbstractControl): ValidationErrors | null => {
-      const value = control.value;
-      if (!value) return null;
-
-      const firstLetter = value.charAt(0);
-      if (!/^[A-ZÄÖÜ]/.test(firstLetter)) {
-        return { capitalizedFirstLetter: true };
-      }
-      return null;
+      const val = control.value;
+      if (!val) return null;
+      return /^[A-ZÄÖÜ]/.test(val.charAt(0)) ? null : { capitalizedFirstLetter: true };
     };
   }
 }

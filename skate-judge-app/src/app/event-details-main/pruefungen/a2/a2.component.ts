@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSliderModule } from '@angular/material/slider';
 import { FormsModule } from '@angular/forms';
 import { Event as SkateEvent, Exam, Pruefling } from '../../../shared/models/event.interface';
+import { IndexedDbService } from '../../../shared/service/db/indexeddb.service';
 
 @Component({
   selector: 'app-a2',
@@ -59,7 +60,11 @@ export class A2Component implements OnInit, AfterViewInit {
   @ViewChild('elementsTable', { static: false }) elementsTable!: ElementRef;
   @ViewChild('athletesTable', { static: false }) athletesTable!: ElementRef;
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute, 
+    private router: Router,
+    private indexedDb: IndexedDbService
+  ) {}
 
   ngOnInit() {
     this.loadEventData();
@@ -78,13 +83,12 @@ export class A2Component implements OnInit, AfterViewInit {
   }
 
   // Data loading
-  private loadEventData(): void {
+  private async loadEventData(): Promise<void> {
     this.eventId = this.route.snapshot.paramMap.get('eventId');
     
     if (this.eventId) {
-      const savedEvents = localStorage.getItem('events');
-      if (savedEvents) {
-        const events: SkateEvent[] = JSON.parse(savedEvents);
+      try {
+        const events: SkateEvent[] = await this.indexedDb.getAll<SkateEvent>('events');
         this.event = events.find(e => e.id === this.eventId);
         
         if (this.event) {
@@ -92,9 +96,14 @@ export class A2Component implements OnInit, AfterViewInit {
           if (this.exam) {
             // Always get fresh filtered list
             this.prueflingeForExam = this.getPrueflingeForExam(this.exam);
+            console.log('📋 A2 Event loaded from IndexedDB:', this.event);
             console.log('Loaded athletes for a2:', this.prueflingeForExam.length, 'visible athletes');
           }
+        } else {
+          console.warn('⚠️ A2 Event not found in IndexedDB');
         }
+      } catch (error) {
+        console.error('❌ Error loading A2 events from IndexedDB:', error);
       }
     }
   }
@@ -144,11 +153,12 @@ export class A2Component implements OnInit, AfterViewInit {
 
   // Navigation
   canGoBack(): boolean {
-    return !(this.currentElementIndex === 0 && this.currentAthleteIndex === 0);
+    return !(this.currentElementIndex === 1 && this.currentAthleteIndex === 0); // Changed from 0 to 1
   }
 
   canGoNext(): boolean {
-    return !(this.currentElementIndex === this.elements.length && this.currentAthleteIndex === this.prueflingeForExam.length - 1);
+    return !(this.currentElementIndex === this.elements.length && 
+             this.currentAthleteIndex === this.prueflingeForExam.length - 1);
   }
 
   goToPreviousWithSave(): void {
@@ -257,7 +267,7 @@ export class A2Component implements OnInit, AfterViewInit {
 
   getTotal(athleteIndex: number): string {
     let total = 0;
-    for (let i = 1; i <= 4; i++) {
+    for (let i = 1; i <= this.elements.length; i++) { // Use elements.length instead of hardcoded 4
       total += this.getScore(i, athleteIndex);
     }
     return total.toFixed(1);
@@ -282,7 +292,7 @@ export class A2Component implements OnInit, AfterViewInit {
   private checkForMissingScores(): { elementIndex: number, athleteIndex: number }[] {
     const missing: { elementIndex: number, athleteIndex: number }[] = [];
     
-    for (let elementIndex = 1; elementIndex <= 4; elementIndex++) {
+    for (let elementIndex = 1; elementIndex <= this.elements.length; elementIndex++) { // Use elements.length
       for (let athleteIndex = 0; athleteIndex < this.prueflingeForExam.length; athleteIndex++) {
         const score = this.getScore(elementIndex, athleteIndex);
         if (!score || score === 0) {
