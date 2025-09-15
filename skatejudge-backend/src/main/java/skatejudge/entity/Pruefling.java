@@ -3,8 +3,8 @@ package skatejudge.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "prueflinge")
@@ -25,11 +25,11 @@ public class Pruefling {
             name = "pruefling_pruefung",
             joinColumns = @JoinColumn(name = "pruefling_id"),
             inverseJoinColumns = @JoinColumn(name = "pruefung_id") )
-    private Set<Pruefung> pruefungen = new HashSet<>();
+    private List<Pruefung> pruefungen = new ArrayList<>();
 
     public Pruefling() {}
 
-    public Pruefling(String name, String vorname, String verein, long a1a, long a1b, long a1c, long a1d) {
+    public Pruefling(String name, String vorname, String verein) {
         this.name = name;
         this.vorname = vorname;
         this.verein = verein;

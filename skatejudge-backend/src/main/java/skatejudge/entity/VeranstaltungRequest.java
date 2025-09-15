@@ -31,12 +31,9 @@ public class VeranstaltungRequest {
 
     @NotNull(message = "{veranstaltung.pruefungIds.notnull}")
     @Size(min = 1, message = "{veranstaltung.pruefungIds.size}")
-    private List<Long> pruefungen;  // Liste von Prüfungs-IDs
+    private List<PruefungRequest> pruefungen;  // Liste von Prüfungs-IDs
 
 
     @NotBlank(message = "{veranstaltung.name.notblank}")
     private String veranstalter;
-
-
-
 }

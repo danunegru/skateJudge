@@ -2,30 +2,37 @@ package skatejudge.controller;
 
 import org.springframework.web.bind.annotation.*;
 import skatejudge.repository.PrueflingRepository;
+import skatejudge.service.PrueflingService;
 import skatejudge.entity.Pruefling;
+import skatejudge.entity.NeuerPrueflingMitPruefungenRequest;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/prueflinge")
 public class PrueflingController {
 
-    private final PrueflingRepository prueflingRepository;
+    private final PrueflingService prueflingService;
 
-    public PrueflingController(PrueflingRepository prueflingRepository) {
-        this.prueflingRepository = prueflingRepository;
+    public PrueflingController(PrueflingService prueflingService) {
+        this.prueflingService = prueflingService;
     }
 
-    @GetMapping("/pruefling")
-    public Iterable<Pruefling> findAllPrueflinge() {
-        return this.prueflingRepository.findAll();
+    @PostMapping("/mitPruefungen")
+    public Pruefling erstellePrueflingMitPruefungen(@RequestBody NeuerPrueflingMitPruefungenRequest request) {
+        return this.prueflingService.erstellePrueflingMitPruefungen(request);
     }
 
-    @PostMapping("/pruefling")
-    public Pruefling addOnePruefling(@RequestBody Pruefling pruefling) {
-        return this.prueflingRepository.save(pruefling);
-    }
+    // @GetMapping("/pruefling")
+    // public Iterable<Pruefling> findAllPrueflinge() {
+    //     return this.prueflingService.findAllPrueflinge();
+    // }
 
-    @DeleteMapping("/pruefling/{id}")
-    public void deleteOnePruefling(@PathVariable int id) {
-        this.prueflingRepository.deleteById(id);
-    }
+    // @PostMapping("/pruefling")
+    // public Pruefling addOnePruefling(@RequestBody Pruefling pruefling) {
+    //     return this.prueflingService.addOnePruefling(pruefling);
+    // }
+
+    // @DeleteMapping("/pruefling/{id}")
+    // public void deleteOnePruefling(@PathVariable int id) {
+    //     this.prueflingService.deleteOnePruefling(id);
+    // }
 }

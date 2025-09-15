@@ -24,22 +24,22 @@ public class PruefungController {
         this.veranstaltungRepository = veranstaltungRepository;
     }
 
-    @PostMapping("/veranstaltungen")
-    public ResponseEntity<String> createVeranstaltung(@RequestBody @Valid VeranstaltungRequest req) {
-        Veranstaltung veranstaltung = new Veranstaltung();
-        veranstaltung.setName(req.getName());
-        veranstaltung.setOrt(req.getOrt());
-        veranstaltung.setStartDatum(req.getStartDatum());
-        veranstaltung.setEndDatum(req.getEndDatum());
-        veranstaltung.setVeranstalter(req.getVeranstalter());
+    // @PostMapping("/veranstaltungen")
+    // public ResponseEntity<String> createVeranstaltung(@RequestBody @Valid VeranstaltungRequest req) {
+    //     Veranstaltung veranstaltung = new Veranstaltung();
+    //     veranstaltung.setName(req.getName());
+    //     veranstaltung.setOrt(req.getOrt());
+    //     veranstaltung.setStartDatum(req.getStartDatum());
+    //     veranstaltung.setEndDatum(req.getEndDatum());
+    //     veranstaltung.setVeranstalter(req.getVeranstalter());
 
-        List<Pruefung> ausgewaehltePruefungen = pruefungRepository.findAllById(req.getPruefungen());
-        veranstaltung.setPruefungen(new HashSet<>(ausgewaehltePruefungen));
+    //     List<Pruefung> ausgewaehltePruefungen = pruefungRepository.findAllById(req.getPruefungen());
+    //     veranstaltung.setPruefungen(new HashSet<>(ausgewaehltePruefungen));
 
-        veranstaltungRepository.save(veranstaltung);
+    //     veranstaltungRepository.save(veranstaltung);
 
-        return ResponseEntity.ok("Veranstaltung erfolgreich gespeichert.");
-    }
+    //     return ResponseEntity.ok("Veranstaltung erfolgreich gespeichert.");
+    // }
 
     @GetMapping("/veranstaltungen")
     public Iterable<Veranstaltung> findAllVeranstaltungen() {
